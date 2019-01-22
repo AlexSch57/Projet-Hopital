@@ -21,7 +21,9 @@ public class Chirurgien {
         return nom;
     }
   
-
+    public String toString(){
+        return nom;
+    }
     
     public boolean equals(Chirurgien c) {
        return (this.getNom().equals(c.getNom()));

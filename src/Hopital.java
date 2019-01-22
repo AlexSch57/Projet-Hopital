@@ -35,7 +35,8 @@ public class Hopital {
     }
     
     public void init(String nomFichier) throws FileNotFoundException, IOException, ParseException{
-        BufferedReader reader = new BufferedReader(new FileReader(new File(nomFichier)));
+        BufferedReader reader = new BufferedReader(new FileReader(new File("."+File.separator+"files"+File.separator+nomFichier)));
+        
         String ligne = reader.readLine();
         while(ligne!=null){
             if (!ligne.contains("ID CHIRURGIE")){
@@ -67,17 +68,18 @@ public class Hopital {
 //                //this.listeChirurgies.add(new Chirurgie(tab[0],tab[1],tab[2],tab[3],salle,chirurgien));
 //                dateChirurgie = new LocalDate(Integer.parseInt(tabDate[2]),Integer.parseInt(tabDate[1]),Integer.parseInt(tabDate[0]));
                 String time = tab[2];                
-                DateFormat hms = new SimpleDateFormat("hh:mm:ss");                
-                Date heureDeb = hms.parse(time);
+                DateFormat hms = new SimpleDateFormat("HH:mm:ss");                
+                Date heureDeb = hms.parse(time);               
                 time = tab[3];
                 Date heureFin = hms.parse(time);
                 this.listeChirurgies.add(new Chirurgie(tab[0],dateChirurgie,heureDeb,heureFin,salle,chirurgien));
-
+                
                
-            }
-            
-            
-            
+            }          
+            ligne = reader.readLine();
+        }
+        for (Chirurgie c : this.listeChirurgies){
+            System.out.println(c.toString());
         }
     }
     

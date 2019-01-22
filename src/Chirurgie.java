@@ -54,7 +54,8 @@ public class Chirurgie {
     }
     
     public String toString(){
-        return this.getId();       
+        return this.getId()+";"+this.getDate().toString()+";"
+                +this.getHeureDebut().toString()+";"+this.getHeureFin().toString()+";"+this.getSalle().toString()+";"+this.getChirurgien().toString();       
     }
     
 }

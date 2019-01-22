@@ -19,6 +19,10 @@ public class Salle {
         return nom;
     }
     
+    public String toString() {
+        return nom;
+    }
+    
     public boolean equals(Salle s) {
        return (this.getNom().equals(s.getNom()));
     }
