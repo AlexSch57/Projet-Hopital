@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -67,11 +68,15 @@ public class Hopital {
 //                dateChirurgie = new LocalDate(1, 1, 1);
 //                //this.listeChirurgies.add(new Chirurgie(tab[0],tab[1],tab[2],tab[3],salle,chirurgien));
 //                dateChirurgie = new LocalDate(Integer.parseInt(tabDate[2]),Integer.parseInt(tabDate[1]),Integer.parseInt(tabDate[0]));
-                String time = tab[2];                
-                DateFormat hms = new SimpleDateFormat("HH:mm:ss");                
-                Date heureDeb = hms.parse(time);               
-                time = tab[3];
-                Date heureFin = hms.parse(time);
+                tabDate = tab[2].split(":");                
+              
+                //LocalTime heureDeb = hms.parse(time);   
+                LocalTime heureDeb = LocalTime.of(Integer.parseInt(tabDate[0]), Integer.parseInt(tabDate[1]), Integer.parseInt(tabDate[2]));
+                
+                tabDate = tab[3].split(":");
+                LocalTime heureFin = LocalTime.of(Integer.parseInt(tabDate[0]), Integer.parseInt(tabDate[1]), Integer.parseInt(tabDate[2]));
+                
+                //LocalTime heureFin = hms.parse(time);
                 this.listeChirurgies.add(new Chirurgie(tab[0],dateChirurgie,heureDeb,heureFin,salle,chirurgien));
                 
                

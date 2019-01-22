@@ -6,6 +6,7 @@
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 /**
@@ -15,8 +16,8 @@ import java.util.Date;
 public class Chirurgie {
     private String id;
     private LocalDate date;
-    private Date heureDebut;
-    private Date heureFin;
+    private LocalTime heureDebut;
+    private LocalTime heureFin;
     private Salle salle;
     private Chirurgien chirurgien;
 
@@ -28,11 +29,11 @@ public class Chirurgie {
         return date;
     }
 
-    public Date getHeureDebut() {
+    public LocalTime getHeureDebut() {
         return heureDebut;
     }
 
-    public Date getHeureFin() {
+    public LocalTime getHeureFin() {
         return heureFin;
     }
 
@@ -44,7 +45,7 @@ public class Chirurgie {
         return chirurgien;
     }
 
-    public Chirurgie(String id, LocalDate date, Date heureDebut, Date heureFin, Salle salle, Chirurgien chirurgien) {
+    public Chirurgie(String id, LocalDate date, LocalTime heureDebut, LocalTime heureFin, Salle salle, Chirurgien chirurgien) {
         this.id = id;
         this.date = date;
         this.heureDebut = heureDebut;
