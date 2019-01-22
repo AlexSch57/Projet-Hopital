@@ -74,10 +74,15 @@ public class Hopital {
                
             }          
             ligne = reader.readLine();
-        }
+        }        
+    }
+    
+    public void printListeChirurgies(){
         for (Chirurgie c : this.listeChirurgies){
             System.out.println(c.toString());
         }
     }
+    
+    
     
 }
