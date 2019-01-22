@@ -83,6 +83,23 @@ public class Hopital {
         }
     }
     
+    /* TODO */
+    public boolean estParallele(Chirurgie c1, Chirurgie c2){
+        if((c2.getHeureDebut().isAfter(c1.getHeureDebut())) &&
+                c2.getHeureDebut().isBefore(c1.getHeureFin()))
+        {
+            return true;
+        }
+        return false;  
+    }  
     
-    
+    public Chirurgie getChirurgieById(String s)
+    {
+        for(Chirurgie c : this.listeChirurgies){
+            if(c.getId().equals(s)){
+                return c;
+            }
+        }
+        return null;
+    }
 }

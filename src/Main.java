@@ -21,6 +21,9 @@ public class Main {
     public static void main(String[] args) throws IOException, FileNotFoundException, ParseException {
        Hopital h = new Hopital();
        h.init("MiniBase.csv");
+       
+       Chirurgie c = h.getChirurgieById("3");
+       System.out.println(c);
     }
     
 }
