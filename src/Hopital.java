@@ -16,6 +16,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  *
@@ -58,21 +61,14 @@ public class Hopital {
                 }
                 String[] tabDate = tab[1].split("/");
                 LocalDate dateChirurgie = LocalDate.of(Integer.parseInt(tabDate[2]),Integer.parseInt(tabDate[1]),Integer.parseInt(tabDate[0]));
-//                dateChirurgie = new LocalDate(1, 1, 1);
-//                //this.listeChirurgies.add(new Chirurgie(tab[0],tab[1],tab[2],tab[3],salle,chirurgien));
-//                dateChirurgie = new LocalDate(Integer.parseInt(tabDate[2]),Integer.parseInt(tabDate[1]),Integer.parseInt(tabDate[0]));
+
                 tabDate = tab[2].split(":");                
-              
-                //LocalTime heureDeb = hms.parse(time);   
                 LocalTime heureDeb = LocalTime.of(Integer.parseInt(tabDate[0]), Integer.parseInt(tabDate[1]), Integer.parseInt(tabDate[2]));
                 
                 tabDate = tab[3].split(":");
                 LocalTime heureFin = LocalTime.of(Integer.parseInt(tabDate[0]), Integer.parseInt(tabDate[1]), Integer.parseInt(tabDate[2]));
                 
-                //LocalTime heureFin = hms.parse(time);
-                this.listeChirurgies.add(new Chirurgie(tab[0],dateChirurgie,heureDeb,heureFin,salle,chirurgien));
-                
-               
+                this.listeChirurgies.add(new Chirurgie(tab[0],dateChirurgie,heureDeb,heureFin,salle,chirurgien));           
             }          
             ligne = reader.readLine();
         } 
@@ -83,6 +79,57 @@ public class Hopital {
         for (Chirurgie c : this.listeChirurgies){
             System.out.println(c.toString());
         }
+    }
+    
+    /* TODO */
+    public HashMap<LocalDate, ArrayList<Chirurgie>> TriParJour(){
+    	HashMap<LocalDate, ArrayList<Chirurgie>> m = new HashMap<>();
+    	
+    	LocalDate dateDuJour = LocalDate.now();
+    	ArrayList<Chirurgie> chirurgieDuJour = new ArrayList<>();
+    	
+    	Iterator it = this.listeChirurgies.iterator();
+    	while(it.hasNext()) {
+    		Chirurgie c = (Chirurgie) it.next();
+    	//for(Chirurgie c : this.listeChirurgies) {
+    		if(dateDuJour.equals(c.getDate())){
+    			chirurgieDuJour.add(c);
+    		}
+    		else {
+    			if(chirurgieDuJour.size() != 0)
+    			{
+        			m.put(dateDuJour, chirurgieDuJour);
+    			}
+    			if(!(it.hasNext())){
+    				m.put(dateDuJour, chirurgieDuJour);
+    			}
+    			dateDuJour = c.getDate();
+
+    			chirurgieDuJour = new ArrayList<>();
+    			chirurgieDuJour.add(c);
+    		}
+    	}
+    	
+    	for (Map.Entry<LocalDate, ArrayList<Chirurgie>> entry : m.entrySet()) {
+            System.out.println("Key : " + entry.getKey() 
+				+ " Value : " + entry.getValue());
+        }
+    	
+//    	// affichage des jours 
+//    	Iterator it = m.keySet().iterator();
+//    	while(it.hasNext()) {
+//    		Object cle = it.next();
+//    		Object valeur = m.get(cle);
+//    		
+//    		LocalDate ld = (LocalDate) cle;
+//    		ArrayList<Chirurgie> al = (ArrayList<Chirurgie>) valeur;
+//    		for(Chirurgie c : al) {
+//        		System.out.println(ld + " ------------ " + c);
+//    		}	
+//    		System.out.println("length : " + m.size());
+//    	}
+    	return m;
+    	
     }
     
     /**

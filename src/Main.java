@@ -28,6 +28,7 @@ public class Main {
        Chirurgie c1 = h.getChirurgieById("1");
        Chirurgie c2 = h.getChirurgieById("25");
        
+       h.TriParJour();
        //System.out.println(c1.compareTo(c2));
 //       
 //       System.out.println(h.estParallele(c1, c2));
