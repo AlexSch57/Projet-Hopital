@@ -91,7 +91,6 @@ public class Hopital {
     	Iterator it = this.listeChirurgies.iterator();
     	while(it.hasNext()) {
     		Chirurgie c = (Chirurgie) it.next();
-    	//for(Chirurgie c : this.listeChirurgies) {
     		if(dateDuJour.equals(c.getDate())){
     			chirurgieDuJour.add(c);
     		}
@@ -100,14 +99,15 @@ public class Hopital {
     			{
         			m.put(dateDuJour, chirurgieDuJour);
     			}
-    			if(!(it.hasNext())){
-    				m.put(dateDuJour, chirurgieDuJour);
-    			}
+    			
     			dateDuJour = c.getDate();
 
     			chirurgieDuJour = new ArrayList<>();
     			chirurgieDuJour.add(c);
     		}
+    		if(!(it.hasNext())){
+				m.put(dateDuJour, chirurgieDuJour);
+			}
     	}
     	
     	for (Map.Entry<LocalDate, ArrayList<Chirurgie>> entry : m.entrySet()) {
