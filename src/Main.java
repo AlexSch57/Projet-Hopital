@@ -2,6 +2,9 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Month;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,9 +24,10 @@ public class Main {
     public static void main(String[] args) throws IOException, FileNotFoundException, ParseException {
        Hopital h = new Hopital();
        h.init("MiniBase.csv");
-       
-       Chirurgie c = h.getChirurgieById("3");
-       System.out.println(c);
-    }
-    
+       h.printListeChirurgies();
+//       Chirurgie c1 = h.getChirurgieById("23");
+//       Chirurgie c2 = h.getChirurgieById("25");
+//       
+//       System.out.println(h.estParallele(c1, c2));
+    }   
 }

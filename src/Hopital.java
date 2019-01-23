@@ -83,14 +83,28 @@ public class Hopital {
         }
     }
     
-    /* TODO */
+    /**
+     * 
+     * @param c1 un Objet Chirurgie
+     * @param c2 un Objet Chirurgie, différent de c1
+     * @return return un booléen :
+     * - true si c1 se déroule en même temps que c2 (partiellement ou complètement)
+     * - false sinon
+     */
     public boolean estParallele(Chirurgie c1, Chirurgie c2){
-        if((c2.getHeureDebut().isAfter(c1.getHeureDebut())) &&
-                c2.getHeureDebut().isBefore(c1.getHeureFin()))
-        {
-            return true;
+        if(c1.getDate().equals(c2.getDate())){
+            if(c1.getHeureDebut().equals(c2.getHeureDebut())){
+                return true;
+            }
+            if(((c2.getHeureDebut().isAfter(c1.getHeureDebut())) &&
+                c2.getHeureDebut().isBefore(c1.getHeureFin())) ||
+                    (c1.getHeureDebut().isAfter(c2.getHeureDebut())) &&
+                    c1.getHeureDebut().isBefore(c2.getHeureFin()))
+            {
+                return true;
+            } 
         }
-        return false;  
+        return false;
     }  
     
     public Chirurgie getChirurgieById(String s)
