@@ -11,9 +11,7 @@ import java.time.LocalTime;
  *
  * @author kormli18
  */
-// test commit eclipse
-// test pull eclipse
-public class Chirurgie {
+public class Chirurgie implements Comparable{
     private String id;
     private LocalDate date;
     private LocalTime heureDebut;
@@ -58,5 +56,30 @@ public class Chirurgie {
         return this.getId()+";"+this.getDate().toString()+";"
                 +this.getHeureDebut().toString()+";"+this.getHeureFin().toString()+";"+this.getSalle().toString()+";"+this.getChirurgien().toString();       
     }
+
+	@Override
+	public int compareTo(Object obj) {
+		if(obj instanceof Chirurgie) {
+			Chirurgie c = (Chirurgie) obj;
+			if(this.getDate().isBefore(c.getDate())) {
+				return -1;
+			}
+			else if(this.getDate().equals(c.getDate())){
+				if(this.getHeureDebut().isBefore(c.getHeureDebut())) {
+					return -1;
+				}
+				else {
+					return 1;
+				}
+			}
+			else
+			{
+				return 1;
+			}
+		}
+		else {
+			return 0;
+		}
+	}
     
 }

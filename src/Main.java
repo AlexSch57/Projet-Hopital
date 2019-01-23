@@ -25,8 +25,10 @@ public class Main {
        Hopital h = new Hopital();
        h.init("MiniBase.csv");
        h.printListeChirurgies();
-//       Chirurgie c1 = h.getChirurgieById("23");
-//       Chirurgie c2 = h.getChirurgieById("25");
+       Chirurgie c1 = h.getChirurgieById("1");
+       Chirurgie c2 = h.getChirurgieById("25");
+       
+       //System.out.println(c1.compareTo(c2));
 //       
 //       System.out.println(h.estParallele(c1, c2));
     }   
