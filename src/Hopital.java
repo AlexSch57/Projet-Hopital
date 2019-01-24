@@ -162,29 +162,29 @@ public class Hopital {
     		ArrayList<Chirurgie> chirurgiesDuJour = entree.getValue();
     		
     		for(int i = 0; i < chirurgiesDuJour.size(); i++) {
-    			Erreur e = new Erreur();
+    			//Erreur e = new Erreur();
     			Chirurgie c1 = chirurgiesDuJour.get(i);
 				while((chirurgiesDuJour.indexOf(c1) != chirurgiesDuJour.size() - 1) && (this.estParallele(c1, chirurgiesDuJour.get(++i))))  {
 					Chirurgie c2 = chirurgiesDuJour.get(i);
 					
 					if((c1.getChirurgien().equals(c2.getChirurgien())) &&
     						c1.getSalle().equals(c2.getSalle())) {
+						Erreur e = new ErreurChevauchement();
     					e.addChirurgie(c1);
     					e.addChirurgie(c2);
     					this.listeErreurs.add(e);
-    					System.out.println("les deux");
     				}
 					else if(c1.getChirurgien().equals(c2.getChirurgien())) {
+						Erreur e = new ErreurUbiquite();
 						e.addChirurgie(c1);
     					e.addChirurgie(c2);
     					this.listeErreurs.add(e);
-    					System.out.println("le chirurgien");
 					}
 					else if(c1.getSalle().equals(c2.getSalle())) {
+						Erreur e = new ErreurInterference();
 						e.addChirurgie(c1);
     					e.addChirurgie(c2);
     					this.listeErreurs.add(e);
-    					System.out.println("la salle");
 					}
 					c1 = c2;        				
 				}
