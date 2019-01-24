@@ -68,12 +68,19 @@ public class Chirurgie implements Comparable{
 				if(this.getHeureDebut().isBefore(c.getHeureDebut())) {
 					return -1;
 				}
+				else if(this.getHeureDebut().equals(c.getHeureDebut())) {
+					if(this.getHeureFin().isBefore(c.getHeureFin())) {
+						return -1;
+					}
+					else {
+						return 1;
+					}
+				}
 				else {
 					return 1;
 				}
 			}
-			else
-			{
+			else {
 				return 1;
 			}
 		}

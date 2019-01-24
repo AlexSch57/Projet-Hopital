@@ -81,7 +81,10 @@ public class Hopital {
         }
     }
     
-    /* TODO */
+    /**
+     * 
+     * @return retourne une map ayant pour clé une date 
+     */
     public HashMap<LocalDate, ArrayList<Chirurgie>> TriParJour(){
     	HashMap<LocalDate, ArrayList<Chirurgie>> m = new HashMap<>();
     	
@@ -114,22 +117,7 @@ public class Hopital {
             System.out.println("Key : " + entry.getKey() 
 				+ " Value : " + entry.getValue());
         }
-    	
-//    	// affichage des jours 
-//    	Iterator it = m.keySet().iterator();
-//    	while(it.hasNext()) {
-//    		Object cle = it.next();
-//    		Object valeur = m.get(cle);
-//    		
-//    		LocalDate ld = (LocalDate) cle;
-//    		ArrayList<Chirurgie> al = (ArrayList<Chirurgie>) valeur;
-//    		for(Chirurgie c : al) {
-//        		System.out.println(ld + " ------------ " + c);
-//    		}	
-//    		System.out.println("length : " + m.size());
-//    	}
-    	return m;
-    	
+    	return m;  	
     }
     
     /**
