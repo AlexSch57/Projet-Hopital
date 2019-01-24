@@ -38,8 +38,17 @@ public class Chirurgie implements Comparable{
     public Salle getSalle() {
         return salle;
     }
+    
 
-    public Chirurgien getChirurgien() {
+    public void setChirurgien(Chirurgien chirurgien) {
+		this.chirurgien = chirurgien;
+	}
+    
+	public void setSalle(Salle salle) {
+		this.salle = salle;
+	}
+
+	public Chirurgien getChirurgien() {
         return chirurgien;
     }
 

@@ -30,6 +30,11 @@ public class Main {
        
        h.TriParJour();
        h.findErreur();
+       h.resolveErreur();
+       
+       System.out.println("après résolution : \n");
+       h.findErreur();
+       
        //System.out.println(c1.compareTo(c2));
 //       
 //       System.out.println(h.estParallele(c1, c2));

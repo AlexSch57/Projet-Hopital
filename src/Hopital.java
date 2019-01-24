@@ -94,9 +94,9 @@ public class Hopital {
     	LocalDate dateDuJour = LocalDate.now();
     	ArrayList<Chirurgie> chirurgieDuJour = new ArrayList<>();
     	
-    	Iterator it = this.listeChirurgies.iterator();
+    	Iterator<Chirurgie> it = this.listeChirurgies.iterator();
     	while(it.hasNext()) {
-    		Chirurgie c = (Chirurgie) it.next();
+    		Chirurgie c = it.next();
     		if(dateDuJour.equals(c.getDate())){
     			chirurgieDuJour.add(c);
     		}
@@ -155,14 +155,13 @@ public class Hopital {
     }
     
     public void findErreur() {
+    	this.listeErreurs = new ArrayList<>();
     	TreeMap <LocalDate, ArrayList<Chirurgie>> dateChirurgies = this.TriParJour();
     	
     	for (Map.Entry<LocalDate, ArrayList<Chirurgie>> entree : dateChirurgies.entrySet()) {
-    		LocalDate dateDujour = entree.getKey();
     		ArrayList<Chirurgie> chirurgiesDuJour = entree.getValue();
     		
     		for(int i = 0; i < chirurgiesDuJour.size(); i++) {
-    			//Erreur e = new Erreur();
     			Chirurgie c1 = chirurgiesDuJour.get(i);
 				while((chirurgiesDuJour.indexOf(c1) != chirurgiesDuJour.size() - 1) && (this.estParallele(c1, chirurgiesDuJour.get(++i))))  {
 					Chirurgie c2 = chirurgiesDuJour.get(i);
@@ -190,9 +189,108 @@ public class Hopital {
 				}
     		}
 		}
+    	System.out.println("Nombre d'erreur(s) : " + this.listeErreurs.size());
     	for(Erreur e : this.listeErreurs) {
     		System.out.println(e.toString());
-    	}
+    	} 	
+    }
+    
+    public void resolveErreur() {
+    	Iterator<Erreur> it = this.listeErreurs.iterator();
+    	while(it.hasNext()) {
+    		Erreur e = it.next();
+    		ArrayList<Chirurgie> chirurgiesDuJour = e.getListeChirurgiesErreur();
+    		LocalDate dateDuJour = chirurgiesDuJour.get(0).getDate();
+    		ArrayList<Chirurgien> chirurgiensDuJour = this.ChirurgiensDuJour(dateDuJour);
+    		ArrayList<Salle> listeSalles = this.getListeSalles();
+    		
+    		// ----- INTERFERENCE ------ //
+    		if(e instanceof ErreurInterference) {
+    			for(Salle  s : listeSalles) {
+    				if(!(s.equals(chirurgiesDuJour.get(1).getSalle()))) {
+    					if(!(isActifSalle(s, dateDuJour, chirurgiesDuJour.get(1).getHeureDebut(), chirurgiesDuJour.get(1).getHeureFin()))) {
+        					chirurgiesDuJour.get(1).setSalle(s);
+        					this.listeChirurgies.remove(e);
+        					break;   						
+    					}
+    				}
+    			}
+    		}
+    		
+    		// ----- CHEVAUCHEMENT ------ //
+    		else if(e instanceof ErreurChevauchement) {
+    			
+    		}
+    		
+    		// ----- UBIQUITE ------ //
+    		else if(e instanceof ErreurUbiquite) {
+    			for(Chirurgien c : chirurgiensDuJour) {
+    				if(!(c.equals(chirurgiesDuJour.get(1).getChirurgien()))) {
+    					if(!(isActifChirurgien(c, dateDuJour, chirurgiesDuJour.get(1).getHeureDebut(), chirurgiesDuJour.get(1).getHeureFin()))) {
+        					chirurgiesDuJour.get(1).setChirurgien(c);
+        					this.listeChirurgies.remove(e);
+        					break;   						
+    					}
+    				}
+    			}
+    		}
+    	}	
+    }
+    
+    public boolean isActifSalle(Salle s, LocalDate jour, LocalTime heureDebut, LocalTime heureFin) {
     	
+    	for(Chirurgie ch : this.listeChirurgies) {
+    		if(ch.getDate().equals(jour)) {
+    			if(ch.getSalle().equals(s)) {
+    				if(((ch.getHeureDebut().isAfter(heureDebut)) &&
+    		             ch.getHeureDebut().isBefore(heureFin) ||
+    		             (heureDebut.isAfter(ch.getHeureDebut())) &&
+    		             	heureDebut.isBefore(ch.getHeureFin()))){
+    		                    	return true;
+    		        }
+    			}
+    		}
+    	}
+    	return false;
+    }
+    
+public boolean isActifChirurgien(Chirurgien c, LocalDate jour, LocalTime heureDebut, LocalTime heureFin) {
+    	
+    	for(Chirurgie ch : this.listeChirurgies) {
+    		if(ch.getDate().equals(jour)) {
+    			if(ch.getChirurgien().equals(c)) {
+    				if(((ch.getHeureDebut().isAfter(heureDebut)) &&
+    		             ch.getHeureDebut().isBefore(heureFin) ||
+    		             (heureDebut.isAfter(ch.getHeureDebut())) &&
+    		             	heureDebut.isBefore(ch.getHeureFin()))){
+    		                    	return true;
+    		        }
+    			}
+    		}
+    	}
+    	return false;
+    }
+
+    
+    public ArrayList<Chirurgien> ChirurgiensDuJour(LocalDate ld) {
+    	ArrayList<Chirurgien> listeChirurgiens = new ArrayList<>();
+    	for(Chirurgie c : this.listeChirurgies) {
+    		if(c.getDate().equals(ld)) {
+    			if(!(listeChirurgiens.contains(c.getChirurgien()))) {
+    				listeChirurgiens.add(c.getChirurgien());
+    			}
+    		}
+    	}
+    	return listeChirurgiens;
+    }
+    
+    public ArrayList<Salle> getListeSalles(){
+    	ArrayList<Salle> listeSalles = new ArrayList<>();
+    	for(Chirurgie c: this.listeChirurgies) {
+    		if(!(listeSalles.contains((c.getSalle())))){
+    			listeSalles.add(c.getSalle());
+    		}
+    	}
+    	return listeSalles;
     }
 }
