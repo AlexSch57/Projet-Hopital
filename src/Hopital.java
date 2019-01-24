@@ -206,24 +206,34 @@ public class Hopital {
     		
     		// ----- INTERFERENCE ------ //
     		if(e instanceof ErreurInterference) {
-    			for(Salle  s : listeSalles) {
-    				if(!(s.equals(chirurgiesDuJour.get(1).getSalle()))) {
-    					if(!(isActifSalle(s, dateDuJour, chirurgiesDuJour.get(1).getHeureDebut(), chirurgiesDuJour.get(1).getHeureFin()))) {
-        					chirurgiesDuJour.get(1).setSalle(s);
-        					this.listeChirurgies.remove(e);
-        					break;   						
-    					}
-    				}
+    			// tentative de recherche d'une autre salle disponible
+    			if(this.changementSalle(listeSalles, chirurgiesDuJour, dateDuJour)) {
+    				this.listeChirurgies.remove(e);
+    			}	
+    			else {
+    				for(Chirurgien c : chirurgiensDuJour) {
+        				if(!(c.equals(chirurgiesDuJour.get(1).getChirurgien()))) {
+        					if(!(isActifChirurgien(c, dateDuJour, chirurgiesDuJour.get(1).getHeureDebut(), chirurgiesDuJour.get(1).getHeureFin()))) {
+            					chirurgiesDuJour.get(1).setChirurgien(c);
+            					this.listeChirurgies.remove(e);
+            					break;   						
+        					}
+        				}
+        			}
     			}
     		}
     		
     		// ----- CHEVAUCHEMENT ------ //
     		else if(e instanceof ErreurChevauchement) {
-    			
+    			// tentative de recherche d'une autre salle disponible
+    			if(this.changementSalle(listeSalles, chirurgiesDuJour, dateDuJour)) {
+    				this.listeChirurgies.remove(e);
+    			}	
     		}
     		
     		// ----- UBIQUITE ------ //
     		else if(e instanceof ErreurUbiquite) {
+    			// tentative de recherche d'un autre chirurgien disponible
     			for(Chirurgien c : chirurgiensDuJour) {
     				if(!(c.equals(chirurgiesDuJour.get(1).getChirurgien()))) {
     					if(!(isActifChirurgien(c, dateDuJour, chirurgiesDuJour.get(1).getHeureDebut(), chirurgiesDuJour.get(1).getHeureFin()))) {
@@ -254,7 +264,7 @@ public class Hopital {
     	return false;
     }
     
-public boolean isActifChirurgien(Chirurgien c, LocalDate jour, LocalTime heureDebut, LocalTime heureFin) {
+    public boolean isActifChirurgien(Chirurgien c, LocalDate jour, LocalTime heureDebut, LocalTime heureFin) {
     	
     	for(Chirurgie ch : this.listeChirurgies) {
     		if(ch.getDate().equals(jour)) {
@@ -292,5 +302,21 @@ public boolean isActifChirurgien(Chirurgien c, LocalDate jour, LocalTime heureDe
     		}
     	}
     	return listeSalles;
+    }
+    
+    public boolean changementSalle(ArrayList<Salle> listeSalles, ArrayList<Chirurgie> listeChirurgies, LocalDate dateDuJour) {
+		for(Salle  s : listeSalles) {
+			if(!(s.equals(listeChirurgies.get(1).getSalle()))) {
+				if(!(isActifSalle(s, dateDuJour, listeChirurgies.get(1).getHeureDebut(), listeChirurgies.get(1).getHeureFin()))) {
+					listeChirurgies.get(1).setSalle(s);
+					return true;  						
+				}
+			}
+		}
+		return false;
+    }
+    
+    public boolean changementChirurgien() {
+    	return true;
     }
 }

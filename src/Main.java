@@ -30,10 +30,13 @@ public class Main {
        
        h.TriParJour();
        h.findErreur();
-       h.resolveErreur();
-       
-       System.out.println("après résolution : \n");
-       h.findErreur();
+       for(int i = 0; i < 2; i++) {
+           h.resolveErreur();
+           
+           System.out.println("après résolution : \n");
+           h.findErreur();  
+       }
+
        
        //System.out.println(c1.compareTo(c2));
 //       
