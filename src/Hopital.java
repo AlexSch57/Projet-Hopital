@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  *
@@ -26,9 +27,11 @@ import java.util.Map;
  */
 public class Hopital {
     private ArrayList<Chirurgie> listeChirurgies;
+    private ArrayList<Erreur> listeErreurs;
 
     public Hopital() {
         this.listeChirurgies = new ArrayList<Chirurgie>();
+        this.listeErreurs = new ArrayList<Erreur>();
     }
     
     public void init(String nomFichier) throws FileNotFoundException, IOException, ParseException{
@@ -85,7 +88,7 @@ public class Hopital {
      * 
      * @return retourne une map ayant pour clé une date 
      */
-    public HashMap<LocalDate, ArrayList<Chirurgie>> TriParJour(){
+    public TreeMap<LocalDate, ArrayList<Chirurgie>> TriParJour(){
     	HashMap<LocalDate, ArrayList<Chirurgie>> m = new HashMap<>();
     	
     	LocalDate dateDuJour = LocalDate.now();
@@ -113,11 +116,8 @@ public class Hopital {
 			}
     	}
     	
-    	for (Map.Entry<LocalDate, ArrayList<Chirurgie>> entry : m.entrySet()) {
-            System.out.println("Key : " + entry.getKey() 
-				+ " Value : " + entry.getValue());
-        }
-    	return m;  	
+    	TreeMap<LocalDate, ArrayList<Chirurgie>> map = new TreeMap<>(m);
+    	return map;  	
     }
     
     /**
@@ -152,5 +152,47 @@ public class Hopital {
             }
         }
         return null;
+    }
+    
+    public void findErreur() {
+    	TreeMap <LocalDate, ArrayList<Chirurgie>> dateChirurgies = this.TriParJour();
+    	
+    	for (Map.Entry<LocalDate, ArrayList<Chirurgie>> entree : dateChirurgies.entrySet()) {
+    		LocalDate dateDujour = entree.getKey();
+    		ArrayList<Chirurgie> chirurgiesDuJour = entree.getValue();
+    		
+    		for(int i = 0; i < chirurgiesDuJour.size(); i++) {
+    			Erreur e = new Erreur();
+    			Chirurgie c1 = chirurgiesDuJour.get(i);
+				while((chirurgiesDuJour.indexOf(c1) != chirurgiesDuJour.size() - 1) && (this.estParallele(c1, chirurgiesDuJour.get(++i))))  {
+					Chirurgie c2 = chirurgiesDuJour.get(i);
+					
+					if((c1.getChirurgien().equals(c2.getChirurgien())) &&
+    						c1.getSalle().equals(c2.getSalle())) {
+    					e.addChirurgie(c1);
+    					e.addChirurgie(c2);
+    					this.listeErreurs.add(e);
+    					System.out.println("les deux");
+    				}
+					else if(c1.getChirurgien().equals(c2.getChirurgien())) {
+						e.addChirurgie(c1);
+    					e.addChirurgie(c2);
+    					this.listeErreurs.add(e);
+    					System.out.println("le chirurgien");
+					}
+					else if(c1.getSalle().equals(c2.getSalle())) {
+						e.addChirurgie(c1);
+    					e.addChirurgie(c2);
+    					this.listeErreurs.add(e);
+    					System.out.println("la salle");
+					}
+					c1 = c2;        				
+				}
+    		}
+		}
+    	for(Erreur e : this.listeErreurs) {
+    		System.out.println(e.toString());
+    	}
+    	
     }
 }

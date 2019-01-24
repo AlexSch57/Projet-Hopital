@@ -24,11 +24,12 @@ public class Main {
     public static void main(String[] args) throws IOException, FileNotFoundException, ParseException {
        Hopital h = new Hopital();
        h.init("MiniBase.csv");
-       h.printListeChirurgies();
+       //h.printListeChirurgies();
        Chirurgie c1 = h.getChirurgieById("1");
        Chirurgie c2 = h.getChirurgieById("25");
        
        h.TriParJour();
+       h.findErreur();
        //System.out.println(c1.compareTo(c2));
 //       
 //       System.out.println(h.estParallele(c1, c2));
