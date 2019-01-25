@@ -9,6 +9,7 @@
  * @author kormli18
  */
 public class Chirurgien {
+
     private String nom;
 
     public Chirurgien(String s) {
@@ -18,15 +19,13 @@ public class Chirurgien {
     public String getNom() {
         return nom;
     }
-  
-    public String toString(){
+
+    public String toString() {
         return nom;
     }
-    
+
     public boolean equals(Chirurgien c) {
-       return (this.getNom().equals(c.getNom()));
+        return (this.getNom().equals(c.getNom()));
     }
-    
-    
-    
+
 }

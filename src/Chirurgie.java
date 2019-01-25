@@ -11,7 +11,8 @@ import java.time.LocalTime;
  *
  * @author kormli18
  */
-public class Chirurgie implements Comparable{
+public class Chirurgie implements Comparable {
+
     private String id;
     private LocalDate date;
     private LocalTime heureDebut;
@@ -38,17 +39,16 @@ public class Chirurgie implements Comparable{
     public Salle getSalle() {
         return salle;
     }
-    
 
     public void setChirurgien(Chirurgien chirurgien) {
-		this.chirurgien = chirurgien;
-	}
-    
-	public void setSalle(Salle salle) {
-		this.salle = salle;
-	}
+        this.chirurgien = chirurgien;
+    }
 
-	public Chirurgien getChirurgien() {
+    public void setSalle(Salle salle) {
+        this.salle = salle;
+    }
+
+    public Chirurgien getChirurgien() {
         return chirurgien;
     }
 
@@ -60,42 +60,42 @@ public class Chirurgie implements Comparable{
         this.salle = salle;
         this.chirurgien = chirurgien;
     }
-    
-    public String toString(){
-        return this.getId()+";"+this.getDate().toString()+";"
-                +this.getHeureDebut().toString()+";"+this.getHeureFin().toString()+";"+this.getSalle().toString()+";"+this.getChirurgien().toString();       
+
+    public String toString() {
+        return this.getId() + ";" + this.getDate().toString() + ";"
+                + this.getHeureDebut().toString() + ";" + this.getHeureFin().toString() + ";" + this.getSalle().toString() + ";" + this.getChirurgien().toString();
     }
 
-	@Override
-	public int compareTo(Object obj) {
-		if(obj instanceof Chirurgie) {
-			Chirurgie c = (Chirurgie) obj;
-			if(this.getDate().isBefore(c.getDate())) {
-				return -1;
-			}
-			else if(this.getDate().equals(c.getDate())){
-				if(this.getHeureDebut().isBefore(c.getHeureDebut())) {
-					return -1;
-				}
-				else if(this.getHeureDebut().equals(c.getHeureDebut())) {
-					if(this.getHeureFin().isBefore(c.getHeureFin())) {
-						return -1;
-					}
-					else {
-						return 1;
-					}
-				}
-				else {
-					return 1;
-				}
-			}
-			else {
-				return 1;
-			}
-		}
-		else {
-			return 0;
-		}
-	}
-    
+    @Override
+    public int compareTo(Object obj) {
+        if (obj instanceof Chirurgie) {
+            Chirurgie c = (Chirurgie) obj;
+            if (this.getDate().isBefore(c.getDate())) {
+                return -1;
+            } 
+            else if (this.getDate().equals(c.getDate())) {
+                if (this.getHeureDebut().isBefore(c.getHeureDebut())) {
+                    return -1;
+                } 
+                else if (this.getHeureDebut().equals(c.getHeureDebut())) {
+                    if (this.getHeureFin().isBefore(c.getHeureFin())) {
+                        return -1;
+                    } 
+                    else {
+                        return 1;
+                    }
+                } 
+                else {
+                    return 1;
+                }
+            } 
+            else {
+                return 1;
+            }
+        } 
+        else {
+            return 0;
+        }
+    }
+
 }

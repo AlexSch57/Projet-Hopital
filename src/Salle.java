@@ -9,6 +9,7 @@
  * @author kormli18
  */
 public class Salle {
+
     private String nom;
 
     public Salle(String nom) {
@@ -18,12 +19,12 @@ public class Salle {
     public String getNom() {
         return nom;
     }
-    
+
     public String toString() {
         return nom;
     }
-    
+
     public boolean equals(Salle s) {
-       return (this.getNom().equals(s.getNom()));
+        return (this.getNom().equals(s.getNom()));
     }
 }
