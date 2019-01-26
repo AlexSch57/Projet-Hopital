@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -342,4 +343,17 @@ public class Hopital {
         }
         return false;
     }
+    
+    public Duration getDureeMoyenneChirurgie(){
+        throw new java.lang.UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public void avancerDureeChirurgie() {
+        throw new java.lang.UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public void reculerDureeChirurgie() {
+        throw new java.lang.UnsupportedOperationException("Not supported yet.");
+    }
+    
 }
