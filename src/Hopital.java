@@ -83,6 +83,13 @@ public class Hopital {
             System.out.println(c.toString());
         }
     }
+    
+    public void printListeErreurs() {
+        System.out.println("Nombre d'erreur(s) : " + this.listeErreurs.size());
+        for (Erreur e : this.listeErreurs) {
+            System.out.println(e.toString());
+        }
+    }
 
     /**
      *
@@ -99,7 +106,8 @@ public class Hopital {
             Chirurgie c = it.next();
             if (dateDuJour.equals(c.getDate())) {
                 chirurgieDuJour.add(c);
-            } else {
+            } 
+            else {
                 if (chirurgieDuJour.size() != 0) {
                     m.put(dateDuJour, chirurgieDuJour);
                 }
@@ -210,10 +218,6 @@ public class Hopital {
 //                }
             }
         }
-        System.out.println("Nombre d'erreur(s) : " + this.listeErreurs.size());
-        for (Erreur e : this.listeErreurs) {
-            System.out.println(e.toString());
-        }
     }
 
     public void resolveErreur() {
@@ -228,27 +232,22 @@ public class Hopital {
             // ----- INTERFERENCE ------ //
             if (e instanceof ErreurInterference) {
                 // tentative de recherche d'une autre salle disponible
-                if (this.changementSalle(listeSalles, chirurgiesDuJour, dateDuJour)) {
-                    this.listeChirurgies.remove(e);
-                } 
-                else if(this.changementChirurgien(chirurgiensDuJour, chirurgiesDuJour, dateDuJour)) {
-                    this.listeChirurgies.remove(e);
-                }
+                if (this.changementSalle(listeSalles, chirurgiesDuJour, dateDuJour)) {} 
+                
+                // tentative de recherche d'un autre chirurgien disponible
+                else if(this.changementChirurgien(chirurgiensDuJour, chirurgiesDuJour, dateDuJour)) {}
             } 
             
             // ----- CHEVAUCHEMENT ------ //
             else if (e instanceof ErreurChevauchement) {
                 // tentative de recherche d'une autre salle disponible
-                if (this.changementSalle(listeSalles, chirurgiesDuJour, dateDuJour)) {
-                    this.listeChirurgies.remove(e);
-                }
+                if (this.changementSalle(listeSalles, chirurgiesDuJour, dateDuJour)) {}
             } 
 
             // ----- UBIQUITE ------ //
             else if (e instanceof ErreurUbiquite) {
-                if (this.changementChirurgien(chirurgiensDuJour, chirurgiesDuJour, dateDuJour)) {
-                    this.listeChirurgies.remove(e);
-                }
+                // tentative de recherche d'un autre chirurgien disponible
+                if (this.changementChirurgien(chirurgiensDuJour, chirurgiesDuJour, dateDuJour)) {}
             }
         }
     }
@@ -258,6 +257,9 @@ public class Hopital {
         for (Chirurgie ch : this.listeChirurgies) {
             if (ch.getDate().equals(jour)) {
                 if (ch.getSalle().equals(s)) {
+                    if (ch.getHeureDebut().equals(heureDebut)) {
+                        return true;
+                    }
                     if ((ch.getHeureDebut().isAfter(heureDebut))
                             && ch.getHeureDebut().isBefore(heureFin)
                             || ((heureDebut.isAfter(ch.getHeureDebut()))
@@ -275,7 +277,10 @@ public class Hopital {
         for (Chirurgie ch : this.listeChirurgies) {
             if (ch.getDate().equals(jour)) {
                 if (ch.getChirurgien().equals(c)) {
-                    if ((ch.getHeureDebut().isAfter(heureDebut))
+                    if (ch.getHeureDebut().equals(heureDebut)) {
+                        return true;
+                    }
+                    else if ((ch.getHeureDebut().isAfter(heureDebut))
                             && ch.getHeureDebut().isBefore(heureFin)
                             || ((heureDebut.isAfter(ch.getHeureDebut()))
                             && heureDebut.isBefore(ch.getHeureFin()))) {
