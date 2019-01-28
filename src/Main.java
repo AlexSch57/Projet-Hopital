@@ -24,27 +24,42 @@ public class Main {
         Hopital h = new Hopital();
         h.init("MiniBase.csv");
         h.TriParJour();
-        h.printListeChirurgies();
+        //h.printListeChirurgies();
 
-        Chirurgie c1 = h.getChirurgieById("1");
-        Chirurgie c2 = h.getChirurgieById("25");
-
-
+        Chirurgie c1 = h.getChirurgieById("13");
         
-        for (int i = 0; i < 3; i++) {
-            System.out.println( " étape " + i+1 + " : \n");
-            h.findErreur();
-            System.out.println("avant résolution : \n");
-            h.printListeErreurs();
-            h.resolveErreur();
-
-            System.out.println("après résolution : \n");
-            h.findErreur();
-            h.printListeErreurs();
-        }
-
-        System.out.println("\n\n\n\n LISTE FIN : \n");
-        h.printListeChirurgies();
+        System.out.println(c1);
+        h.avancerDureeChirurgie(c1, 5, 0);
+        System.out.println(c1);
+        
+        //h.printListeChirurgies();
+//        Chirurgie c2 = h.getChirurgieById("25");
+//
+//
+//        
+//        for (int i = 0; i < 3; i++) {
+//            System.out.println( " étape " + (i+1) + " : \n");
+//            h.findErreur();
+//            System.out.println("avant résolution : \n");
+//            h.printListeErreurs();
+//            h.resolveErreur();
+//
+//            System.out.println("après résolution : \n");
+//            h.findErreur();
+//            h.printListeErreurs();
+//        }
+//
+//        System.out.println("\n\n\n\n LISTE FIN : \n");
+//        h.printListeChirurgies();
+//        
+//        
+//        System.out.println("TEST HEURE DE SES GRANDS MORTS");
+//        
+        LocalTime lt = LocalTime.of(5, 0);
+        System.out.println(lt);
+        LocalTime mdr = lt.plusMinutes(120);
+        
+        System.out.println(mdr);
         
     }
 }

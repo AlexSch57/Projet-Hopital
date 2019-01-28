@@ -304,6 +304,18 @@ public class Hopital {
         }
         return listeChirurgiens;
     }
+    
+    public ArrayList<Chirurgie> getChirurgiesDuJour(LocalDate ld){
+    	ArrayList<Chirurgie> listeChirurgies = new ArrayList<>();
+    	for(Chirurgie c : this.listeChirurgies) {
+    		if(c.getDate().equals(ld)) {
+    			if (!(listeChirurgies.contains(c))) {
+    				listeChirurgies.add(c);
+    			}
+    		}
+    	}
+    	return listeChirurgies;
+    }
 
     public ArrayList<Salle> getListeSalles() {
         ArrayList<Salle> listeSalles = new ArrayList<>();
@@ -345,14 +357,34 @@ public class Hopital {
     }
     
     public Duration getDureeMoyenneChirurgie(){
+    	
         throw new java.lang.UnsupportedOperationException("Not supported yet.");
     }
     
-    public void avancerDureeChirurgie() {
-        throw new java.lang.UnsupportedOperationException("Not supported yet.");
+    public void avancerDureeChirurgie(Chirurgie c, int heure, int minute) {
+    	minute = minute + (heure * 60);
+    	LocalTime newHeureDebut = c.getHeureDebut().minusMinutes(minute);
+    	LocalTime newHeureFin = c.getHeureFin().minusMinutes(minute);
+    	ArrayList<Chirurgie> listeChirurgiesDuJour = this.getChirurgiesDuJour(c.getDate());
+    	Chirurgie tentativeChirurgie = new Chirurgie(c.getId(), c.getDate(), newHeureDebut, newHeureFin, c.getSalle(), c.getChirurgien());	
+    	boolean datePossible = false;
+    	for(Chirurgie ch : listeChirurgiesDuJour) {
+    		if(!(this.estParallele(tentativeChirurgie, ch))) {
+    			datePossible = true;
+    		}
+    	}
+    	if(datePossible) {
+    		//System.out.println(tentativeChirurgie);
+    		c = tentativeChirurgie;
+    		this.listeChirurgies.remove(c);
+    		this.listeChirurgies.add(tentativeChirurgie);
+    		System.out.println(c);
+    	}
     }
     
-    public void reculerDureeChirurgie() {
+
+
+    public void retarderDureeChirurgie(Chirurgie c, int heure, int minute) {
         throw new java.lang.UnsupportedOperationException("Not supported yet.");
     }
     
