@@ -376,7 +376,7 @@ public class Hopital {
             newHeureFin = c.getHeureFin().plusMinutes(minute);
         }
         else {
-            throw new IllegalArgumentException("le 4ème argument de la methode avancerDureeChirurgie doit être \"avancer\" ou \"retarder\"");
+            throw new IllegalArgumentException("le 4ème argument de la methode changementHeureChirurgie doit être \"avancer\" ou \"retarder\"");
         }
 
     	ArrayList<Chirurgie> listeChirurgiesDuJour = this.getChirurgiesDuJour(c.getDate());
