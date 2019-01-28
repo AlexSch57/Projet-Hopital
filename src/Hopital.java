@@ -361,31 +361,42 @@ public class Hopital {
         throw new java.lang.UnsupportedOperationException("Not supported yet.");
     }
     
-    public void avancerDureeChirurgie(Chirurgie c, int heure, int minute) {
+    public boolean changementHeureChirurgie(Chirurgie c, int heure, int minute, String typeChangement) {
+        
     	minute = minute + (heure * 60);
-    	LocalTime newHeureDebut = c.getHeureDebut().minusMinutes(minute);
-    	LocalTime newHeureFin = c.getHeureFin().minusMinutes(minute);
+        LocalTime newHeureDebut = LocalTime.of(0, 0);
+        LocalTime newHeureFin = LocalTime.of(0,0);
+        
+        if(typeChangement.equals("avancer")) {
+            newHeureDebut = c.getHeureDebut().minusMinutes(minute);
+            newHeureFin = c.getHeureFin().minusMinutes(minute);
+        }
+        else if(typeChangement.equals("retarder")) {
+            newHeureDebut = c.getHeureDebut().plusMinutes(minute);
+            newHeureFin = c.getHeureFin().plusMinutes(minute);
+        }
+        else {
+            throw new IllegalArgumentException("le 4ème argument de la methode avancerDureeChirurgie doit être \"avancer\" ou \"retarder\"");
+        }
+
     	ArrayList<Chirurgie> listeChirurgiesDuJour = this.getChirurgiesDuJour(c.getDate());
     	Chirurgie tentativeChirurgie = new Chirurgie(c.getId(), c.getDate(), newHeureDebut, newHeureFin, c.getSalle(), c.getChirurgien());	
-    	boolean datePossible = false;
+    	boolean datePossible = true;
+        
     	for(Chirurgie ch : listeChirurgiesDuJour) {
-    		if(!(this.estParallele(tentativeChirurgie, ch))) {
-    			datePossible = true;
-    		}
+            if(this.estParallele(tentativeChirurgie, ch)) {
+    		datePossible = false;
+            }
     	}
+        
     	if(datePossible) {
-    		//System.out.println(tentativeChirurgie);
-    		c = tentativeChirurgie;
-    		this.listeChirurgies.remove(c);
-    		this.listeChirurgies.add(tentativeChirurgie);
-    		System.out.println(c);
+            c.setHeureDebut(newHeureDebut);
+            c.setHeureFin(newHeureFin);
+            return true;
     	}
-    }
-    
-
-
-    public void retarderDureeChirurgie(Chirurgie c, int heure, int minute) {
-        throw new java.lang.UnsupportedOperationException("Not supported yet.");
+        else {
+            return false;
+        }
     }
     
 }

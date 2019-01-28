@@ -52,6 +52,15 @@ public class Chirurgie implements Comparable {
         return chirurgien;
     }
 
+    public void setHeureDebut(LocalTime heureDebut) {
+        this.heureDebut = heureDebut;
+    }
+
+    public void setHeureFin(LocalTime heureFin) {
+        this.heureFin = heureFin;
+    }
+    
+
     public Chirurgie(String id, LocalDate date, LocalTime heureDebut, LocalTime heureFin, Salle salle, Chirurgien chirurgien) {
         this.id = id;
         this.date = date;
@@ -61,6 +70,10 @@ public class Chirurgie implements Comparable {
         this.chirurgien = chirurgien;
     }
 
+    public Chirurgie() {
+        
+    }
+    
     public String toString() {
         return this.getId() + ";" + this.getDate().toString() + ";"
                 + this.getHeureDebut().toString() + ";" + this.getHeureFin().toString() + ";" + this.getSalle().toString() + ";" + this.getChirurgien().toString();

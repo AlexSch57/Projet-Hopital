@@ -29,8 +29,10 @@ public class Main {
         Chirurgie c1 = h.getChirurgieById("13");
         
         System.out.println(c1);
-        h.avancerDureeChirurgie(c1, 5, 0);
-        System.out.println(c1);
+        System.out.println(h.getChirurgieById("14"));
+        System.out.println("\n\n");
+        System.out.println(h.changementHeureChirurgie(h.getChirurgieById("13"), 13, 0, "retarder"));
+        System.out.println(h.getChirurgieById("13"));
         
         //h.printListeChirurgies();
 //        Chirurgie c2 = h.getChirurgieById("25");
@@ -55,11 +57,6 @@ public class Main {
 //        
 //        System.out.println("TEST HEURE DE SES GRANDS MORTS");
 //        
-        LocalTime lt = LocalTime.of(5, 0);
-        System.out.println(lt);
-        LocalTime mdr = lt.plusMinutes(120);
-        
-        System.out.println(mdr);
         
     }
 }
