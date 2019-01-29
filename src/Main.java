@@ -26,17 +26,19 @@ public class Main {
         h.init("MiniBase.csv");
         h.TriParJour();
         //h.printListeChirurgies();
-
-        Chirurgie c1 = h.getChirurgieById("13");
+        LocalTime moyenne = h.getDureeMoyenneChirurgie();
+                //System.out.println(moyenne.getMinute());
+        //Chirurgie c1 = h.getChirurgieById("13");
         
-        System.out.println(c1);
-        System.out.println(h.getChirurgieById("14"));
-        System.out.println("\n\n");
-        System.out.println(h.changementHeureChirurgie(h.getChirurgieById("13"), 13, 0, "retarder"));
-        System.out.println(h.getChirurgieById("13"));
+        //System.out.println(c1);
+        //System.out.println(h.getChirurgieById("14"));
+        //System.out.println("\n\n");
+        //System.out.println(h.changementHeureChirurgie(h.getChirurgieById("13"), 13, 0, "retarder"));
+        //System.out.println(h.getChirurgieById("13"));
         
-        System.out.println(h.getDureeMoyenneChirurgie());
-        
+        //System.out.println(h.getDureeMoyenneChirurgie());
+       
+        h.normalisationHeureChirurgie();
 //        Chirurgie c2 = h.getChirurgieById("25");
 //
 //

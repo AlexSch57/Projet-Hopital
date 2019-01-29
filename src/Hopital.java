@@ -374,16 +374,26 @@ public class Hopital {
     /* A FINIR */
     public void normalisationHeureChirurgie() {
     	LocalTime moyenne = this.getDureeMoyenneChirurgie();
+        int moyenneEnSeconde = moyenne.getHour() * 3600 + moyenne.getMinute() * 60 + moyenne.getSecond();
+        System.out.println(moyenneEnSeconde);
     	for(Chirurgie c : this.listeChirurgies) {
-    		Duration dureeChirurgie = Duration.between(c.getHeureDebut(), c.getHeureFin());
-    		if(dureeChirurgie.getSeconds() >= (5 * 3600)) {
-    			if(dureeChirurgie.getSeconds() <= ((5 * 3600) + moyenne.getHour() + moyenne.getMinute())) {
+            Duration dureeChirurgie = Duration.between(c.getHeureDebut(), c.getHeureFin());
+            if(dureeChirurgie.getSeconds() >= (4 * 3600) + (30 * 60)) {
+                System.out.println(c);
+                
+                if(dureeChirurgie.getSeconds() >= ((4 * 3600) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60))) {
+                    c.setHeureFin(c.getHeureFin().minusHours(2));
+                    System.out.println(c);
+                    //System.out.println((4 * 3600) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60));
+
     				//c.setHeureFin(c.getHeureFin() - moyenne.getHour() - moyenne.getMinute());
-    			}
-    			else {
-    				
-    			}
     		}
+    		else {
+                    LocalTime newHeureFin = c.getHeureFin().minusHours(2);
+                    c.setHeureFin(newHeureFin);
+                    //c.setHeureFin(c.getHeureFin() - moyenne);
+    		}
+            }
     	}
     }
     
