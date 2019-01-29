@@ -356,9 +356,35 @@ public class Hopital {
         return false;
     }
     
-    public Duration getDureeMoyenneChirurgie(){
+    public LocalTime getDureeMoyenneChirurgie(){
+    	float total = 0;
+    	for(Chirurgie c : this.listeChirurgies) {
+    		Duration d = Duration.between(c.getHeureDebut(), c.getHeureFin());
+    		total += (float) d.getSeconds();
+    	}
+    	float moyenne = total/this.listeChirurgies.size();
+
+    	int min = (int) moyenne/60;
+    	min = min % 60;
+    	int heure = (int) moyenne/3600;
     	
-        throw new java.lang.UnsupportedOperationException("Not supported yet.");
+    	return LocalTime.of(heure, min);
+    }
+    
+    /* A FINIR */
+    public void normalisationHeureChirurgie() {
+    	LocalTime moyenne = this.getDureeMoyenneChirurgie();
+    	for(Chirurgie c : this.listeChirurgies) {
+    		Duration dureeChirurgie = Duration.between(c.getHeureDebut(), c.getHeureFin());
+    		if(dureeChirurgie.getSeconds() >= (5 * 3600)) {
+    			if(dureeChirurgie.getSeconds() <= ((5 * 3600) + moyenne.getHour() + moyenne.getMinute())) {
+    				//c.setHeureFin(c.getHeureFin() - moyenne.getHour() - moyenne.getMinute());
+    			}
+    			else {
+    				
+    			}
+    		}
+    	}
     }
     
     public boolean changementHeureChirurgie(Chirurgie c, int heure, int minute, String typeChangement) {

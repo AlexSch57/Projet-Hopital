@@ -2,6 +2,7 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
@@ -34,7 +35,8 @@ public class Main {
         System.out.println(h.changementHeureChirurgie(h.getChirurgieById("13"), 13, 0, "retarder"));
         System.out.println(h.getChirurgieById("13"));
         
-        //h.printListeChirurgies();
+        System.out.println(h.getDureeMoyenneChirurgie());
+        
 //        Chirurgie c2 = h.getChirurgieById("25");
 //
 //
@@ -55,8 +57,6 @@ public class Main {
 //        h.printListeChirurgies();
 //        
 //        
-//        System.out.println("TEST HEURE DE SES GRANDS MORTS");
-//        
-        
+
     }
 }
