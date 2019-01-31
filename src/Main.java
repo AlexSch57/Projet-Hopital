@@ -71,7 +71,7 @@ public class Main {
         h.printListeChirurgies();
 //        
 //        
-        //createOutput(h);
+        createOutput(h);
     }
     
     public static void createOutput(Hopital h) throws IOException {
