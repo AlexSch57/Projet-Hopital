@@ -85,11 +85,22 @@ public class Hopital {
         }
     }
     
+    
+    
     public void printListeErreurs() {
         System.out.println("Nombre d'erreur(s) : " + this.listeErreurs.size());
         for (Erreur e : this.listeErreurs) {
             System.out.println(e.toString());
         }
+    }
+    
+    public String toString(){
+    	this.TriParJour();
+    	String result = "";
+    	for (Chirurgie c : this.listeChirurgies) {
+    		result += c.toString() + "\n";
+    	}
+    	return result;
     }
 
     /**

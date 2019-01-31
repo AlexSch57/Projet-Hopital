@@ -1,9 +1,13 @@
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 
@@ -17,13 +21,14 @@ import java.time.Month;
  * @author kormli18
  */
 public class Main {
-
+	private static String fichierBase;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, FileNotFoundException, ParseException {
         Hopital h = new Hopital();
-        h.init("MiniBase.csv");
+        fichierBase = "MiniBase";
+        h.init(fichierBase+".csv");        
         h.TriParJour();
         //h.printListeChirurgies();
         //LocalTime moyenne = h.getDureeMoyenneChirurgie();
@@ -62,10 +67,20 @@ public class Main {
             h.printListeErreurs();
         }
 ////
-//        System.out.println("\n\n\n\n LISTE FIN : \n");
-//        h.printListeChirurgies();
+        System.out.println("\n\n\n\n LISTE FIN : \n");
+        h.printListeChirurgies();
 //        
 //        
-
+        //createOutput(h);
+    }
+    
+    public static void createOutput(Hopital h) throws IOException {
+    	String contenuFichier = "ID CHIRURGIE;DATE CHIRURGIE;HEURE_DEBUT CHIRURGIE;HEURE_FIN CHIRURGIE;SALLE;CHIRURGIEN\n";
+    	contenuFichier += h.toString();
+    	File fichier = new File("files" + File.separator + "outputs" + File.separator + fichierBase + " " + LocalDate.now() + " " + LocalTime.of(LocalTime.now().getHour(),LocalTime.now().getMinute()) +  ".csv");
+    	fichier.createNewFile();
+    	PrintWriter writer = new PrintWriter(fichier, "UTF-8");
+    	writer.println(contenuFichier);    	
+    	writer.close();
     }
 }
