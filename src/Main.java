@@ -26,10 +26,15 @@ public class Main {
         h.init("MiniBase.csv");
         h.TriParJour();
         //h.printListeChirurgies();
-        LocalTime moyenne = h.getDureeMoyenneChirurgie();
-                //System.out.println(moyenne.getMinute());
+        //LocalTime moyenne = h.getDureeMoyenneChirurgie();
+        //System.out.println(moyenne.getMinute());
         //Chirurgie c1 = h.getChirurgieById("13");
+        LocalTime ld = h.getHeureLimiteDebut();
+        System.out.println(ld);
+        ld = h.getHeureLimiteFin();
+        System.out.println(ld);
         
+        h.printListeChirurgies();
         //System.out.println(c1);
         //System.out.println(h.getChirurgieById("14"));
         //System.out.println("\n\n");
@@ -39,22 +44,24 @@ public class Main {
         //System.out.println(h.getDureeMoyenneChirurgie());
        
         h.normalisationHeureChirurgie();
+        
+        //h.printListeChirurgies();
 //        Chirurgie c2 = h.getChirurgieById("25");
 //
 //
 //        
-//        for (int i = 0; i < 3; i++) {
-//            System.out.println( " étape " + (i+1) + " : \n");
-//            h.findErreur();
-//            System.out.println("avant résolution : \n");
-//            h.printListeErreurs();
-//            h.resolveErreur();
-//
-//            System.out.println("après résolution : \n");
-//            h.findErreur();
-//            h.printListeErreurs();
-//        }
-//
+        for (int i = 0; i < 3; i++) {
+            System.out.println( " étape " + (i+1) + " : \n");
+            h.findErreur();
+            System.out.println("avant résolution : \n");
+            h.printListeErreurs();
+            h.resolveErreur();
+
+            System.out.println("après résolution : \n");
+            h.findErreur();
+            h.printListeErreurs();
+        }
+////
 //        System.out.println("\n\n\n\n LISTE FIN : \n");
 //        h.printListeChirurgies();
 //        
