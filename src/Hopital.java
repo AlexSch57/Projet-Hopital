@@ -250,7 +250,18 @@ public class Hopital {
                 else if(this.changementChirurgien(chirurgiensDuJour, chirurgiesDuJour, dateDuJour)) {}
                 
                 // tentative de changement de l'heure de la chirurgie 
-                //else if() {}
+//                else {
+//                	for(Chirurgie c : e.listeChirurgiesErreur) {
+//                		int tempsDecalage = 30;
+//                		while(!(this.changementHeureChirurgie(c, 0, tempsDecalage, "avancer"))) {
+//                			tempsDecalage += 30;
+//                			LocalTime verification = c.getHeureFin().plusMinutes(tempsDecalage);
+//                			if(verification.isAfter(this.getHeureLimiteFin()) || verification.equals(this.getHeureLimiteFin())) {
+//                				break;
+//                			}
+//                    	}
+//                	}
+//                }
             } 
             
             // ----- CHEVAUCHEMENT ------ //
@@ -263,8 +274,30 @@ public class Hopital {
             else if (e instanceof ErreurUbiquite) {
                 // tentative de recherche d'un autre chirurgien disponible
                 if (this.changementChirurgien(chirurgiensDuJour, chirurgiesDuJour, dateDuJour)) {}
+                // tentative de changement de l'heure de la chirurgie 
+                else {
+                	for(Chirurgie c : e.listeChirurgiesErreur) {
+                		int tempsDecalage = 30;
+                		boolean decalagePossible = false;
+                		while(!(decalagePossible)) {
+                		
+                			if(this.changementHeureChirurgie(c, 0, tempsDecalage, "retarder")) {
+                				decalagePossible = true;
+                			}
+                			LocalTime verification = c.getHeureFin().plusMinutes(tempsDecalage);
+                			if(verification.isAfter(this.getHeureLimiteFin())) {
+                				break;
+                			}
+                			tempsDecalage +=30;
+                		}
+                		if(decalagePossible) {
+                			break;
+                		}
+                	}
+                }
             }
         }
+        Collections.sort(this.listeChirurgies);
     }
 
     public boolean isActifSalle(Salle s, LocalDate jour, LocalTime heureDebut, LocalTime heureFin) {
@@ -439,7 +472,8 @@ public class Hopital {
     	boolean datePossible = true;
         
     	for(Chirurgie ch : listeChirurgiesDuJour) {
-            if(this.estParallele(tentativeChirurgie, ch)) {
+            if((this.estParallele(tentativeChirurgie, ch) && 
+            		((tentativeChirurgie.getChirurgien().equals(ch.getChirurgien())) || (tentativeChirurgie.getSalle().equals(ch.getSalle()))))) {
     		datePossible = false;
             }
     	}

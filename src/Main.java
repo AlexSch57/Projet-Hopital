@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.util.Collections;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -34,18 +35,17 @@ public class Main {
         //LocalTime moyenne = h.getDureeMoyenneChirurgie();
         //System.out.println(moyenne.getMinute());
         //Chirurgie c1 = h.getChirurgieById("13");
-        LocalTime ld = h.getHeureLimiteDebut();
-        System.out.println(ld);
-        ld = h.getHeureLimiteFin();
-        System.out.println(ld);
-        
-        h.printListeChirurgies();
+        //h.printListeChirurgies();
         //System.out.println(c1);
         //System.out.println(h.getChirurgieById("14"));
         //System.out.println("\n\n");
         //System.out.println(h.changementHeureChirurgie(h.getChirurgieById("13"), 13, 0, "retarder"));
-        //System.out.println(h.getChirurgieById("13"));
-        
+//        System.out.println(h.getChirurgieById("6"));
+//        h.changementHeureChirurgie(h.getChirurgieById("6"), 0, 240, "retarder");
+//        System.out.println(h.getChirurgieById("6"));
+//        
+//        
+        System.out.println("GNEU GNEU GNEU GNEU CA MARCHE PAS \n\n\n\n\n\n");
         //System.out.println(h.getDureeMoyenneChirurgie());
        
         h.normalisationHeureChirurgie();
@@ -68,10 +68,11 @@ public class Main {
         }
 ////
         System.out.println("\n\n\n\n LISTE FIN : \n");
+        
         h.printListeChirurgies();
 //        
 //        
-        createOutput(h);
+        //createOutput(h);
     }
     
     public static void createOutput(Hopital h) throws IOException {
