@@ -78,7 +78,8 @@ public class Main {
     public static void createOutput(Hopital h) throws IOException {
     	String contenuFichier = "ID CHIRURGIE;DATE CHIRURGIE;HEURE_DEBUT CHIRURGIE;HEURE_FIN CHIRURGIE;SALLE;CHIRURGIEN\n";
     	contenuFichier += h.toString();
-    	File fichier = new File("files" + File.separator + "outputs" + File.separator + fichierBase + " " + LocalDate.now() + " " + LocalTime.of(LocalTime.now().getHour(),LocalTime.now().getMinute()) +  ".csv");
+    	File fichier = new File("files" + File.separator + "outputs" + File.separator + fichierBase + " " + LocalDate.now() + " " + 
+                LocalTime.now().getHour() + "h" + LocalTime.now().getMinute() +  ".csv");
     	fichier.createNewFile();
     	PrintWriter writer = new PrintWriter(fichier, "UTF-8");
     	writer.println(contenuFichier);    	
