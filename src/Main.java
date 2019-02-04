@@ -28,8 +28,8 @@ public class Main {
      */
     public static void main(String[] args) throws IOException, FileNotFoundException, ParseException {
         Hopital h = new Hopital();
-        fichierBase = "MiniBase";
-        h.init(fichierBase+".csv");        
+        fichierBase = "Chirurgies_v2";
+        h.init(fichierBase + ".csv");        
         h.TriParJour();
         //h.printListeChirurgies();
         //LocalTime moyenne = h.getDureeMoyenneChirurgie();
@@ -45,26 +45,23 @@ public class Main {
 //        System.out.println(h.getChirurgieById("6"));
 //        
 //        
-        System.out.println("GNEU GNEU GNEU GNEU CA MARCHE PAS \n\n\n\n\n\n");
+        
         //System.out.println(h.getDureeMoyenneChirurgie());
        
-        h.normalisationHeureChirurgie();
+        //h.normalisationHeureChirurgie();
         
         //h.printListeChirurgies();
 //        Chirurgie c2 = h.getChirurgieById("25");
 //
 //
-//        
-        for (int i = 0; i < 3; i++) {
-            System.out.println( " étape " + (i+1) + " : \n");
+        h.findErreur();
+        System.out.println("nombres d'erreurs dans le fichier : " + h.getTailleListeErreurs() + "\n\n");
+        for (int i = 1; i <= 7; i++) {
+            System.out.println( " étape " + (i) + " :");
             h.findErreur();
-            System.out.println("avant résolution : \n");
-            h.printListeErreurs();
+            
             h.resolveErreur();
-
-            System.out.println("après résolution : \n");
-            h.findErreur();
-            h.printListeErreurs();
+            System.out.println("erreur(s) restante(s) : " + h.getTailleListeErreurs());
         }
 ////
         System.out.println("\n\n\n\n LISTE FIN : \n");
@@ -72,7 +69,7 @@ public class Main {
         h.printListeChirurgies();
 //        
 //        
-        createOutput(h);
+        //createOutput(h);
     }
     
     public static void createOutput(Hopital h) throws IOException {

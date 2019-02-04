@@ -31,8 +31,8 @@ public class Hopital {
     private ArrayList<Erreur> listeErreurs;
 
     public Hopital() {
-        this.listeChirurgies = new ArrayList<Chirurgie>();
-        this.listeErreurs = new ArrayList<Erreur>();
+        this.listeChirurgies = new ArrayList<>();
+        this.listeErreurs = new ArrayList<>();
     }
 
     public void init(String nomFichier) throws FileNotFoundException, IOException, ParseException {
@@ -92,6 +92,10 @@ public class Hopital {
         for (Erreur e : this.listeErreurs) {
             System.out.println(e.toString());
         }
+    }
+    
+    public int getTailleListeErreurs() {
+        return this.listeErreurs.size();
     }
     
     public String toString(){
@@ -479,7 +483,9 @@ public class Hopital {
     	}
         
     	if(datePossible) {
+            newHeureDebut =newHeureDebut.plusMinutes(10);
             c.setHeureDebut(newHeureDebut);
+            newHeureFin = newHeureFin.plusMinutes(10);
             c.setHeureFin(newHeureFin);
             return true;
     	}
