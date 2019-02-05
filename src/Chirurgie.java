@@ -4,8 +4,12 @@
  * and open the template in the editor.
  */
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  *
@@ -75,8 +79,11 @@ public class Chirurgie implements Comparable {
     }
     
     public String toString() {
-        return this.getId() + ";" + this.getDate().toString() + ";"
-                + this.getHeureDebut().toString() + ";" + this.getHeureFin().toString() + ";" + this.getSalle().toString() + ";" + this.getChirurgien().toString();
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        //String today = formatter.format(this.getDate());
+        String today = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH).format(this.getDate());
+        return this.getId() + ";" + today + ";"
+                + this.getHeureDebut().toString() + ":00" + ";" + this.getHeureFin().toString() + ":00" + ";" + this.getSalle().toString() + ";" + this.getChirurgien().toString();
     }
 
     @Override

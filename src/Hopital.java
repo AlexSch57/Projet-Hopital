@@ -42,6 +42,7 @@ public class Hopital {
         while (ligne != null) {
             if (!ligne.contains("ID CHIRURGIE")) {
                 String[] tab = ligne.split(";");
+
                 boolean existChirurgien = false;
                 boolean existSalle = false;
                 Chirurgien chirurgien = null;
@@ -64,6 +65,7 @@ public class Hopital {
                     salle = new Salle(tab[4]);
                 }
                 String[] tabDate = tab[1].split("/");
+
                 LocalDate dateChirurgie = LocalDate.of(Integer.parseInt(tabDate[2]), Integer.parseInt(tabDate[1]), Integer.parseInt(tabDate[0]));
 
                 tabDate = tab[2].split(":");
@@ -83,6 +85,10 @@ public class Hopital {
         for (Chirurgie c : this.listeChirurgies) {
             System.out.println(c.toString());
         }
+    }
+    
+    public ArrayList<Chirurgie> getListeChirurgies() {
+        return this.listeChirurgies;
     }
     
     

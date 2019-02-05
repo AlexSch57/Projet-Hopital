@@ -1,16 +1,11 @@
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
-import java.util.Collections;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -27,8 +22,9 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, FileNotFoundException, ParseException {
+       
         Hopital h = new Hopital();
-        fichierBase = "Chirurgies_v2";
+        fichierBase = "Minibase 2019-02-05 16h43";
         h.init(fichierBase + ".csv");        
         h.TriParJour();
         //h.printListeChirurgies();
@@ -48,7 +44,7 @@ public class Main {
         
         //System.out.println(h.getDureeMoyenneChirurgie());
        
-        //h.normalisationHeureChirurgie();
+        h.normalisationHeureChirurgie();
         
         //h.printListeChirurgies();
 //        Chirurgie c2 = h.getChirurgieById("25");
@@ -73,13 +69,17 @@ public class Main {
     }
     
     public static void createOutput(Hopital h) throws IOException {
-    	String contenuFichier = "ID CHIRURGIE;DATE CHIRURGIE;HEURE_DEBUT CHIRURGIE;HEURE_FIN CHIRURGIE;SALLE;CHIRURGIEN\n";
-    	contenuFichier += h.toString();
+    	String contenuFichier = "ID CHIRURGIE;DATE CHIRURGIE;HEURE_DEBUT CHIRURGIE;HEURE_FIN CHIRURGIE;SALLE;CHIRURGIEN";
+    	//contenuFichier += h.toString();
+        
     	File fichier = new File("files" + File.separator + "outputs" + File.separator + fichierBase + " " + LocalDate.now() + " " + 
                 LocalTime.now().getHour() + "h" + LocalTime.now().getMinute() +  ".csv");
     	fichier.createNewFile();
     	PrintWriter writer = new PrintWriter(fichier, "UTF-8");
-    	writer.println(contenuFichier);    	
+        writer.println(contenuFichier);
+        for(Chirurgie c : h.getListeChirurgies()) {
+            writer.println(c.toString());
+        }	
     	writer.close();
     }
 }
