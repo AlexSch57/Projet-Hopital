@@ -28,7 +28,7 @@ public class Main {
         
         
         Chirurgien c = Chirurgien.getChirurgienById(1);
-        fichierBase = "MiniBaseTest";
+        fichierBase = "Chirurgies_v2";
         try {
 			h.init(fichierBase + ".csv");
 		} catch (ChirurgienInexistantException | SalleInexistanteException | IOException | ParseException e) {			
@@ -56,7 +56,7 @@ public class Main {
 //        
 //        //System.out.println(h.getDureeMoyenneChirurgie());
 //       
-//        //h.normalisationHeureChirurgie();
+        //h.normalisationHeureChirurgie();
 //        
 //        //h.printListeChirurgies();
 ////        Chirurgie c2 = h.getChirurgieById("25");
@@ -66,11 +66,11 @@ public class Main {
         //h.printListeErreurs();
         System.out.println("nombres d'erreurs dans le fichier : " + h.getTailleListeErreurs() + "\n\n");
         for (int i = 1; i <= 7; i++) {
-            //System.out.println( " étape " + (i) + " :");
+            System.out.println( " étape " + (i) + " :");
             h.findErreur();
            
            h.resolveErreur();
-            //System.out.println("erreur(s) restante(s) : " + h.getTailleListeErreurs());
+           System.out.println("erreur(s) restante(s) : " + h.getTailleListeErreurs());
            //h.printListeErreurs();
         }
 //////
@@ -82,12 +82,12 @@ public class Main {
 ////        }
 ////        
 ////        
-        try {
-            createOutput(h);	
-        }
-        catch (IOException e) {
-        	e.printStackTrace();
-        }
+//        try {
+//            createOutput(h);	
+//        }
+//        catch (IOException e) {
+//        	e.printStackTrace();
+//        }
         h.verificationCouple();
 
     }

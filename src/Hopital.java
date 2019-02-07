@@ -269,26 +269,26 @@ public class Hopital {
                 // tentative de recherche d'un autre chirurgien disponible
                 if (this.changementChirurgien(chirurgiensDuJour, chirurgiesDuJour, dateDuJour)) {}
                 // tentative de changement de l'heure de la chirurgie 
-//                else {
-//                	for(Chirurgie c : e.listeChirurgiesErreur) {
-//                		int tempsDecalage = 30;
-//                		boolean decalagePossible = false;
-//                		while(!(decalagePossible)) {
-//                		
-//                			if(this.changementHeureChirurgie(c, 0, tempsDecalage, "retarder")) {
-//                				decalagePossible = true;
-//                			}
-//                			LocalTime verification = c.getHeureFin().plusMinutes(tempsDecalage);
-//                			if(verification.isAfter(this.getHeureLimiteFin())) {
-//                				break;
-//                			}
-//                			tempsDecalage +=30;
-//                		}
-//                		if(decalagePossible) {
-//                			break;
-//                		}
-//                	}
-//                }
+                else {
+                	for(Chirurgie c : e.listeChirurgiesErreur) {
+                		int tempsDecalage = 30;
+                		boolean decalagePossible = false;
+                		while(!(decalagePossible)) {
+                		
+                			if(this.changementHeureChirurgie(c, 0, tempsDecalage, "retarder")) {
+                				decalagePossible = true;
+                			}
+                			LocalTime verification = c.getHeureFin().plusMinutes(tempsDecalage);
+                			if(verification.isAfter(this.getHeureLimiteFin())) {
+                				break;
+                			}
+                			tempsDecalage +=30;
+                		}
+                		if(decalagePossible) {
+                			break;
+                		}
+                	}
+                }
             }
         }
         Collections.sort(this.listeChirurgies);
@@ -417,7 +417,6 @@ public class Hopital {
     		for(Paire_Chirurgien_Salle pcs : Paire_Chirurgien_Salle.values()) {
     			if(pcs.getChirurgien().equals(c.getChirurgien()) && pcs.getSalle().equals(c.getSalle())) {
     				coupleExistant = true;
-    				System.out.println("ok");
     				i++;
     			}
     		}
