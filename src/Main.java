@@ -22,14 +22,18 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException, FileNotFoundException, ParseException {
+    public static void main(String[] args){
        //mdr
         Hopital h = new Hopital();
         
         
         Chirurgien c = Chirurgien.getChirurgienById(1);
         fichierBase = "Chirurgies_v2";
-        h.init(fichierBase + ".csv");        
+        try {
+			h.init(fichierBase + ".csv");
+		} catch (ChirurgienInexistantException | SalleInexistanteException | IOException | ParseException e) {			
+			e.printStackTrace();
+		}        
         h.TriParJour();
         //h.printListeChirurgies();
         

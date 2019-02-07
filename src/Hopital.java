@@ -35,36 +35,19 @@ public class Hopital {
         this.listeErreurs = new ArrayList<>();
     }
 
-    public void init(String nomFichier) throws FileNotFoundException, IOException, ParseException {
+    public void init(String nomFichier) throws FileNotFoundException, IOException, ParseException, ChirurgienInexistantException, SalleInexistanteException {
         BufferedReader reader = new BufferedReader(new FileReader(new File("." + File.separator + "files" + File.separator + nomFichier)));
 
         String ligne = reader.readLine();
         while (ligne != null) {
             if (!ligne.contains("ID CHIRURGIE")) {
-                String[] tab = ligne.split(";");
-
-                boolean existChirurgien = true;
-                boolean existSalle = true;
-//                Chirurgien chirurgien = null;
-//                Salle salle = null;
-//                for (Chirurgie ch : this.listeChirurgies) {
-//                    if (ch.getChirurgien().getNom().equals(tab[5])) {
-//                        existChirurgien = true;
-//                        chirurgien = ch.getChirurgien();
-//                    }
-//                    if (ch.getSalle().getNom().equals(tab[4])) {
-//                        existSalle = true;
-//                        salle = ch.getSalle();
-//                    }
-//                }
-//
-//                if (!existChirurgien) {
-//                    chirurgien = new Chirurgien(tab[5]);
-//                }
-//                if (!existSalle) {
-//                    salle = new Salle(tab[4]);
-//                }
-                
+            	String[] tab = ligne.split(";");              
+            	if (Chirurgien.getChirurgienByName(tab[5]).equals(null)){
+            		throw new ChirurgienInexistantException();
+            	}
+            	if (Salle.getSalleByName(tab[4]).equals(null)){
+            		throw new SalleInexistanteException();
+            	}
                 String[] tabDate = tab[1].split("/");
 
                 LocalDate dateChirurgie = LocalDate.of(Integer.parseInt(tabDate[2]), Integer.parseInt(tabDate[1]), Integer.parseInt(tabDate[0]));
