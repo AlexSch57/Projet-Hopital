@@ -28,22 +28,18 @@ public class Main {
         
         
         Chirurgien c = Chirurgien.getChirurgienById(1);
-        fichierBase = "Chirurgies_v2";
+        fichierBase = "MiniBaseTest";
         try {
 			h.init(fichierBase + ".csv");
 		} catch (ChirurgienInexistantException | SalleInexistanteException | IOException | ParseException e) {			
 			e.printStackTrace();
 		}        
         h.TriParJour();
+        
+        h.verificationCouple();
         //h.printListeChirurgies();
+
         
-        System.out.println("\n\n\n");
-        Salle s = Salle.getSalleById(1);
-        ArrayList<Chirurgien> lesChirurgiens = Paire_Chirurgien_Salle.getChirurgiensDeLaSalle(s);
-        
-        for(Chirurgien chir : lesChirurgiens) {
-        	System.out.println(chir);
-        }
 //        //LocalTime moyenne = h.getDureeMoyenneChirurgie();
 //        //System.out.println(moyenne.getMinute());
 //        //Chirurgie c1 = h.getChirurgieById("13");
@@ -66,16 +62,17 @@ public class Main {
 ////        Chirurgie c2 = h.getChirurgieById("25");
 ////
 ////
-//        h.findErreur();
-//        //h.printListeErreurs();
-//        System.out.println("nombres d'erreurs dans le fichier : " + h.getTailleListeErreurs() + "\n\n");
-//        for (int i = 1; i <= 7; i++) {
-//            System.out.println( " étape " + (i) + " :");
-//            h.findErreur();
-//           
-//            h.resolveErreur();
-//            System.out.println("erreur(s) restante(s) : " + h.getTailleListeErreurs());
-//        }
+        h.findErreur();
+        //h.printListeErreurs();
+        System.out.println("nombres d'erreurs dans le fichier : " + h.getTailleListeErreurs() + "\n\n");
+        for (int i = 1; i <= 7; i++) {
+            //System.out.println( " étape " + (i) + " :");
+            h.findErreur();
+           
+           h.resolveErreur();
+            //System.out.println("erreur(s) restante(s) : " + h.getTailleListeErreurs());
+           //h.printListeErreurs();
+        }
 //////
 //        System.out.println("\n\n\n\n LISTE FIN : \n");
 //        
@@ -85,7 +82,14 @@ public class Main {
 ////        }
 ////        
 ////        
-//        //createOutput(h);
+        try {
+            createOutput(h);	
+        }
+        catch (IOException e) {
+        	e.printStackTrace();
+        }
+        h.verificationCouple();
+
     }
     
     public static void createOutput(Hopital h) throws IOException {

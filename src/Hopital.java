@@ -269,26 +269,26 @@ public class Hopital {
                 // tentative de recherche d'un autre chirurgien disponible
                 if (this.changementChirurgien(chirurgiensDuJour, chirurgiesDuJour, dateDuJour)) {}
                 // tentative de changement de l'heure de la chirurgie 
-                else {
-                	for(Chirurgie c : e.listeChirurgiesErreur) {
-                		int tempsDecalage = 30;
-                		boolean decalagePossible = false;
-                		while(!(decalagePossible)) {
-                		
-                			if(this.changementHeureChirurgie(c, 0, tempsDecalage, "retarder")) {
-                				decalagePossible = true;
-                			}
-                			LocalTime verification = c.getHeureFin().plusMinutes(tempsDecalage);
-                			if(verification.isAfter(this.getHeureLimiteFin())) {
-                				break;
-                			}
-                			tempsDecalage +=30;
-                		}
-                		if(decalagePossible) {
-                			break;
-                		}
-                	}
-                }
+//                else {
+//                	for(Chirurgie c : e.listeChirurgiesErreur) {
+//                		int tempsDecalage = 30;
+//                		boolean decalagePossible = false;
+//                		while(!(decalagePossible)) {
+//                		
+//                			if(this.changementHeureChirurgie(c, 0, tempsDecalage, "retarder")) {
+//                				decalagePossible = true;
+//                			}
+//                			LocalTime verification = c.getHeureFin().plusMinutes(tempsDecalage);
+//                			if(verification.isAfter(this.getHeureLimiteFin())) {
+//                				break;
+//                			}
+//                			tempsDecalage +=30;
+//                		}
+//                		if(decalagePossible) {
+//                			break;
+//                		}
+//                	}
+//                }
             }
         }
         Collections.sort(this.listeChirurgies);
@@ -373,8 +373,14 @@ public class Hopital {
             for(Chirurgie ch : listeChirurgies){
                 if (!(s.equals(ch.getSalle()))) {
                     if (!(isActifSalle(s, dateDuJour, ch.getHeureDebut(), ch.getHeureFin()))) {
-                        ch.setSalle(s);
-                        return true;
+                    	
+                    	ArrayList<Salle> lesSallesDuChirurgien = Paire_Chirurgien_Salle.getSallesDuChirurgien(ch.getChirurgien());
+                    	
+                    	if(lesSallesDuChirurgien.contains(s))
+                     	{
+                            ch.setSalle(s);
+                            return true;
+                    	}
                     }
                 }
             }
@@ -387,14 +393,40 @@ public class Hopital {
             for(Chirurgie ch : listeChirurgies) {
                 if (!(c.equals(ch.getChirurgien()))) {
                     if (!(isActifChirurgien(c, dateDuJour, ch.getHeureDebut(), ch.getHeureFin()))) {
-                        ch.setChirurgien(c);
-                        return true;
+                    	
+                    	ArrayList<Chirurgien> lesChirurgiensDeLaSalle = Paire_Chirurgien_Salle.getChirurgiensDeLaSalle(ch.getSalle());
+                    	
+                    	if(lesChirurgiensDeLaSalle.contains(c))
+                     	{
+                            ch.setChirurgien(c);
+                            return true;
+                    	}
                     }
                 }
             }
            
         }
         return false;
+    }
+    
+    public boolean verificationCouple() {
+    	int i = 0;
+    	for(Chirurgie c : this.listeChirurgies) {
+    		
+    		boolean coupleExistant = false;
+    		for(Paire_Chirurgien_Salle pcs : Paire_Chirurgien_Salle.values()) {
+    			if(pcs.getChirurgien().equals(c.getChirurgien()) && pcs.getSalle().equals(c.getSalle())) {
+    				coupleExistant = true;
+    				System.out.println("ok");
+    				i++;
+    			}
+    		}
+    		if(!(coupleExistant)) {
+    			return false;
+    		}
+    	}
+    	System.out.println("couple valide : " + i + "/" + this.listeChirurgies.size());
+    	return true;
     }
     
     public LocalTime getDureeMoyenneChirurgie(){
