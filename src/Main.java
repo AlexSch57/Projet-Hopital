@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,11 +26,26 @@ public class Main {
        //mdr
         Hopital h = new Hopital();
         
-        System.out.println(Chirurgien.getChirurgienById(16));
+        
+        Chirurgien c = Chirurgien.getChirurgienById(1);
         fichierBase = "Chirurgies_v2";
         h.init(fichierBase + ".csv");        
         h.TriParJour();
-        h.printListeChirurgies();
+        //h.printListeChirurgies();
+        
+        ArrayList<Salle> lesSalles = Paire_Chirurgien_Salle.getSallesDuChirurgien(c);
+        
+        for(Salle s : lesSalles) {
+        	System.out.println(s);
+        }
+        
+        System.out.println("\n\n\n");
+        Salle s = Salle.getSalleById(1);
+        ArrayList<Chirurgien> lesChirurgiens = Paire_Chirurgien_Salle.getChirurgiensDeLaSalle(s);
+        
+        for(Chirurgien chir : lesChirurgiens) {
+        	System.out.println(chir);
+        }
 //        //LocalTime moyenne = h.getDureeMoyenneChirurgie();
 //        //System.out.println(moyenne.getMinute());
 //        //Chirurgie c1 = h.getChirurgieById("13");

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public enum Paire_Chirurgien_Salle {	
 		
@@ -150,5 +151,28 @@ public enum Paire_Chirurgien_Salle {
     {
     	return s;
     }
-	
+    
+    public static ArrayList<Salle> getSallesDuChirurgien(Chirurgien c) {
+    	ArrayList<Salle> lesSalles = new ArrayList<>();
+    	for(Paire_Chirurgien_Salle pcs : Paire_Chirurgien_Salle.values()) {
+    		if(pcs.getChirurgien().equals(c)) {
+    			if(!(lesSalles.contains(pcs.getSalle()))) {
+    				lesSalles.add(pcs.getSalle());
+    			}
+    		}
+    	}
+    	return lesSalles;	
+    }
+    
+    public static ArrayList<Chirurgien> getChirurgiensDeLaSalle(Salle s) {
+    	ArrayList<Chirurgien> lesChirurgiens = new ArrayList<>();
+    	for(Paire_Chirurgien_Salle pcs : Paire_Chirurgien_Salle.values()) {
+    		if(pcs.getSalle().equals(s)) {
+    			if(!(lesChirurgiens.contains(pcs.getChirurgien()))) {
+    				lesChirurgiens.add(pcs.getChirurgien());
+    			}
+    		}
+    	}
+    	return lesChirurgiens;	
+    }
 }
