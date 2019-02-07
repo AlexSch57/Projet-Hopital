@@ -42,10 +42,10 @@ public class Hopital {
         while (ligne != null) {
             if (!ligne.contains("ID CHIRURGIE")) {
             	String[] tab = ligne.split(";");              
-            	if (Chirurgien.getChirurgienByName(tab[5]).equals(null)){
+            	if (Chirurgien.getChirurgienByName(tab[5]) == null){
             		throw new ChirurgienInexistantException();
             	}
-            	if (Salle.getSalleByName(tab[4]).equals(null)){
+            	if (Salle.getSalleByName(tab[4]) == null){
             		throw new SalleInexistanteException();
             	}
                 String[] tabDate = tab[1].split("/");
