@@ -22,7 +22,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, FileNotFoundException, ParseException {
-       
+       //lol
         Hopital h = new Hopital();
         fichierBase = "Chirurgies_v2";
         h.init(fichierBase + ".csv");        
