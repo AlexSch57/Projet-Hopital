@@ -66,7 +66,7 @@ public enum Chirurgien {
     
     public static Chirurgien getChirurgienByName(String s) {
     	for(Chirurgien c : Chirurgien.values()) {
-    		if(c.getNom() == s) {
+    		if(c.getNom().equals(s)) {
     			return c;
     		}
     	}

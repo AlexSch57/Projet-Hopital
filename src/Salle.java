@@ -59,9 +59,9 @@ public enum Salle {
         return null;
     }
     
-    public static Salle getChirurgienByName(String str) {
+    public static Salle getSalleByName(String str) {
     	for(Salle s : Salle.values()) {
-    		if(s.getNom() == str) {
+    		if(s.getNom().equals(str)) {
     			return s;
     		}
     	}

@@ -43,27 +43,28 @@ public class Hopital {
             if (!ligne.contains("ID CHIRURGIE")) {
                 String[] tab = ligne.split(";");
 
-                boolean existChirurgien = false;
-                boolean existSalle = false;
-                Chirurgien chirurgien = null;
-                Salle salle = null;
-                for (Chirurgie ch : this.listeChirurgies) {
-                    if (ch.getChirurgien().getNom().equals(tab[5])) {
-                        existChirurgien = true;
-                        chirurgien = ch.getChirurgien();
-                    }
-                    if (ch.getSalle().getNom().equals(tab[4])) {
-                        existSalle = true;
-                        salle = ch.getSalle();
-                    }
-                }
-
-                if (!existChirurgien) {
-                    chirurgien = new Chirurgien(tab[5]);
-                }
-                if (!existSalle) {
-                    salle = new Salle(tab[4]);
-                }
+                boolean existChirurgien = true;
+                boolean existSalle = true;
+//                Chirurgien chirurgien = null;
+//                Salle salle = null;
+//                for (Chirurgie ch : this.listeChirurgies) {
+//                    if (ch.getChirurgien().getNom().equals(tab[5])) {
+//                        existChirurgien = true;
+//                        chirurgien = ch.getChirurgien();
+//                    }
+//                    if (ch.getSalle().getNom().equals(tab[4])) {
+//                        existSalle = true;
+//                        salle = ch.getSalle();
+//                    }
+//                }
+//
+//                if (!existChirurgien) {
+//                    chirurgien = new Chirurgien(tab[5]);
+//                }
+//                if (!existSalle) {
+//                    salle = new Salle(tab[4]);
+//                }
+                
                 String[] tabDate = tab[1].split("/");
 
                 LocalDate dateChirurgie = LocalDate.of(Integer.parseInt(tabDate[2]), Integer.parseInt(tabDate[1]), Integer.parseInt(tabDate[0]));
@@ -74,7 +75,7 @@ public class Hopital {
                 tabDate = tab[3].split(":");
                 LocalTime heureFin = LocalTime.of(Integer.parseInt(tabDate[0]), Integer.parseInt(tabDate[1]), Integer.parseInt(tabDate[2]));
 
-                this.listeChirurgies.add(new Chirurgie(tab[0], dateChirurgie, heureDeb, heureFin, salle, chirurgien));
+                this.listeChirurgies.add(new Chirurgie(tab[0], dateChirurgie, heureDeb, heureFin, Salle.getSalleByName(tab[4]), Chirurgien.getChirurgienByName(tab[5])));
             }
             ligne = reader.readLine();
         }

@@ -26,10 +26,10 @@ public class Main {
         Hopital h = new Hopital();
         
         System.out.println(Chirurgien.getChirurgienById(16));
-//        fichierBase = "Chirurgies_v2";
-//        h.init(fichierBase + ".csv");        
-//        h.TriParJour();
-//        //h.printListeChirurgies();
+        fichierBase = "Chirurgies_v2";
+        h.init(fichierBase + ".csv");        
+        h.TriParJour();
+        h.printListeChirurgies();
 //        //LocalTime moyenne = h.getDureeMoyenneChirurgie();
 //        //System.out.println(moyenne.getMinute());
 //        //Chirurgie c1 = h.getChirurgieById("13");
