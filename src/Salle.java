@@ -49,4 +49,22 @@ public enum Salle {
     public boolean equals(Salle s) {
         return (this.getNom().equals(s.getNom()));
     }
+    
+    public static Salle getSalleById(int id) {
+    	for(Salle s : Salle.values()) {
+    		if(s.getValue() == id) {
+    			return s;
+    		}
+    	}
+        return null;
+    }
+    
+    public static Salle getChirurgienByName(String str) {
+    	for(Salle s : Salle.values()) {
+    		if(s.getNom() == str) {
+    			return s;
+    		}
+    	}
+        return null;
+    }
 }

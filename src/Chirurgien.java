@@ -54,5 +54,22 @@ public enum Chirurgien {
     public boolean equals(Chirurgien c) {
         return (this.getNom().equals(c.getNom()));
     }
-
+    
+    public static Chirurgien getChirurgienById(int id) {
+    	for(Chirurgien c : Chirurgien.values()) {
+    		if(c.getValue() == id) {
+    			return c;
+    		}
+    	}
+        return null;
+    }
+    
+    public static Chirurgien getChirurgienByName(String s) {
+    	for(Chirurgien c : Chirurgien.values()) {
+    		if(c.getNom() == s) {
+    			return c;
+    		}
+    	}
+        return null;
+    }
 }
