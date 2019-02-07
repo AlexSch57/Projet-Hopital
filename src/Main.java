@@ -37,12 +37,6 @@ public class Main {
         h.TriParJour();
         //h.printListeChirurgies();
         
-        ArrayList<Salle> lesSalles = Paire_Chirurgien_Salle.getSallesDuChirurgien(c);
-        
-        for(Salle s : lesSalles) {
-        	System.out.println(s);
-        }
-        
         System.out.println("\n\n\n");
         Salle s = Salle.getSalleById(1);
         ArrayList<Chirurgien> lesChirurgiens = Paire_Chirurgien_Salle.getChirurgiensDeLaSalle(s);

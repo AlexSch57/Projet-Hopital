@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 
 public enum Paire_Chirurgien_Salle {	
 		
@@ -165,14 +167,37 @@ public enum Paire_Chirurgien_Salle {
     }
     
     public static ArrayList<Chirurgien> getChirurgiensDeLaSalle(Salle s) {
+    	
     	ArrayList<Chirurgien> lesChirurgiens = new ArrayList<>();
+       	boolean salleAvecJoker = false;
+        
     	for(Paire_Chirurgien_Salle pcs : Paire_Chirurgien_Salle.values()) {
     		if(pcs.getSalle().equals(s)) {
+    			if(pcs.getChirurgien().getNom().equals("Joker")) {
+    				salleAvecJoker = true;
+    			}
     			if(!(lesChirurgiens.contains(pcs.getChirurgien()))) {
+    				lesChirurgiens.add(pcs.getChirurgien());	
+    			}
+    		}
+    	}	
+
+    	if(salleAvecJoker) {
+    		for(Paire_Chirurgien_Salle pcs : Paire_Chirurgien_Salle.values()) {
+            	if(!(lesChirurgiens.contains(pcs.getChirurgien()))) {
     				lesChirurgiens.add(pcs.getChirurgien());
     			}
     		}
+    		
+    		Iterator<Chirurgien> it = lesChirurgiens.iterator();
+    		while(it.hasNext()) {
+    			Chirurgien c = it.next();
+    			if(c.getNom().equals("Joker")) {
+    				it.remove();
+    			}
+    		}
     	}
+    	
     	return lesChirurgiens;	
     }
 }
