@@ -24,7 +24,7 @@ public class Main {
     public static void main(String[] args) throws IOException, FileNotFoundException, ParseException {
        
         Hopital h = new Hopital();
-        fichierBase = "Minibase 2019-02-05 16h43";
+        fichierBase = "Chirurgies_v2";
         h.init(fichierBase + ".csv");        
         h.TriParJour();
         //h.printListeChirurgies();
@@ -44,25 +44,29 @@ public class Main {
         
         //System.out.println(h.getDureeMoyenneChirurgie());
        
-        h.normalisationHeureChirurgie();
+        //h.normalisationHeureChirurgie();
         
         //h.printListeChirurgies();
 //        Chirurgie c2 = h.getChirurgieById("25");
 //
 //
         h.findErreur();
+        //h.printListeErreurs();
         System.out.println("nombres d'erreurs dans le fichier : " + h.getTailleListeErreurs() + "\n\n");
         for (int i = 1; i <= 7; i++) {
             System.out.println( " étape " + (i) + " :");
             h.findErreur();
-            
+           
             h.resolveErreur();
             System.out.println("erreur(s) restante(s) : " + h.getTailleListeErreurs());
         }
 ////
         System.out.println("\n\n\n\n LISTE FIN : \n");
         
-        h.printListeChirurgies();
+        //h.printListeChirurgies();
+//        for(Chirurgie c : h.getListeChirurgies()) {
+//        	System.out.println(c.toString());
+//        }
 //        
 //        
         //createOutput(h);
