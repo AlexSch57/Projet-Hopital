@@ -26,6 +26,7 @@ public class Main {
        //test nouvelle branche
         Hopital h = new Hopital();
         
+
         
         Chirurgien c = Chirurgien.getChirurgienById(1);
         fichierBase = "MiniBase";
@@ -63,6 +64,8 @@ public class Main {
 ////
 ////
         h.findErreur();
+        
+        
         //h.printListeErreurs();
         System.out.println("nombres d'erreurs dans le fichier : " + h.getTailleListeErreurs() + "\n\n");
         int nbEtape = 1;
