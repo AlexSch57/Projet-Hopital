@@ -28,7 +28,7 @@ public class Main {
         
         
         Chirurgien c = Chirurgien.getChirurgienById(1);
-        fichierBase = "Chirurgies_v2";
+        fichierBase = "MiniBase";
         try {
 			h.init(fichierBase + ".csv");
 		} catch (ChirurgienInexistantException | SalleInexistanteException | IOException | ParseException e) {			
@@ -65,13 +65,26 @@ public class Main {
         h.findErreur();
         //h.printListeErreurs();
         System.out.println("nombres d'erreurs dans le fichier : " + h.getTailleListeErreurs() + "\n\n");
-        for (int i = 1; i <= 7; i++) {
-            System.out.println( " étape " + (i) + " :");
+        int nbEtape = 1;
+        ArrayList<Integer> nbErreursParEtape = new ArrayList<>();
+        while(h.getTailleListeErreurs() > 0) {
+            nbErreursParEtape.add(h.getTailleListeErreurs());
+            if(nbErreursParEtape.size() > 2) {
+                if(((nbErreursParEtape.get(nbErreursParEtape.size() - 1)).equals(nbErreursParEtape.get(nbErreursParEtape.size() - 2)))
+                    && ((nbErreursParEtape.get(nbErreursParEtape.size() - 1)).equals(nbErreursParEtape.get(nbErreursParEtape.size() - 3)))) {
+                    
+                        System.out.println("Impossible de resoudre toutes les erreurs");
+                        break;
+                }
+            }
+            System.out.println( " étape " + (nbEtape) + " :");
             h.findErreur();
            
-           h.resolveErreur();
-           System.out.println("erreur(s) restante(s) : " + h.getTailleListeErreurs());
-           //h.printListeErreurs();
+            h.resolveErreur();
+            System.out.println("erreur(s) restante(s) : " + h.getTailleListeErreurs());
+            nbEtape++;
+
+
         }
 //////
 //        System.out.println("\n\n\n\n LISTE FIN : \n");
