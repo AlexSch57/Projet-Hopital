@@ -63,6 +63,7 @@ public class Hopital {
             ligne = reader.readLine();
         }
         Collections.sort(this.listeChirurgies);
+        this.findErreur();
     }
 
     public void printListeChirurgies() {
@@ -176,7 +177,7 @@ public class Hopital {
 
                 if(chirurgiesDuJour.indexOf(c1) != chirurgiesDuJour.size() -1) {
                     Chirurgie c2 = chirurgiesDuJour.get(i+1);
-                    if(this.estParallele(c1, chirurgiesDuJour.get(i+1))){
+                    if(this.estParallele(c1, c2)){
                         if ((c1.getChirurgien().equals(c2.getChirurgien()))
                             && c1.getSalle().equals(c2.getSalle())) {
                             Erreur e = new ErreurChevauchement();
