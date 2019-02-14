@@ -21,7 +21,7 @@ import java.util.Scanner;
  * @author schwal180
  */
 public class Menu {
-	//d
+	
     private String currentFile;
     private Hopital notreHopital;
     private Scanner sc;
