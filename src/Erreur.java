@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -31,4 +32,13 @@ public abstract class Erreur {
     }
 
     public abstract String toString();
+    
+    public boolean equals(Object e) {    	
+    	if (this.getClass().equals(e.getClass())){
+    		if (new HashSet<Chirurgie>(this.getListeChirurgiesErreur()).equals(new HashSet<Chirurgie>(((Erreur) e).getListeChirurgiesErreur()))){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 }
