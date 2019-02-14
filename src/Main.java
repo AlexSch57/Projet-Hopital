@@ -49,6 +49,7 @@ public class Main {
 //        //h.printListeChirurgies();
 //
 //        
+
 ////        //LocalTime moyenne = h.getDureeMoyenneChirurgie();
 ////        //System.out.println(moyenne.getMinute());
 ////        //Chirurgie c1 = h.getChirurgieById("13");
@@ -87,6 +88,10 @@ public class Main {
                         System.out.println("Impossible de resoudre toutes les erreurs");
                         break;
                 }
+                if(nbEtape > 19)  {
+                	h.printListeErreurs();
+                	break;
+                }
             }
             System.out.println( " étape " + (nbEtape) + " :");
             h.findErreur();
@@ -99,7 +104,20 @@ public class Main {
 //
 //
         }        
-      
+        
+//        //createOutput(h);
+//    	Chirurgie c1 = h.getChirurgieById("12031");
+//    	Chirurgie c2 = h.getChirurgieById("12023");
+//    
+//    	
+//    	System.out.println(c1);
+//    	System.out.println(c2);
+//    
+//    	
+//
+//    	System.out.println(c1.estParallele(c2));
+//    	System.out.println(c2.estParallele(c1));
+
 //////
 //        System.out.println("\n\n\n\n LISTE FIN : \n");
 //        
@@ -116,5 +134,26 @@ public class Main {
 //            e.printStackTrace();
 //        }
 //        h.verificationCouple();
+    	
+    }
+    public static void createOutput(Hopital h) throws IOException {
+    	String contenuFichier = "ID CHIRURGIE;DATE CHIRURGIE;HEURE_DEBUT CHIRURGIE;HEURE_FIN CHIRURGIE;SALLE;CHIRURGIEN";
+    	//contenuFichier += h.toString();
+        
+        String formalisationMinute = "" + LocalTime.now().getMinute();
+        if(LocalTime.now().getMinute() < 10) {
+            formalisationMinute = "0" + LocalTime.now().getMinute();
+        }
+        String nomFichier = "abc" + " " + LocalDate.now() + " " + LocalTime.now().getHour() + "h" + formalisationMinute +  ".csv";
+        
+    	File fichier = new File("files" + File.separator + "outputs" + File.separator + nomFichier);
+    	fichier.createNewFile();
+    	PrintWriter writer = new PrintWriter(fichier, "UTF-8");
+        writer.println(contenuFichier);
+        for(Chirurgie c : h.getListeChirurgies()) {
+            writer.println(c.toString());
+        }	
+    	writer.close();
+        System.out.println("fichier exporté ! nom : " + nomFichier);
     }
 }

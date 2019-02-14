@@ -133,28 +133,6 @@ public class Hopital {
         return map;
     }
 
-    /**
-     *
-     * @param c1 un Objet Chirurgie
-     * @param c2 un Objet Chirurgie, différent de c1
-     * @return return un booléen : - true si c1 se déroule en même temps que c2
-     * (partiellement ou complètement) - false sinon
-     */
-    public boolean estParallele(Chirurgie c1, Chirurgie c2) {
-        if (c1.getDate().equals(c2.getDate())) {
-            if (c1.getHeureDebut().equals(c2.getHeureDebut())) {
-                return true;
-            }
-            if (((c2.getHeureDebut().isAfter(c1.getHeureDebut()))
-                    && c2.getHeureDebut().isBefore(c1.getHeureFin()))
-                    || ((c1.getHeureDebut().isAfter(c2.getHeureDebut()))
-                    && c1.getHeureDebut().isBefore(c2.getHeureFin()))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public Chirurgie getChirurgieById(String s) {
         for (Chirurgie c : this.listeChirurgies) {
             if (c.getId().equals(s)) {
@@ -179,7 +157,7 @@ public class Hopital {
                     for(int j = 0; j < chirurgiesDuJour.size(); j++) {
                         Chirurgie c2 = chirurgiesDuJour.get(j);
                         if (c1 != c2) {
-                            if(this.estParallele(c1, c2)){
+                            if(c1.estParallele(c2)){
                                 if ((c1.getChirurgien().equals(c2.getChirurgien()))
                                     && c1.getSalle().equals(c2.getSalle())) {
                                     Erreur e = new ErreurChevauchement();
@@ -530,7 +508,7 @@ public class Hopital {
     	boolean datePossible = true;
         
     	for(Chirurgie ch : listeChirurgiesDuJour) {
-            if((this.estParallele(tentativeChirurgie, ch) && 
+            if((tentativeChirurgie.estParallele(ch) && 
             		((tentativeChirurgie.getChirurgien().equals(ch.getChirurgien())) || (tentativeChirurgie.getSalle().equals(ch.getSalle()))))) {
     		datePossible = false;
             }

@@ -88,11 +88,44 @@ public class Chirurgie implements Comparable {
          }
     }
     
+    public static Long getDuree(LocalTime lt1, LocalTime lt2) {
+    	 if (lt1.isBefore(lt2)) {
+             return Duration.between(lt1, lt2).toMinutes();
+         } 
+    	 else { 
+            return Duration.ofMinutes(1440).minus(Duration.between(lt2, lt1)).toMinutes();
+         }
+    }
+    
     public String toString() {
         String today = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH).format(this.getDate());
         return this.getId() + ";" + today + ";"
                 + this.getHeureDebut().toString() + ":00" + ";" + this.getHeureFin().toString() + ":00" + ";" + this.getSalle().toString() + ";" + this.getChirurgien().toString();
     }
+    
+    /**
+    *
+    * @param c un Objet Chirurgie, différent de la chirurgie actuel
+    * @return return un booléen : - true si la chirurgie c se déroule en même temps que la chirurgie courante (partiellement ou complètement) 
+    * - false sinon
+    */
+   public boolean estParallele(Chirurgie c) {
+       if (this.getDate().equals(c.getDate())) {
+           if (this.getHeureDebut().equals(c.getHeureDebut())) {
+               return true;
+           }
+           if ((c.getHeureDebut().isAfter(this.getHeureDebut()))
+                   && (getDuree(this.getHeureDebut(), c.getHeureDebut()) < this.getDuree())) {
+               return true;
+           }
+           if((this.getHeureDebut().isAfter(c.getHeureDebut()))
+                   && (getDuree(c.getHeureDebut(), this.getHeureDebut()) < c.getDuree())) {
+        	   return true;
+           }
+       }
+       return false;
+   }
+   
 
     @Override
     public int compareTo(Object obj) {
