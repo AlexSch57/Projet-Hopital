@@ -6,6 +6,7 @@
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -77,10 +78,17 @@ public class Chirurgie implements Comparable {
     public Chirurgie() {
         
     }
+
+    public Long getDuree() {
+    	 if (this.heureDebut.isBefore(this.heureFin)) {
+             return Duration.between(this.heureDebut, this.heureFin).toMinutes();
+         } 
+    	 else { 
+            return Duration.ofMinutes(1440).minus(Duration.between(this.heureFin, this.heureDebut)).toMinutes();
+         }
+    }
     
     public String toString() {
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        //String today = formatter.format(this.getDate());
         String today = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH).format(this.getDate());
         return this.getId() + ";" + today + ";"
                 + this.getHeureDebut().toString() + ":00" + ";" + this.getHeureFin().toString() + ":00" + ";" + this.getSalle().toString() + ";" + this.getChirurgien().toString();
