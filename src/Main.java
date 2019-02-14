@@ -41,8 +41,14 @@ public class Main {
         catch (ChirurgienInexistantException | SalleInexistanteException | IOException | ParseException e) {			
             e.printStackTrace();
         }        
+
         h.TriParJour();
         h.findErreur();
+        
+        LocalTime moyenne = h.getDureeMoyenneChirurgie();
+        System.out.println(moyenne);
+        System.out.println(h.getDureeMoyenneChirurgie());
+        
         //System.out.println(h.getTailleListeErreurs());
 //        
 //        h.verificationCouple();
@@ -74,6 +80,7 @@ public class Main {
 //////
 //        h.findErreur();
 //        
+
 //        
 //        //h.printListeErreurs();
         System.out.println("nombres d'erreurs dans le fichier : " + h.getTailleListeErreurs() + "\n\n");
@@ -103,6 +110,7 @@ public class Main {
             nbEtape++;
         }        
         
+
         //createOutput(h);
 //    	Chirurgie c1 = h.getChirurgieById("12031");
 //    	Chirurgie c2 = h.getChirurgieById("12023");
