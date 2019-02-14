@@ -185,19 +185,25 @@ public class Hopital {
                                     Erreur e = new ErreurChevauchement();
                                     e.addChirurgie(c1);
                                     e.addChirurgie(c2);
-                                    this.listeErreurs.add(e);
+                                    if (!this.listeErreurs.contains(e)) {
+                                    	this.listeErreurs.add(e);
+                                    }
                                 } 
                                 else if (c1.getChirurgien().equals(c2.getChirurgien())) {
                                     Erreur e = new ErreurUbiquite();
                                     e.addChirurgie(c1);
                                     e.addChirurgie(c2);
-                                    this.listeErreurs.add(e);
+                                    if (!this.listeErreurs.contains(e)) {
+                                    	this.listeErreurs.add(e);
+                                    }
                                 } 
                                 else if (c1.getSalle().equals(c2.getSalle())) {
                                     Erreur e = new ErreurInterference();
                                     e.addChirurgie(c1);
                                     e.addChirurgie(c2);
-                                    this.listeErreurs.add(e);
+                                    if (!this.listeErreurs.contains(e)) {
+                                    	this.listeErreurs.add(e);
+                                    }
                                 }
                             }
                         }

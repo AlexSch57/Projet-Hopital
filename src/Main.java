@@ -98,39 +98,8 @@ public class Main {
            
 //
 //
-        }
-        
-        LocalTime lt1 = LocalTime.of(20, 0);
-        LocalTime lt2 = LocalTime.of(0, 0);
-        
-        if(lt1.isBefore(lt2)) {
-            System.out.println(Duration.between(lt1, lt2).toMinutes());
-        }
-        else {
-        	
-        }
-
-        
-        String time = "22:00-00:30";
-        String[] parts = time.split("-");
-
-        LocalTime start = LocalTime.parse(parts[0]);
-        LocalTime end = LocalTime.parse(parts[1]);
-        if (start.isBefore(end)) { // normal case
-            System.out.println(Duration.between(start, end));
-        } else { // 24 - duration between end and start, note how end and start switched places
-           Duration wesh = Duration.ofMinutes(1440).minus(Duration.between(end, start));
-           Long mdr = wesh.toMinutes();
-           System.out.println(mdr);
-        }
-        
-        System.out.println(start.plusMinutes(185));
-        
-        Chirurgie c = h.getChirurgieById("11941");
-        System.out.println(c);
-        System.out.println(c.getDuree());
-        
-
+        }        
+      
 //////
 //        System.out.println("\n\n\n\n LISTE FIN : \n");
 //        
