@@ -16,7 +16,7 @@ public abstract class Erreur {
     protected ArrayList<Chirurgie> listeChirurgiesErreur;
 
     public Erreur() {
-        this.listeChirurgiesErreur = new ArrayList<Chirurgie>();
+        this.listeChirurgiesErreur = new ArrayList<>();
     }
 
     public Erreur(ArrayList<Chirurgie> listeChirurgiesErreur) {
@@ -32,13 +32,13 @@ public abstract class Erreur {
     }
 
     public abstract String toString();
-    
-    public boolean equals(Object e) {    	
-    	if (this.getClass().equals(e.getClass())){
-    		if (new HashSet<Chirurgie>(this.getListeChirurgiesErreur()).equals(new HashSet<Chirurgie>(((Erreur) e).getListeChirurgiesErreur()))){
-    			return true;
-    		}
-    	}
-    	return false;
+
+    public boolean equals(Object e) {
+        if (this.getClass().equals(e.getClass())) {
+            if (new HashSet<Chirurgie>(this.getListeChirurgiesErreur()).equals(new HashSet<Chirurgie>(((Erreur) e).getListeChirurgiesErreur()))) {
+                return true;
+            }
+        }
+        return false;
     }
 }

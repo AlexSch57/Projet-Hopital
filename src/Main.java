@@ -110,7 +110,6 @@ public class Main {
             nbEtape++;
         }        
         
-
         //createOutput(h);
 //    	Chirurgie c1 = h.getChirurgieById("12031");
 //    	Chirurgie c2 = h.getChirurgieById("12023");
