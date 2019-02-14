@@ -77,6 +77,7 @@ public class Main {
 //        
 //        //h.printListeErreurs();
         System.out.println("nombres d'erreurs dans le fichier : " + h.getTailleListeErreurs() + "\n\n");
+        //h.printListeErreurs();
         int nbEtape = 1;
         ArrayList<Integer> nbErreursParEtape = new ArrayList<>();
         while(h.getTailleListeErreurs() > 0) {
@@ -86,9 +87,10 @@ public class Main {
                     && ((nbErreursParEtape.get(nbErreursParEtape.size() - 1)).equals(nbErreursParEtape.get(nbErreursParEtape.size() - 3)))) {
                     
                         System.out.println("Impossible de resoudre toutes les erreurs");
+                        h.printListeErreurs();
                         break;
                 }
-                if(nbEtape > 19)  {
+                if(nbEtape > 50)  {
                 	h.printListeErreurs();
                 	break;
                 }
@@ -99,13 +101,9 @@ public class Main {
             h.resolveErreur();
             System.out.println("erreur(s) restante(s) : " + h.getTailleListeErreurs());
             nbEtape++;
-            
-           
-//
-//
         }        
         
-//        //createOutput(h);
+        //createOutput(h);
 //    	Chirurgie c1 = h.getChirurgieById("12031");
 //    	Chirurgie c2 = h.getChirurgieById("12023");
 //    

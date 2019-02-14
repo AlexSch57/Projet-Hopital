@@ -241,18 +241,18 @@ public class Hopital {
         Iterator<Erreur> it = this.listeErreurs.iterator();
         while (it.hasNext()) {
             Erreur e = it.next();
-            ArrayList<Chirurgie> chirurgiesDuJour = e.getListeChirurgiesErreur();
-            LocalDate dateDuJour = chirurgiesDuJour.get(0).getDate();
+            ArrayList<Chirurgie> listeChirurgiesErreur = e.getListeChirurgiesErreur();
+            LocalDate dateDuJour = listeChirurgiesErreur.get(0).getDate();
             ArrayList<Chirurgien> chirurgiensDuJour = this.ChirurgiensDuJour(dateDuJour);
             ArrayList<Salle> listeSalles = this.getListeSalles();
 
             // ----- INTERFERENCE ------ //
             if (e instanceof ErreurInterference) {
                 // tentative de recherche d'une autre salle disponible
-                if (this.changementSalle(listeSalles, chirurgiesDuJour, dateDuJour)) {} 
+                if (this.changementSalle(listeSalles, listeChirurgiesErreur, dateDuJour)) {} 
                 
                 // tentative de recherche d'un autre chirurgien disponible
-                else if(this.changementChirurgien(chirurgiensDuJour, chirurgiesDuJour, dateDuJour)) {}
+                if (this.changementChirurgien2(listeChirurgiesErreur, chirurgiensDuJour)) {}
                 
                 // tentative de changement de l'heure de la chirurgie 
 //                else {
@@ -272,13 +272,13 @@ public class Hopital {
             // ----- CHEVAUCHEMENT ------ //
             else if (e instanceof ErreurChevauchement) {
                 // tentative de recherche d'une autre salle disponible
-                if (this.changementSalle(listeSalles, chirurgiesDuJour, dateDuJour)) {}
+                if (this.changementSalle(listeSalles, listeChirurgiesErreur, dateDuJour)) {}
             } 
 
             // ----- UBIQUITE ------ //
             else if (e instanceof ErreurUbiquite) {
                 // tentative de recherche d'un autre chirurgien disponible
-                if (this.changementChirurgien(chirurgiensDuJour, chirurgiesDuJour, dateDuJour)) {}
+                if (this.changementChirurgien2(listeChirurgiesErreur, chirurgiensDuJour)) {}
                 // tentative de changement de l'heure de la chirurgie 
                 else {
                 	for(Chirurgie c : e.listeChirurgiesErreur) {
@@ -304,7 +304,10 @@ public class Hopital {
         }
         Collections.sort(this.listeChirurgies);
     }
-
+    
+    /**
+     @Depreciated
+    */
     public boolean isActifSalle(Salle s, LocalDate jour, LocalTime heureDebut, LocalTime heureFin) {
 
         for (Chirurgie ch : this.listeChirurgies) {
@@ -324,7 +327,23 @@ public class Hopital {
         }
         return false;
     }
+    
+    public boolean estDisponibleSalle(Salle s, Chirurgie c) {
+    	for(Chirurgie ch : this.listeChirurgies) {
+    		if(ch.getDate().equals(c.getDate())) {
+    			if(ch.getSalle().equals(s)) {
+    				if(ch.estParallele(c)) {
+    					return false;
+    				}
+    			}
+    		}
+    	}
+    	return true;
+    }
 
+    /**
+    @Depreciated
+   */
     public boolean isActifChirurgien(Chirurgien c, LocalDate jour, LocalTime heureDebut, LocalTime heureFin) {
 
         for (Chirurgie ch : this.listeChirurgies) {
@@ -343,6 +362,20 @@ public class Hopital {
             }
         }
         return false;
+    }
+    
+    public boolean estDisponibleChirurgien(Chirurgien c, Chirurgie chir) {
+
+        for (Chirurgie ch : this.listeChirurgies) {
+        	if(ch.getDate().equals(chir.getDate())) {
+        		if(ch.getChirurgien().equals(c)) {
+        			if(ch.estParallele(chir)) {
+        				return false;
+        			}
+        		}
+        	}
+        }
+        return true;
     }
 
     public ArrayList<Chirurgien> ChirurgiensDuJour(LocalDate ld) {
@@ -379,11 +412,11 @@ public class Hopital {
         return listeSalles;
     }
 
-     public boolean changementSalle(ArrayList<Salle> listeSalles, ArrayList<Chirurgie> listeChirurgies, LocalDate dateDuJour) {
+    public boolean changementSalle(ArrayList<Salle> listeSalles, ArrayList<Chirurgie> listeChirurgies, LocalDate dateDuJour) {
         for (Salle s : listeSalles) {
             for(Chirurgie ch : listeChirurgies){
                 if (!(s.equals(ch.getSalle()))) {
-                    if (!(isActifSalle(s, dateDuJour, ch.getHeureDebut(), ch.getHeureFin()))) {
+                    if (estDisponibleSalle(s, ch)) {
                     	
                     	ArrayList<Salle> lesSallesDuChirurgien = Paire_Chirurgien_Salle.getSallesDuChirurgien(ch.getChirurgien());
                     	
@@ -399,11 +432,12 @@ public class Hopital {
         return false;
     }
 
+
     public boolean changementChirurgien(ArrayList<Chirurgien> listeChirurgiens, ArrayList<Chirurgie> listeChirurgies, LocalDate dateDuJour) {
         for (Chirurgien c : listeChirurgiens) {
             for(Chirurgie ch : listeChirurgies) {
                 if (!(c.equals(ch.getChirurgien()))) {
-                    if (!(isActifChirurgien(c, dateDuJour, ch.getHeureDebut(), ch.getHeureFin()))) {
+                    if(estDisponibleChirurgien(c, ch)) {
                     	
                     	ArrayList<Chirurgien> lesChirurgiensDeLaSalle = Paire_Chirurgien_Salle.getChirurgiensDeLaSalle(ch.getSalle());
                     	
@@ -418,6 +452,18 @@ public class Hopital {
            
         }
         return false;
+    }
+    
+    public boolean changementChirurgien2(ArrayList<Chirurgie> listeChirurgies, ArrayList<Chirurgien> listeChirurgiens) {
+    	for(Chirurgie c : listeChirurgies) {
+    		for(Chirurgien ch : listeChirurgiens) {
+        		if(this.estDisponibleChirurgien(ch, c)) {
+        			c.setChirurgien(ch);
+        			return true;
+        		}
+        	}
+    	}
+    	return false;
     }
     
     public boolean verificationCouple() {
