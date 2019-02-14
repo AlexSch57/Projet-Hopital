@@ -22,11 +22,13 @@ import java.util.Scanner;
  */
 public class Menu {
     private String currentFile;
-    private Hopital lHopital;
+    private Hopital notreHopital;
+    private Scanner sc;
     
     public Menu() {
         this.currentFile = "Aucun";
-        this.lHopital = null;
+        this.notreHopital = null;
+        this.sc = new Scanner(System.in);
     }
     
     public void setCurrentFile(String currentFile) {
@@ -34,19 +36,19 @@ public class Menu {
     }
 
     public Hopital getLHopital() {
-        return lHopital;
+        return notreHopital;
     }
 
     public void setLHopital(Hopital lHopital) {
-        this.lHopital = lHopital;
+        this.notreHopital = lHopital;
     }
     
     public void displayMenu() {
         int tailleListeChirurgies = 0;
         int tailleListeErreurs = 0;
-        if(this.lHopital != null) {
-            tailleListeChirurgies = this.lHopital.getListeChirurgies().size();
-            tailleListeErreurs = this.lHopital.getTailleListeErreurs();
+        if(this.notreHopital != null) {
+            tailleListeChirurgies = this.notreHopital.getListeChirurgies().size();
+            tailleListeErreurs = this.notreHopital.getTailleListeErreurs();
         }
         System.out.println("\nBienvenue dans le projet-Hopital ! \n"
                 + "Fichier courant : " + this.currentFile + " \n"
@@ -75,8 +77,8 @@ public class Menu {
             case 2:
                 int nbEtape = 1;
                 ArrayList<Integer> nbErreursParEtape = new ArrayList<>();
-                while(this.lHopital.getTailleListeErreurs() > 0) {
-                    nbErreursParEtape.add(this.lHopital.getTailleListeErreurs());
+                while(this.notreHopital.getTailleListeErreurs() > 0) {
+                    nbErreursParEtape.add(this.notreHopital.getTailleListeErreurs());
                     if(nbErreursParEtape.size() > 2) {
                         if(((nbErreursParEtape.get(nbErreursParEtape.size() - 1)).equals(nbErreursParEtape.get(nbErreursParEtape.size() - 2)))
                             && ((nbErreursParEtape.get(nbErreursParEtape.size() - 1)).equals(nbErreursParEtape.get(nbErreursParEtape.size() - 3)))) {
@@ -86,19 +88,19 @@ public class Menu {
                         }
                     }
                     System.out.println( " étape " + (nbEtape) + " :");
-                    this.lHopital.findErreur();
+                    this.notreHopital.findErreur();
 
-                    this.lHopital.resolveErreur();
-                    System.out.println("erreur(s) restante(s) : " + this.lHopital.getTailleListeErreurs());
+                    this.notreHopital.resolveErreur();
+                    System.out.println("erreur(s) restante(s) : " + this.notreHopital.getTailleListeErreurs());
                     nbEtape++;
                 }
-                if(this.lHopital.getTailleListeErreurs() == 0) {
+                if(this.notreHopital.getTailleListeErreurs() == 0) {
                     System.out.println("Toutes les erreurs ont été corrigées !\n");
                 }
                 break;
                 
             case 3:
-                this.createOutput(lHopital);               
+                this.createOutput(notreHopital);               
                 break;
 
             case 4:
@@ -110,7 +112,8 @@ public class Menu {
                 break;
                 
             case 6:
-                System.out.println("fin du programme");
+                System.out.println("Fin du programme");
+                sc.close();
                 System.exit(0);
                 break;
                 
@@ -127,15 +130,15 @@ public class Menu {
     */
     public int choixUtilisateur()
     {
-        Scanner scan = new Scanner(System.in);
+       
         int nombre = 0;
         int limite = 6;
-        if(this.lHopital == null) {
+        if(this.notreHopital == null) {
             limite = 1;
         }
         do {
             try {
-                nombre = scan.nextInt();
+                nombre = sc.nextInt();
                 if((nombre < 1 || nombre > limite) && nombre != 6) {
                     if(limite == 1) {
                         System.out.println("Vous ne pouvez pas faire d'autres choix que le n°1 tant que vous n'avez pas choisi de fichier");
@@ -164,41 +167,35 @@ public class Menu {
     ** Methode gérant la selection et le chargement du fichier utilisé pour la création du graphe
     */
     public void selectFile() throws IOException, FileNotFoundException, ParseException, ChirurgienInexistantException, SalleInexistanteException {
-        boolean exist = false;
+       
         File f = new File(System.getProperty("user.dir"));
-        f = new File(f.getAbsoluteFile() + "\\" + "files");
-        String[] tab = f.list();
-        System.out.println("Liste des fichiers :");
-        for(String s : tab) {
-            if(s.contains(".")) {
-                System.out.println(s);
+        f = new File(f.getAbsoluteFile() + File.separator + "files");
+        File[] tab = f.listFiles();
+        ArrayList<String> listeFic = new ArrayList<String>();
+        for (File file : tab) {
+            if (file.isFile()) {
+                listeFic.add(file.getName());
             }
         }
-        System.out.println("\n");
-        while(!(exist)) {
-            System.out.println("Sélectionner un fichier :");
-            Scanner sc = new Scanner(System.in);
-            String reponse = sc.nextLine();
-            f = new File(System.getProperty("user.dir"));
-            f = new File(f.getAbsolutePath() + "\\" + "files" + "\\" + reponse);
-            if((f.exists() && f.isFile())) {
-                this.currentFile = reponse;
-                this.lHopital = new Hopital();
-                this.lHopital.init(reponse);
-                exist = true;
-            }
-            else {
-                reponse += ".csv";
-                f = new File(System.getProperty("user.dir"));
-                f = new File(f.getAbsolutePath() + "\\" + "files" + "\\" + reponse);
-                if((f.exists() && f.isFile())) {
-                    this.currentFile = reponse;
-                    this.lHopital = new Hopital();
-                    this.lHopital.init(reponse);
-                    exist = true;
-                }
-            }
-        } 
+        int indexFichier = 0; 
+        System.out.println("Liste des fichiers :\n");
+        for(String s : listeFic) {
+            System.out.println(++indexFichier + ". " + s);
+        }        
+        System.out.println("Sélectionner un fichier par son index :");       
+        int reponse;
+		try {
+			reponse = sc.nextInt();
+			String nomFichier = listeFic.get(--reponse);
+			f = new File(System.getProperty("user.dir"));
+            f = new File(f.getAbsolutePath() + File.separator + "files" + File.separator + nomFichier);
+            this.currentFile = nomFichier;
+            this.notreHopital = new Hopital();                 
+            this.notreHopital.init(nomFichier);            
+		} catch (IndexOutOfBoundsException | InputMismatchException e) {				
+			System.err.println("Le fichier demandé n'existe pas\n");
+			this.selectFile();
+		}            
     }
     
     public void createOutput(Hopital h) throws IOException {
@@ -209,7 +206,8 @@ public class Menu {
         if(LocalTime.now().getMinute() < 10) {
             formalisationMinute = "0" + LocalTime.now().getMinute();
         }
-        String nomFichier = this.currentFile + " " + LocalDate.now() + " " + LocalTime.now().getHour() + "h" + formalisationMinute +  ".csv";
+        String nomBase = currentFile.replaceFirst(".csv", "");;
+        String nomFichier = nomBase + " " + LocalDate.now() + " " + LocalTime.now().getHour() + "h" + formalisationMinute +  ".csv";
         
     	File fichier = new File("files" + File.separator + "outputs" + File.separator + nomFichier);
     	fichier.createNewFile();
