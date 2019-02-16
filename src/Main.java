@@ -25,11 +25,12 @@ public class Main {
      */
     public static void main(String[] args) throws IOException, FileNotFoundException, ParseException, ChirurgienInexistantException, SalleInexistanteException {
         
-//        Menu m = new Menu();
-//        while(true) {
-//            m.displayMenu();
-//            m.switchChoix();
-//        }
+        Menu m = new Menu();
+        boolean mdr = true;
+        while(mdr) {
+            m.displayMenu();
+            m.switchChoix();
+        }
        //test nouvelle branche
         Hopital h = new Hopital();
 //        
