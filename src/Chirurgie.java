@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.Locale;
 
 /**
@@ -126,7 +127,18 @@ public class Chirurgie implements Comparable {
        return false;
    }
    
-
+    public boolean equals(Object e) {
+        if (this.getClass().equals(e.getClass())) {
+            Chirurgie c = (Chirurgie) e;
+            if((this.date.equals(c.date)) && (this.heureDebut.equals(c.heureDebut)) && (this.heureFin.equals(c.heureFin)) && (this.chirurgien.equals(c.chirurgien)) && 
+                    (this.salle.equals(c.salle))) {
+                return true;
+            }
+        }
+        return false;
+    }
+        
+    
     @Override
     public int compareTo(Object obj) {
         if (obj instanceof Chirurgie) {

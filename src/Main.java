@@ -44,10 +44,10 @@ public class Main {
 
         h.TriParJour();
         h.findErreur();
-        
+
         LocalTime moyenne = h.getDureeMoyenneChirurgie();
-        System.out.println(moyenne);
-        System.out.println(h.getDureeMoyenneChirurgie());
+        
+        
         
         //System.out.println(h.getTailleListeErreurs());
 //        
@@ -87,6 +87,7 @@ public class Main {
         //h.printListeErreurs();
         int nbEtape = 1;
         ArrayList<Integer> nbErreursParEtape = new ArrayList<>();
+       
         while(h.getTailleListeErreurs() > 0) {
             nbErreursParEtape.add(h.getTailleListeErreurs());
             if(nbErreursParEtape.size() > 2) {
@@ -141,6 +142,7 @@ public class Main {
 //        h.verificationCouple();
     	
     }
+    
     public static void createOutput(Hopital h) throws IOException {
     	String contenuFichier = "ID CHIRURGIE;DATE CHIRURGIE;HEURE_DEBUT CHIRURGIE;HEURE_FIN CHIRURGIE;SALLE;CHIRURGIEN";
     	//contenuFichier += h.toString();
