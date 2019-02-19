@@ -69,6 +69,7 @@ public class Hopital {
         }
         Collections.sort(this.listeChirurgies);
         this.findErreur();
+        this.normalisationHeureChirurgie();
     }
 
     public void printListeChirurgies() {
@@ -267,10 +268,6 @@ public class Hopital {
                         while (!((this.changementHeureChirurgie(c, 0, tempsDecalage, "avancer")) 
                                 || (this.changementHeureChirurgie(c, 0, tempsDecalage, "retarder")))) {
                             tempsDecalage += 10;
-                            LocalTime verification = c.getHeureFin().plusMinutes(tempsDecalage);
-                            if (verification.isAfter(this.getHeureLimiteFin()) || verification.equals(this.getHeureLimiteFin())) {
-                                break;
-                            }
                             i++;
                             if(i >= 72) {
                                 break;
@@ -306,10 +303,6 @@ public class Hopital {
                         while (!((this.changementHeureChirurgie(c, 0, tempsDecalage, "avancer")) 
                                 || (this.changementHeureChirurgie(c, 0, tempsDecalage, "retarder")))) {
                             tempsDecalage += 10;
-                            LocalTime verification = c.getHeureFin().plusMinutes(tempsDecalage);
-                            if (verification.isAfter(this.getHeureLimiteFin()) || verification.equals(this.getHeureLimiteFin())) {
-                                break;
-                            }
                             i++;
                             if(i >= 72) {
                                 break;
@@ -523,29 +516,35 @@ public class Hopital {
         int moyenneEnSeconde = moyenne.getHour() * 3600 + moyenne.getMinute() * 60 + moyenne.getSecond();
         //System.out.println(moyenneEnSeconde);
         for (Chirurgie c : this.listeChirurgies) {
-            long dureeLong = c.getDuree();
-            int dureeChirurgieEnSeconde = (int) dureeLong * 60;
-
-            //Duration dureeChirurgie = Duration.between(c.getHeureDebut(), c.getHeureFin());
-            if (dureeChirurgieEnSeconde >= moyenneEnSeconde * 1.5) {
-                //System.out.println(c);
-
-                if (dureeChirurgieEnSeconde >= ((moyenneEnSeconde * 1.5) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60))) {
-                    //System.out.println((moyenneEnSeconde * 1.5) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60));
-                    c.setHeureFin(c.getHeureFin().minusHours(moyenne.getHour()));
-                    c.setHeureFin(c.getHeureFin().minusMinutes(moyenne.getMinute()));
-                    c.setHeureFin(c.getHeureFin().minusSeconds(moyenne.getSecond()));
-                } 
-                else {
-
-                    /* A FAIRE */
-                    long toLong = (long) (moyenneEnSeconde * 1.5);
-                    //System.out.println(toLong);
-                    c.setHeureFin(c.getHeureDebut().plusSeconds(toLong));
-                    c.setHeureFin(LocalTime.of(c.getHeureFin().getHour(), c.getHeureFin().getMinute()));
-                    //System.out.println(c + " mdr changement");
-
+            if(c.getHeureFin().equals(LocalTime.of(0, 0))) {
+                if(c.getDuree() > 120) {
+                    LocalTime newHeureFin = c.getHeureDebut().plusMinutes(120);
+                    c.setHeureFin(newHeureFin);
                 }
+            }
+            else {
+                long dureeLong = c.getDuree();
+                int dureeChirurgieEnSeconde = (int) dureeLong * 60;
+
+                //Duration dureeChirurgie = Duration.between(c.getHeureDebut(), c.getHeureFin());
+                if (dureeChirurgieEnSeconde >= moyenneEnSeconde * 1.5) {
+                    //System.out.println(c);
+
+                    if (dureeChirurgieEnSeconde >= ((moyenneEnSeconde * 1.5) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60))) {
+                        //System.out.println((moyenneEnSeconde * 1.5) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60));
+                        c.setHeureFin(c.getHeureFin().minusHours(moyenne.getHour()));
+                        c.setHeureFin(c.getHeureFin().minusMinutes(moyenne.getMinute()));
+                        c.setHeureFin(c.getHeureFin().minusSeconds(moyenne.getSecond()));
+                    } 
+                    else {
+                        /* A FAIRE */
+                        long toLong = (long) (moyenneEnSeconde * 1.5);
+                        //System.out.println(toLong);
+                        c.setHeureFin(c.getHeureDebut().plusSeconds(toLong));
+                        c.setHeureFin(LocalTime.of(c.getHeureFin().getHour(), c.getHeureFin().getMinute()));
+                        //System.out.println(c + " mdr changement");
+                    }
+                } 
             }
         }
     }
