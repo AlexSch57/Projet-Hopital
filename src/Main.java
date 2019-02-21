@@ -25,12 +25,12 @@ public class Main {
      */
     public static void main(String[] args) throws IOException, FileNotFoundException, ParseException, ChirurgienInexistantException, SalleInexistanteException {
         
-        Menu m = new Menu();
-        //boolean mdr = true;
-        while(m.isActif()) {
-            m.displayMenu();
-            m.switchChoix();
-        }
+//        Menu m = new Menu();
+//        //boolean mdr = true;
+//        while(m.isActif()) {
+//            m.displayMenu();
+//            m.switchChoix();
+//        }
        //test nouvelle branche
         Hopital h = new Hopital();
 //        
@@ -48,6 +48,11 @@ public class Main {
 
         LocalTime moyenne = h.getDureeMoyenneChirurgie();
         
+        int totalDebut = 0;
+        for(Chirurgie c : h.getListeChirurgies()) {
+        	totalDebut += c.getDuree();
+        }
+        System.out.println(totalDebut);
         
         
         //System.out.println(h.getTailleListeErreurs());
@@ -73,7 +78,7 @@ public class Main {
 ////        
 ////        //System.out.println(h.getDureeMoyenneChirurgie());
 ////       
-        	h.normalisationHeureChirurgie();
+        	//h.normalisationHeureChirurgie();
 ////        
 ////        //h.printListeChirurgies();
 //////        Chirurgie c2 = h.getChirurgieById("25");
@@ -83,7 +88,10 @@ public class Main {
 //        
 
 //        
-//        //h.printListeErreurs();
+        	
+//        //h.printListeErreurs();       	
+  		  
+  		  
         System.out.println("nombres d'erreurs dans le fichier : " + h.getTailleListeErreurs() + "\n\n");
         //h.printListeErreurs();
         int nbEtape = 1;
@@ -112,6 +120,21 @@ public class Main {
             nbEtape++;
         }        
         
+        
+        System.out.println("\nfdp");
+		  ArrayList<Chirurgien> mdr = Chirurgien.triListeChirurgiens(Chirurgien.getListeChirurgiens());
+		  for(Chirurgien c : mdr) {
+			  System.out.println(c + " : " + c.getTempsDeTravail());
+		  }
+		  
+		  int totalFin = 0;
+		  for(Chirurgie c : h.getListeChirurgies()) {
+	       	totalFin += c.getDuree();
+	    }
+	    System.out.println(totalFin);
+	    
+	    System.out.println(totalDebut - totalFin);
+	    System.out.println((totalDebut - totalFin) / h.getListeChirurgies().size());
         //createOutput(h);
 //    	Chirurgie c1 = h.getChirurgieById("12031");
 //    	Chirurgie c2 = h.getChirurgieById("12023");

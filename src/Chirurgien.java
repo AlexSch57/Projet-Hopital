@@ -56,6 +56,9 @@ public enum Chirurgien {
         this.tempsDeTravail += i;
     }
 
+    public void retraitTempsDeTravail(long i) {
+    	this.tempsDeTravail -= i;
+    }
     public boolean equals(Chirurgien c) {
         return (this.getNom().equals(c.getNom()));
     }

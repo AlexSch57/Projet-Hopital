@@ -318,9 +318,12 @@ public class Hopital {
 
     public boolean changementChirurgien(ArrayList<Chirurgie> listeChirurgies, ArrayList<Chirurgien> listeChirurgiens) {
         for (Chirurgie c : listeChirurgies) {
+        	Chirurgien.triListeChirurgiens(listeChirurgiens);
             for (Chirurgien ch : listeChirurgiens) {
                 if (this.estDisponibleChirurgien(ch, c)) {
+                	c.getChirurgien().retraitTempsDeTravail(c.getDuree());
                     c.setChirurgien(ch);
+                    c.getChirurgien().ajoutTempsDeTravail(c.getDuree());
                     return true;
                 }
             }
@@ -348,8 +351,10 @@ public class Hopital {
         for (Chirurgie c : this.listeChirurgies) {
             if(c.getHeureFin().equals(LocalTime.of(0, 0))) {
                 if(c.getDuree() > 120) {
+                	c.getChirurgien().retraitTempsDeTravail(c.getDuree());
                     LocalTime newHeureFin = c.getHeureDebut().plusMinutes(120);
                     c.setHeureFin(newHeureFin);
+                    c.getChirurgien().ajoutTempsDeTravail(c.getDuree());
                 }
             }
             else {
@@ -359,14 +364,18 @@ public class Hopital {
                 if (dureeChirurgieEnSeconde >= moyenneEnSeconde * 1.5) {
 
                     if (dureeChirurgieEnSeconde >= ((moyenneEnSeconde * 1.5) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60))) {
+                    	c.getChirurgien().retraitTempsDeTravail(c.getDuree());
                         c.setHeureFin(c.getHeureFin().minusHours(moyenne.getHour()));
                         c.setHeureFin(c.getHeureFin().minusMinutes(moyenne.getMinute()));
                         c.setHeureFin(c.getHeureFin().minusSeconds(moyenne.getSecond()));
+                        c.getChirurgien().ajoutTempsDeTravail(c.getDuree());
                     } 
                     else {
                         long toLong = (long) (moyenneEnSeconde * 1.5);
+                        c.getChirurgien().retraitTempsDeTravail(c.getDuree());
                         c.setHeureFin(c.getHeureDebut().plusSeconds(toLong));
                         c.setHeureFin(LocalTime.of(c.getHeureFin().getHour(), c.getHeureFin().getMinute()));
+                        c.getChirurgien().ajoutTempsDeTravail(c.getDuree());
                     }
                 } 
             }
@@ -380,8 +389,11 @@ public class Hopital {
         	if(c.getDate().equals(jour)) {
                 if(c.getHeureFin().equals(LocalTime.of(0, 0))) {
                     if(c.getDuree() > 120) {
+                    	c.getChirurgien().retraitTempsDeTravail(c.getDuree());
                         LocalTime newHeureFin = c.getHeureDebut().plusMinutes(120);
                        	c.setHeureFin(newHeureFin);
+                        c.getChirurgien().ajoutTempsDeTravail(c.getDuree());
+                       	
                     }
                 }
                 else {
@@ -391,14 +403,18 @@ public class Hopital {
                     if (dureeChirurgieEnSeconde >= moyenneEnSeconde * 1.5) {
                     
                         if (dureeChirurgieEnSeconde >= ((moyenneEnSeconde * 1.5) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60))) {
+                        	c.getChirurgien().retraitTempsDeTravail(c.getDuree());
                             c.setHeureFin(c.getHeureFin().minusHours(moyenne.getHour()));
                             c.setHeureFin(c.getHeureFin().minusMinutes(moyenne.getMinute()));
-                            c.setHeureFin(c.getHeureFin().minusSeconds(moyenne.getSecond()));                         
+                            c.setHeureFin(c.getHeureFin().minusSeconds(moyenne.getSecond()));  
+                            c.getChirurgien().ajoutTempsDeTravail(c.getDuree());
                         } 
                         else {
                             long toLong = (long) (moyenneEnSeconde * 1.5);
+                            c.getChirurgien().retraitTempsDeTravail(c.getDuree());
                             c.setHeureFin(c.getHeureDebut().plusSeconds(toLong));
                             c.setHeureFin(LocalTime.of(c.getHeureFin().getHour(), c.getHeureFin().getMinute()));
+                            c.getChirurgien().ajoutTempsDeTravail(c.getDuree()); 
                         }
                     } 
                 }
