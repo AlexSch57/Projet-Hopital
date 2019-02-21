@@ -1,22 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.Locale;
 
 /**
- *
- * @author kormli18
+ * Classe représentant une Chirurgie
+ * @author Alexandre Schwitthal
+ * @version 1.0
  */
+
 public class Chirurgie implements Comparable {
 
     private String id;
@@ -76,10 +70,11 @@ public class Chirurgie implements Comparable {
         this.chirurgien = chirurgien;
     }
 
-    public Chirurgie() {
-        
-    }
 
+    /**
+     * 
+     * @return Long : Correspondant à la durée entre l'heure de début et l'heure de fin de la chirurgie courante
+     */
     public Long getDuree() {
     	 if (this.heureDebut.isBefore(this.heureFin)) {
              return Duration.between(this.heureDebut, this.heureFin).toMinutes();
@@ -89,6 +84,12 @@ public class Chirurgie implements Comparable {
          }
     }
     
+    /**
+     * 
+     * @param lt1 : objet de type LocalTime, qui correspond à une heure de début de Chirurgie
+     * @param lt2 : objet de type LocalTime, qui correspond à une heure de fin de Chirurgie
+     * @return Long : Correspondant à la durée entre lt1 et lt2
+     */
     public static Long getDuree(LocalTime lt1, LocalTime lt2) {
     	 if (lt1.isBefore(lt2)) {
              return Duration.between(lt1, lt2).toMinutes();
@@ -127,9 +128,14 @@ public class Chirurgie implements Comparable {
        return false;
    }
    
-    public boolean equals(Object e) {
-        if (this.getClass().equals(e.getClass())) {
-            Chirurgie c = (Chirurgie) e;
+   /**
+   * @param o : Objet de type Object, qui sera cast en Chirurgie
+   * @return true si la date, l'heure de début, l'heure de fin, le chirurgien et la salle de la chirurgie courante et de la chirurgie en paramètre sont équivalente
+   * - false sinon 
+   */
+    public boolean equals(Object o) {
+        if (this.getClass().equals(o.getClass())) {
+            Chirurgie c = (Chirurgie) o;
             if((this.date.equals(c.date)) && (this.heureDebut.equals(c.heureDebut)) && (this.heureFin.equals(c.heureFin)) && (this.chirurgien.equals(c.chirurgien)) && 
                     (this.salle.equals(c.salle))) {
                 return true;
@@ -139,6 +145,13 @@ public class Chirurgie implements Comparable {
     }
         
     
+    /**
+     * @param obj : Objet de type Object, qui sera cast en Chirurgie
+     * Methode permettant le tri des Chirurgies par jour, et par heure, de la plus ancienne à la plus récente
+     * @return -1 si l'objet courant est plus ancien que l'objet passé en paramètre
+     * 1 si l'objet courant est plus récent que l'objet passé en paramètre
+     * 0 si l'objet passé en paramètre n'est pas une Chirurgie. 
+     */
     @Override
     public int compareTo(Object obj) {
         if (obj instanceof Chirurgie) {

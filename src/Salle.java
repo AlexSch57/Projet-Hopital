@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -66,5 +68,15 @@ public enum Salle {
     		}
     	}
         return null;
+    }
+    
+    public static ArrayList<Salle> getListeSalles() {
+        ArrayList<Salle> listeSalles = new ArrayList<>();
+        for(Salle s : Salle.values()) {
+       		if(!(listeSalles.contains(s))) {
+       			listeSalles.add(s);
+       		}
+       	}
+        return listeSalles;
     }
 }

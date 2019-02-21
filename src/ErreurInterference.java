@@ -1,15 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
- *
- * @author schwal180
+ * Classe représentant les erreurs d'Interference, héritant d'Erreur
+ * Erreur généré par l'utilisation d'une même salle 2 fois au même moment
+ * @author Liam Kormann
+ * @version 1.0
  */
+
 public class ErreurInterference extends Erreur {
 
+	/**
+	 * @return une String, correspondant à son type d'erreur, ainsi qu'une liste de ses chirurgies
+	 */
     @Override
     public String toString() {
         String s = "Erreur Interférence : ";

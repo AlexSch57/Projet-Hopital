@@ -1,17 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-//test Pull
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -22,9 +15,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- *
- * @author kormli18
+ * Classe représentant l'hopital, disposant de l'ensemble des chirurgies
+ * @author Alexandre Schwitthal
+ * @version 1.0
  */
+
 public class Hopital {
 
     private ArrayList<Chirurgie> listeChirurgies;
@@ -62,10 +57,10 @@ public class Hopital {
                 
                 Chirurgien c = Chirurgien.getChirurgienByName(tab[5]);
                 Chirurgie chir = new Chirurgie(tab[0], dateChirurgie, heureDeb, heureFin, Salle.getSalleByName(tab[4]), Chirurgien.getChirurgienByName(tab[5]));
-                if(!(this.listeChirurgies.contains(chir))) {
+                //if(!(this.listeChirurgies.contains(chir))) {
                     this.listeChirurgies.add(chir);
                     c.ajoutTempsDeTravail(chir.getDuree());
-                }  
+                //}  
             }
             ligne = reader.readLine();
         }
@@ -204,7 +199,7 @@ public class Hopital {
             ArrayList<Chirurgie> listeChirurgiesErreur = e.getListeChirurgiesErreur();
             LocalDate dateDuJour = listeChirurgiesErreur.get(0).getDate();
             ArrayList<Chirurgien> chirurgiensDuJour = this.getChirurgiensDuJour(dateDuJour);
-            ArrayList<Salle> listeSalles = this.getListeSalles();
+            ArrayList<Salle> listeSalles = Salle.getListeSalles();
 
             // ----- INTERFERENCE ------ //
             if (e instanceof ErreurInterference) {
@@ -300,16 +295,6 @@ public class Hopital {
             }
         }
         return listeChirurgies;
-    }
-
-    public ArrayList<Salle> getListeSalles() {
-        ArrayList<Salle> listeSalles = new ArrayList<>();
-        for (Chirurgie c : this.listeChirurgies) {
-            if (!(listeSalles.contains((c.getSalle())))) {
-                listeSalles.add(c.getSalle());
-            }
-        }
-        return listeSalles;
     }
 
     public boolean changementSalle(ArrayList<Salle> listeSalles, ArrayList<Chirurgie> listeChirurgies, LocalDate dateDuJour) {

@@ -2,15 +2,14 @@
 import java.util.ArrayList;
 import java.util.HashSet;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
- *
- * @author schwal180
+ * Classe abstraite, représentant les erreurs
+ * elle est composé d'une liste de chirurgies
+ * les chirurgies de la liste sont en conflit entre-elles
+ * @author Liam Kormann
+ * @version 1.0
  */
+
 public abstract class Erreur {
 
     protected ArrayList<Chirurgie> listeChirurgiesErreur;
@@ -33,6 +32,11 @@ public abstract class Erreur {
 
     public abstract String toString();
 
+    /**
+     * @param e : Object étant une Erreur
+     * @return true si les éléments de la liste des chirurgies de l'objet courant et de l'objet en paramètre sont équivalent
+     * false sinon
+     */
     public boolean equals(Object e) {
         if (this.getClass().equals(e.getClass())) {
             if (new HashSet<Chirurgie>(this.getListeChirurgiesErreur()).equals(new HashSet<Chirurgie>(((Erreur) e).getListeChirurgiesErreur()))) {
