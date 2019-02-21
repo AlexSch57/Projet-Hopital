@@ -69,7 +69,7 @@ public class Hopital {
         }
         Collections.sort(this.listeChirurgies);
         this.findErreur();
-        this.normalisationHeureChirurgie();
+        //this.normalisationHeureChirurgie();
     }
 
     public void printListeChirurgies() {
@@ -189,53 +189,7 @@ public class Hopital {
                             }
                         }
                     }
-//                    Chirurgie c2 = chirurgiesDuJour.get(i+1);
-//                    if(this.estParallele(c1, c2)){
-//                        if ((c1.getChirurgien().equals(c2.getChirurgien()))
-//                            && c1.getSalle().equals(c2.getSalle())) {
-//                            Erreur e = new ErreurChevauchement();
-//                            e.addChirurgie(c1);
-//                            e.addChirurgie(c2);
-//                            this.listeErreurs.add(e);
-//                        } 
-//                        else if (c1.getChirurgien().equals(c2.getChirurgien())) {
-//                            Erreur e = new ErreurUbiquite();
-//                            e.addChirurgie(c1);
-//                            e.addChirurgie(c2);
-//                            this.listeErreurs.add(e);
-//                        } 
-//                        else if (c1.getSalle().equals(c2.getSalle())) {
-//                            Erreur e = new ErreurInterference();
-//                            e.addChirurgie(c1);
-//                            e.addChirurgie(c2);
-//                            this.listeErreurs.add(e);
-//                        }
-//                    }
                 }
-//                while ((chirurgiesDuJour.indexOf(c1) != chirurgiesDuJour.size() - 1) && (this.estParallele(c1, chirurgiesDuJour.get(++i)))) {
-//                    Chirurgie c2 = chirurgiesDuJour.get(i);
-//
-//                    if ((c1.getChirurgien().equals(c2.getChirurgien()))
-//                            && c1.getSalle().equals(c2.getSalle())) {
-//                        Erreur e = new ErreurChevauchement();
-//                        e.addChirurgie(c1);
-//                        e.addChirurgie(c2);
-//                        this.listeErreurs.add(e);
-//                    } 
-//                    else if (c1.getChirurgien().equals(c2.getChirurgien())) {
-//                        Erreur e = new ErreurUbiquite();
-//                        e.addChirurgie(c1);
-//                        e.addChirurgie(c2);
-//                        this.listeErreurs.add(e);
-//                    } 
-//                    else if (c1.getSalle().equals(c2.getSalle())) {
-//                        Erreur e = new ErreurInterference();
-//                        e.addChirurgie(c1);
-//                        e.addChirurgie(c2);
-//                        this.listeErreurs.add(e);
-//                    }
-//                    c1 = c2;
-//                }
             }
         }
     }
@@ -257,89 +211,41 @@ public class Hopital {
                 }
 
                 // tentative de recherche d'un autre chirurgien disponible
-                else if (this.changementChirurgien2(listeChirurgiesErreur, chirurgiensDuJour)) {
+                else if (this.changementChirurgien(listeChirurgiesErreur, chirurgiensDuJour)) {
 
                 } 
                 // tentative de changement de l'heure de la chirurgie 
                 else {
-                    for (Chirurgie c : e.listeChirurgiesErreur) {
-                        int i = 0;
-                        int tempsDecalage = 10;
-                        while (!((this.changementHeureChirurgie(c, 0, tempsDecalage, "avancer")) 
-                                || (this.changementHeureChirurgie(c, 0, tempsDecalage, "retarder")))) {
-                            tempsDecalage += 10;
-                            i++;
-                            if(i >= 72) {
-                                break;
-                            }
-                        }
-                        if(i < 72) {
-                            System.out.println(c);
-                            i = 0;
-                            break;   
-                        }
-                    }
+                    this.deplacementHeureChirurgie(listeChirurgiesErreur, 10);
                 }
             } 
+            
             // ----- CHEVAUCHEMENT ------ //
             else if (e instanceof ErreurChevauchement) {
                 // tentative de recherche d'une autre salle disponible
                 if (this.changementSalle(listeSalles, listeChirurgiesErreur, dateDuJour)) {
                     
                 }
+                // tentative de changement de l'heure de la chirurgie 
+                else {
+                	this.deplacementHeureChirurgie(listeChirurgiesErreur, 10);
+                }
                 
             } 
+            
             // ----- UBIQUITE ------ //
             else if (e instanceof ErreurUbiquite) {
                 // tentative de recherche d'un autre chirurgien disponible
-                if (this.changementChirurgien2(listeChirurgiesErreur, chirurgiensDuJour)) {
+                if (this.changementChirurgien(listeChirurgiesErreur, chirurgiensDuJour)) {
                     
                 } 
                 // tentative de changement de l'heure de la chirurgie 
                 else {
-                    for (Chirurgie c : e.listeChirurgiesErreur) {
-                        int i = 0;
-                        int tempsDecalage = 10;
-                        while (!((this.changementHeureChirurgie(c, 0, tempsDecalage, "avancer")) 
-                                || (this.changementHeureChirurgie(c, 0, tempsDecalage, "retarder")))) {
-                            tempsDecalage += 10;
-                            i++;
-                            if(i >= 72) {
-                                break;
-                            }
-                        }
-                        if( i < 72) {
-                            System.out.println(c);
-                            break;
-                        }
-                    }
+                	this.deplacementHeureChirurgie(listeChirurgiesErreur, 10);
                 }
             }
         }
         Collections.sort(this.listeChirurgies);
-    }
-
-    /**
-     * @Depreciated
-     */
-    public boolean isActifSalle(Salle s, LocalDate jour, LocalTime heureDebut, LocalTime heureFin) {
-
-        for (Chirurgie ch : this.listeChirurgies) {
-            if (ch.getDate().equals(jour)) {
-                if (ch.getSalle().equals(s)) {
-                    if (ch.getHeureDebut().equals(heureDebut)) {
-                        return true;
-                    }
-                    if ((ch.getHeureDebut().isAfter(heureDebut))
-                            && ch.getHeureDebut().isBefore(heureFin)
-                            || ((heureDebut.isAfter(ch.getHeureDebut()))
-                            && heureDebut.isBefore(ch.getHeureFin()))) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     public boolean estDisponibleSalle(Salle s, Chirurgie c) {
@@ -353,29 +259,6 @@ public class Hopital {
             }
         }
         return true;
-    }
-
-    /**
-     * @Depreciated
-     */
-    public boolean isActifChirurgien(Chirurgien c, LocalDate jour, LocalTime heureDebut, LocalTime heureFin) {
-
-        for (Chirurgie ch : this.listeChirurgies) {
-            if (ch.getDate().equals(jour)) {
-                if (ch.getChirurgien().equals(c)) {
-                    if (ch.getHeureDebut().equals(heureDebut)) {
-                        return true;
-                    } 
-                    else if ((ch.getHeureDebut().isAfter(heureDebut))
-                            && ch.getHeureDebut().isBefore(heureFin)
-                            || ((heureDebut.isAfter(ch.getHeureDebut()))
-                            && heureDebut.isBefore(ch.getHeureFin()))) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     public boolean estDisponibleChirurgien(Chirurgien c, Chirurgie chir) {
@@ -445,27 +328,7 @@ public class Hopital {
         return false;
     }
 
-    public boolean changementChirurgien(ArrayList<Chirurgien> listeChirurgiens, ArrayList<Chirurgie> listeChirurgies, LocalDate dateDuJour) {
-        for (Chirurgien c : listeChirurgiens) {
-            for (Chirurgie ch : listeChirurgies) {
-                if (!(c.equals(ch.getChirurgien()))) {
-                    if (estDisponibleChirurgien(c, ch)) {
-
-                        ArrayList<Chirurgien> lesChirurgiensDeLaSalle = Paire_Chirurgien_Salle.getChirurgiensDeLaSalle(ch.getSalle());
-
-                        if (lesChirurgiensDeLaSalle.contains(c)) {
-                            ch.setChirurgien(c);
-                            return true;
-                        }
-                    }
-                }
-            }
-
-        }
-        return false;
-    }
-
-    public boolean changementChirurgien2(ArrayList<Chirurgie> listeChirurgies, ArrayList<Chirurgien> listeChirurgiens) {
+    public boolean changementChirurgien(ArrayList<Chirurgie> listeChirurgies, ArrayList<Chirurgien> listeChirurgiens) {
         for (Chirurgie c : listeChirurgies) {
             for (Chirurgien ch : listeChirurgiens) {
                 if (this.estDisponibleChirurgien(ch, c)) {
@@ -514,7 +377,6 @@ public class Hopital {
     public void normalisationHeureChirurgie() {
         LocalTime moyenne = this.getDureeMoyenneChirurgie();
         int moyenneEnSeconde = moyenne.getHour() * 3600 + moyenne.getMinute() * 60 + moyenne.getSecond();
-        //System.out.println(moyenneEnSeconde);
         for (Chirurgie c : this.listeChirurgies) {
             if(c.getHeureFin().equals(LocalTime.of(0, 0))) {
                 if(c.getDuree() > 120) {
@@ -549,8 +411,43 @@ public class Hopital {
         }
     }
 
-    public void normalisationHeureChirurgie(LocalDate jour) {
+    public void normalisationHeureChirurgieDuJour(LocalDate jour) {
+    	LocalTime moyenne = this.getDureeMoyenneChirurgie();
+        int moyenneEnSeconde = moyenne.getHour() * 3600 + moyenne.getMinute() * 60 + moyenne.getSecond();
+        for (Chirurgie c : this.listeChirurgies) {
+        	if(c.getDate().equals(jour)) {
+                if(c.getHeureFin().equals(LocalTime.of(0, 0))) {
+                    if(c.getDuree() > 120) {
+                        LocalTime newHeureFin = c.getHeureDebut().plusMinutes(120);
+                        c.setHeureFin(newHeureFin);
+                    }
+                }
+                else {
+                    long dureeLong = c.getDuree();
+                    int dureeChirurgieEnSeconde = (int) dureeLong * 60;
 
+                    //Duration dureeChirurgie = Duration.between(c.getHeureDebut(), c.getHeureFin());
+                    if (dureeChirurgieEnSeconde >= moyenneEnSeconde * 1.5) {
+                        //System.out.println(c);
+
+                        if (dureeChirurgieEnSeconde >= ((moyenneEnSeconde * 1.5) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60))) {
+                            //System.out.println((moyenneEnSeconde * 1.5) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60));
+                            c.setHeureFin(c.getHeureFin().minusHours(moyenne.getHour()));
+                            c.setHeureFin(c.getHeureFin().minusMinutes(moyenne.getMinute()));
+                            c.setHeureFin(c.getHeureFin().minusSeconds(moyenne.getSecond()));
+                        } 
+                        else {
+                            /* A FAIRE */
+                            long toLong = (long) (moyenneEnSeconde * 1.5);
+                            //System.out.println(toLong);
+                            c.setHeureFin(c.getHeureDebut().plusSeconds(toLong));
+                            c.setHeureFin(LocalTime.of(c.getHeureFin().getHour(), c.getHeureFin().getMinute()));
+                            //System.out.println(c + " mdr changement");
+                        }
+                    } 
+                }
+        	}
+        }
     }
 
     public boolean changementHeureChirurgie(Chirurgie c, int heure, int minute, String typeChangement) {
@@ -600,6 +497,31 @@ public class Hopital {
         else {
             return false;
         }
+    }
+    
+    public void deplacementHeureChirurgie(ArrayList<Chirurgie> lesChirurgies, int tempsDecalage) {
+    	boolean ChangementChirurgie = false;
+    	for(Chirurgie c : lesChirurgies) {
+    		int i = 0;
+    		int limite = 12 * 60 / tempsDecalage;
+    		while (!((this.changementHeureChirurgie(c, 0, tempsDecalage, "avancer")) 
+                    || (this.changementHeureChirurgie(c, 0, tempsDecalage, "retarder")))) {
+                tempsDecalage += 10;
+                i++;
+                if(i >= limite) {
+                    break;
+                }
+            }
+            if( i < limite) {
+                System.out.println(c);
+                ChangementChirurgie = true;
+                break;
+            }
+    	}
+    	if(!(ChangementChirurgie)) {
+    		this.normalisationHeureChirurgieDuJour(lesChirurgies.get(0).getDate());
+    		//this.deplacementHeureChirurgie(lesChirurgies, tempsDecalage);
+    	}
     }
 
     public LocalTime getHeureLimiteDebut() {
