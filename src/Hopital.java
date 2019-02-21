@@ -29,10 +29,12 @@ public class Hopital {
 
     private ArrayList<Chirurgie> listeChirurgies;
     private ArrayList<Erreur> listeErreurs;
+    private LocalTime dureeMoyenneChirurgies;
 
     public Hopital() {
         this.listeChirurgies = new ArrayList<>();
         this.listeErreurs = new ArrayList<>();
+        this.dureeMoyenneChirurgies = LocalTime.of(0, 0);
     }
 
     public void init(String nomFichier) throws FileNotFoundException, IOException, ParseException, ChirurgienInexistantException, SalleInexistanteException {
@@ -69,7 +71,8 @@ public class Hopital {
         }
         Collections.sort(this.listeChirurgies);
         this.findErreur();
-        //this.normalisationHeureChirurgie();
+        this.dureeMoyenneChirurgies = this.getDureeMoyenneChirurgie();
+        
     }
 
     public void printListeChirurgies() {
@@ -340,25 +343,6 @@ public class Hopital {
         return false;
     }
 
-    public boolean verificationCouple() {
-        int i = 0;
-        for (Chirurgie c : this.listeChirurgies) {
-
-            boolean coupleExistant = false;
-            for (Paire_Chirurgien_Salle pcs : Paire_Chirurgien_Salle.values()) {
-                if (pcs.getChirurgien().equals(c.getChirurgien()) && pcs.getSalle().equals(c.getSalle())) {
-                    coupleExistant = true;
-                    i++;
-                }
-            }
-            if (!(coupleExistant)) {
-                return false;
-            }
-        }
-        System.out.println("couple valide : " + i + "/" + this.listeChirurgies.size());
-        return true;
-    }
-
     public LocalTime getDureeMoyenneChirurgie() {
         float total = 0;
         for (Chirurgie c : this.listeChirurgies) {
@@ -373,9 +357,8 @@ public class Hopital {
         return LocalTime.of(heure, min);
     }
 
-    /* A FINIR */
     public void normalisationHeureChirurgie() {
-        LocalTime moyenne = this.getDureeMoyenneChirurgie();
+        LocalTime moyenne = this.dureeMoyenneChirurgies;
         int moyenneEnSeconde = moyenne.getHour() * 3600 + moyenne.getMinute() * 60 + moyenne.getSecond();
         for (Chirurgie c : this.listeChirurgies) {
             if(c.getHeureFin().equals(LocalTime.of(0, 0))) {
@@ -388,23 +371,17 @@ public class Hopital {
                 long dureeLong = c.getDuree();
                 int dureeChirurgieEnSeconde = (int) dureeLong * 60;
 
-                //Duration dureeChirurgie = Duration.between(c.getHeureDebut(), c.getHeureFin());
                 if (dureeChirurgieEnSeconde >= moyenneEnSeconde * 1.5) {
-                    //System.out.println(c);
 
                     if (dureeChirurgieEnSeconde >= ((moyenneEnSeconde * 1.5) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60))) {
-                        //System.out.println((moyenneEnSeconde * 1.5) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60));
                         c.setHeureFin(c.getHeureFin().minusHours(moyenne.getHour()));
                         c.setHeureFin(c.getHeureFin().minusMinutes(moyenne.getMinute()));
                         c.setHeureFin(c.getHeureFin().minusSeconds(moyenne.getSecond()));
                     } 
                     else {
-                        /* A FAIRE */
                         long toLong = (long) (moyenneEnSeconde * 1.5);
-                        //System.out.println(toLong);
                         c.setHeureFin(c.getHeureDebut().plusSeconds(toLong));
                         c.setHeureFin(LocalTime.of(c.getHeureFin().getHour(), c.getHeureFin().getMinute()));
-                        //System.out.println(c + " mdr changement");
                     }
                 } 
             }
@@ -412,37 +389,31 @@ public class Hopital {
     }
 
     public void normalisationHeureChirurgieDuJour(LocalDate jour) {
-    	LocalTime moyenne = this.getDureeMoyenneChirurgie();
+        LocalTime moyenne = this.dureeMoyenneChirurgies;
         int moyenneEnSeconde = moyenne.getHour() * 3600 + moyenne.getMinute() * 60 + moyenne.getSecond();
         for (Chirurgie c : this.listeChirurgies) {
         	if(c.getDate().equals(jour)) {
                 if(c.getHeureFin().equals(LocalTime.of(0, 0))) {
                     if(c.getDuree() > 120) {
                         LocalTime newHeureFin = c.getHeureDebut().plusMinutes(120);
-                        c.setHeureFin(newHeureFin);
+                       	c.setHeureFin(newHeureFin);
                     }
                 }
                 else {
                     long dureeLong = c.getDuree();
                     int dureeChirurgieEnSeconde = (int) dureeLong * 60;
 
-                    //Duration dureeChirurgie = Duration.between(c.getHeureDebut(), c.getHeureFin());
                     if (dureeChirurgieEnSeconde >= moyenneEnSeconde * 1.5) {
-                        //System.out.println(c);
-
+                    
                         if (dureeChirurgieEnSeconde >= ((moyenneEnSeconde * 1.5) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60))) {
-                            //System.out.println((moyenneEnSeconde * 1.5) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60));
                             c.setHeureFin(c.getHeureFin().minusHours(moyenne.getHour()));
                             c.setHeureFin(c.getHeureFin().minusMinutes(moyenne.getMinute()));
-                            c.setHeureFin(c.getHeureFin().minusSeconds(moyenne.getSecond()));
+                            c.setHeureFin(c.getHeureFin().minusSeconds(moyenne.getSecond()));                         
                         } 
                         else {
-                            /* A FAIRE */
                             long toLong = (long) (moyenneEnSeconde * 1.5);
-                            //System.out.println(toLong);
                             c.setHeureFin(c.getHeureDebut().plusSeconds(toLong));
                             c.setHeureFin(LocalTime.of(c.getHeureFin().getHour(), c.getHeureFin().getMinute()));
-                            //System.out.println(c + " mdr changement");
                         }
                     } 
                 }
@@ -520,28 +491,7 @@ public class Hopital {
     	}
     	if(!(ChangementChirurgie)) {
     		this.normalisationHeureChirurgieDuJour(lesChirurgies.get(0).getDate());
-    		//this.deplacementHeureChirurgie(lesChirurgies, tempsDecalage);
     	}
-    }
-
-    public LocalTime getHeureLimiteDebut() {
-        LocalTime lt = LocalTime.of(23, 59);
-        for (Chirurgie c : this.listeChirurgies) {
-            if (c.getHeureDebut().isBefore(lt)) {
-                lt = c.getHeureDebut();
-            }
-        }
-        return lt;
-    }
-
-    public LocalTime getHeureLimiteFin() {
-        LocalTime lt = LocalTime.of(0, 1);
-        for (Chirurgie c : this.listeChirurgies) {
-            if (c.getHeureFin().isAfter(lt)) {
-                lt = c.getHeureFin();
-            }
-        }
-        return lt;
     }
     
     public LocalTime getMoyenneHoraireChirurgie() {
