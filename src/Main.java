@@ -26,8 +26,8 @@ public class Main {
     public static void main(String[] args) throws IOException, FileNotFoundException, ParseException, ChirurgienInexistantException, SalleInexistanteException {
         
         Menu m = new Menu();
-        boolean mdr = true;
-        while(mdr) {
+        //boolean mdr = true;
+        while(m.isActif()) {
             m.displayMenu();
             m.switchChoix();
         }
