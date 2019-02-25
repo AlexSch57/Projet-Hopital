@@ -299,7 +299,9 @@ public class Menu {
     	System.out.println("Chirurgie ajoutée");
     	
     }
-    
+        public void choixModifChirurgie(int id, LocalDate dateChirugie,LocalTime heureDeb,LocalTime heureFin,Salle salle,Chirurgien chirurgien ){
+            
+        }
 	public void removeChirurgie() {
         System.out.println("Veuillez saisir l'identifiant de la chirurgie à supprimer : ");
         Scanner sc = new Scanner(System.in);
@@ -334,6 +336,7 @@ public class Menu {
     	try {
 			return LocalDate.of(Integer.parseInt(tab[2]),Integer.parseInt(tab[1]),Integer.parseInt(tab[0]));
 		} catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
+                        System.err.println("Sasie incorrecte");
 			return this.setDateChirurgie();
 		}   	
     }
@@ -345,7 +348,8 @@ public class Menu {
     	String[] tab = stringDate.split(":");    	
     	try {
 			return LocalTime.of(Integer.parseInt(tab[0]),Integer.parseInt(tab[1]),Integer.parseInt(tab[2]));
-		} catch (DateTimeException e) {
+		} catch (DateTimeException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
+                        System.err.println("Sasie incorrecte");
 			return this.setHeureChirurgie();
 		}    	
     }
@@ -362,7 +366,7 @@ public class Menu {
 			int indexChoix = Integer.parseInt(choix);
 			return listeSalles.get(--indexChoix);
 		} catch (NumberFormatException | ArrayIndexOutOfBoundsException | InputMismatchException e) {
-			
+			System.err.println("Sasie incorrecte");
 			return this.setSalleChirurgie();
 		}
 	}
@@ -379,7 +383,8 @@ public class Menu {
 			String choix = sc.nextLine();
 			int indexChoix = Integer.parseInt(choix);			
 			return listeChirurgiens.get(--indexChoix);
-		} catch (InputMismatchException | IndexOutOfBoundsException | NumberFormatException e) {			
+		} catch (InputMismatchException | IndexOutOfBoundsException | NumberFormatException e) {
+                        System.err.println("Sasie incorrecte");
 			return this.setChirurgienChirurgie();
 		}	
     }
