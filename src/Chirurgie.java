@@ -116,6 +116,14 @@ public class Chirurgie implements Comparable {
            if (this.getHeureDebut().equals(c.getHeureDebut())) {
                return true;
            }
+           if (this.getHeureDebut().equals(c.getHeureFin())) {
+               return true;
+           }
+           
+           if (this.getHeureFin().equals(c.getHeureDebut())) {
+               return true;
+           }
+           
            if ((c.getHeureDebut().isAfter(this.getHeureDebut()))
                    && (getDuree(this.getHeureDebut(), c.getHeureDebut()) < this.getDuree())) {
                return true;
