@@ -101,8 +101,16 @@ public class Chirurgie implements Comparable {
     
     public String toString() {
         String today = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH).format(this.getDate());
+        String ajoutSecondeDebut = "";
+        String ajoutSecondeFin = "";
+        if(this.getHeureDebut().getSecond() == 0) {
+            ajoutSecondeDebut = ":00";
+        }
+        if(this.getHeureFin().getSecond() == 0) {
+            ajoutSecondeFin = ":00";
+        }
         return this.getId() + ";" + today + ";"
-                + this.getHeureDebut().toString() + ":00" + ";" + this.getHeureFin().toString() + ":00" + ";" + this.getSalle().toString() + ";" + this.getChirurgien().toString();
+                + this.getHeureDebut().toString() + ajoutSecondeDebut + ";" + this.getHeureFin().toString() + ajoutSecondeFin + ";" + this.getSalle().toString() + ";" + this.getChirurgien().toString();
     }
     
     /**

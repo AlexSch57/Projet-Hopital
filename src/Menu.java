@@ -24,7 +24,7 @@ import java.util.Scanner;
  * @author schwal180
  */
 public class Menu {
-    
+
     private String currentFile;
     private Hopital notreHopital;
     private Scanner sc;
@@ -149,28 +149,24 @@ public class Menu {
             limite = 1;
         }
         do {
-            try {                
+            try {
                 nombre = sc.nextInt();
                 if ((nombre < 1 || nombre > limite) && nombre != 7) {
                     if (limite == 1) {
                         System.out.println("Vous ne pouvez pas faire d'autres choix que le n°1 tant que vous n'avez pas choisi de fichier");
-                    } 
-                    else {
+                    } else {
                         System.out.println("Veuillez séléctionner un nombre entre 1 et 7");
                     }
                 }
-            } 
-            catch (InputMismatchException ex) {
+            } catch (InputMismatchException ex) {
                 if (limite == 1) {
                     System.out.println("Vous ne pouvez pas faire d'autres choix que le n°1 tant que vous n'avez pas choisi de fichier");
-                } 
-                else {
+                } else {
                     System.out.println("Veuillez séléctionner un nombre entre 1 et 7");
                 }
                 return choixUtilisateur();
             }
-        } 
-        while ((nombre < 1 || nombre > limite) && nombre != 7);
+        } while ((nombre < 1 || nombre > limite) && nombre != 7);
 
         return nombre;
     }
@@ -206,8 +202,7 @@ public class Menu {
             this.currentFile = nomFichier;
             this.notreHopital = new Hopital();
             this.notreHopital.init(nomFichier);
-        } 
-        catch (IndexOutOfBoundsException | InputMismatchException e) {
+        } catch (IndexOutOfBoundsException | InputMismatchException e) {
             System.err.println("Le fichier demandé n'existe pas\n");
             this.selectFile();
         }
@@ -234,166 +229,168 @@ public class Menu {
         writer.close();
         System.out.println("fichier exporté ! nom : " + nomFichier);
     }
-    
+
     @SuppressWarnings("unused")
-	public void addChirurgie() {
-    	int idChirurgie = getIdMax()+1;
-    	LocalDate dateChirugie = null;
-    	LocalTime heureDeb = null;
-    	LocalTime heureFin = null;
-    	Salle salle = null;
-    	Chirurgien chirurgien = null;
-    	//Scanner sc = new Scanner(System.in);
-    	while((dateChirugie==null) || (heureDeb==null) || (heureFin==null) || (salle==null) || (chirurgien==null)) {    		
-    		//String choix = "";
-	    	System.out.println("Veuillez saisir les attributs de la chirurgie à définir : ");
-	    	System.out.println("1. ID_CHIRURGIE : " + (getIdMax()+1) + " (affecté automatiquement)");
-	    	if (dateChirugie!=null) {
-	    		System.out.println("2. DATE_CHIRURGIE : " + dateChirugie);
-	    	}else {
-	    		System.out.println("2. DATE_CHIRURGIE : Non défini" );
-	    	}
-	    	if (heureDeb!=null) {
-	    		System.out.println("3. HEURE_DEBUT_CHIRURGIE : " + heureDeb);
-	    	}else {
-	    		System.out.println("3. HEURE_DEBUT_CHIRURGIE : Non défini" );
-	    	}
-	    	if (heureFin!=null) {
-	    		System.out.println("4. HEURE_FIN_CHIRURGIE : " + heureFin);
-	    	}else {
-	    		System.out.println("4. HEURE_FIN_CHIRURGIE : Non défini" );
-	    	}
-	    	if (salle!=null) {
-	    		System.out.println("5. SALLE : " + salle);
-	    	}else {
-	    		System.out.println("5. SALLE : Non défini" );
-	    	}
-	    	if (chirurgien!=null) {
-	    		System.out.println("6. CHIRURGIEN : " + chirurgien);
-	    	}else {
-	    		System.out.println("6. CHIRURGIEN : Non défini" );
-	    	}	    	
-	    	String choix = sc.nextLine();	    	
-	    	switch(choix) {
-	    	case "2" :
-	    		dateChirugie = this.setDateChirurgie();
-	    		break;
-	    	case "3" :
-	    		heureDeb = this.setHeureChirurgie();
-	    		break;
-	    	case "4" :
-	    		heureFin = this.setHeureChirurgie();
-	    		break;
-	    	case "5" :
-	    		salle = this.setSalleChirurgie();
-	    		break;
-	    	case "6" :
-	    		chirurgien = this.setChirurgienChirurgie();
-	    		break;
-	    	default :
-	    		break;
-	    	}
-	    	//sc.reset();
-    	}    	
-    	notreHopital.getListeChirurgies().add(new Chirurgie(Integer.toString((idChirurgie)),dateChirugie, heureDeb, heureFin, salle, chirurgien));
-    	System.out.println("Chirurgie ajoutée");
-    	
-    }
-        public void choixModifChirurgie(int id, LocalDate dateChirugie,LocalTime heureDeb,LocalTime heureFin,Salle salle,Chirurgien chirurgien ){
-            
+    public void addChirurgie() {
+        int idChirurgie = getIdMax() + 1;
+        LocalDate dateChirugie = null;
+        LocalTime heureDeb = null;
+        LocalTime heureFin = null;
+        Salle salle = null;
+        Chirurgien chirurgien = null;
+        //Scanner sc = new Scanner(System.in);
+        while ((dateChirugie == null) || (heureDeb == null) || (heureFin == null) || (salle == null) || (chirurgien == null)) {
+            //String choix = "";
+            System.out.println("Veuillez saisir les attributs de la chirurgie à définir : ");
+            System.out.println("1. ID_CHIRURGIE : " + (getIdMax() + 1) + " (affecté automatiquement)");
+            if (dateChirugie != null) {
+                System.out.println("2. DATE_CHIRURGIE : " + dateChirugie);
+            } else {
+                System.out.println("2. DATE_CHIRURGIE : Non défini");
+            }
+            if (heureDeb != null) {
+                System.out.println("3. HEURE_DEBUT_CHIRURGIE : " + heureDeb);
+            } else {
+                System.out.println("3. HEURE_DEBUT_CHIRURGIE : Non défini");
+            }
+            if (heureFin != null) {
+                System.out.println("4. HEURE_FIN_CHIRURGIE : " + heureFin);
+            } else {
+                System.out.println("4. HEURE_FIN_CHIRURGIE : Non défini");
+            }
+            if (salle != null) {
+                System.out.println("5. SALLE : " + salle);
+            } else {
+                System.out.println("5. SALLE : Non défini");
+            }
+            if (chirurgien != null) {
+                System.out.println("6. CHIRURGIEN : " + chirurgien);
+            } else {
+                System.out.println("6. CHIRURGIEN : Non défini");
+            }
+            String choix = sc.nextLine();
+            switch (choix) {
+                case "2":
+                    dateChirugie = this.setDateChirurgie();
+                    break;
+                case "3":
+                    heureDeb = this.setHeureChirurgie();
+                    break;
+                case "4":
+                    heureFin = this.setHeureChirurgie();
+                    break;
+                case "5":
+                    salle = this.setSalleChirurgie();
+                    break;
+                case "6":
+                    chirurgien = this.setChirurgienChirurgie();
+                    break;
+                default:
+                    break;
+            }
+            //sc.reset();
         }
-	public void removeChirurgie() {
+        notreHopital.getListeChirurgies().add(new Chirurgie(Integer.toString((idChirurgie)), dateChirugie, heureDeb, heureFin, salle, chirurgien));
+        System.out.println("Chirurgie ajoutée");
+
+    }
+
+    public void choixModifChirurgie(int id, LocalDate dateChirugie, LocalTime heureDeb, LocalTime heureFin, Salle salle, Chirurgien chirurgien) {
+
+    }
+
+    public void removeChirurgie() {
         System.out.println("Veuillez saisir l'identifiant de la chirurgie à supprimer : ");
         Scanner sc = new Scanner(System.in);
         String reponse = sc.nextLine();
         Iterator<Chirurgie> it = notreHopital.getListeChirurgies().iterator();
         while (it.hasNext()) {
             Chirurgie c = it.next();
-            if(c.getId().equals(reponse)) {
+            if (c.getId().equals(reponse)) {
                 it.remove();
                 System.out.println("la chirurgie n°" + reponse + " à bien été supprimé !");
                 this.notreHopital.findErreur();
             }
         }
     }
-    
-    public int getIdMax(){
-    	ArrayList<Chirurgie> listeChirurgies = notreHopital.getListeChirurgies();
-    	int idMax = 0;
-    	for (Chirurgie c : listeChirurgies) {
-    		if (Integer.parseInt(c.getId()) > idMax){
-    			idMax = Integer.parseInt(c.getId());
-    		}
-    	}
-    	return idMax;
+
+    public int getIdMax() {
+        ArrayList<Chirurgie> listeChirurgies = notreHopital.getListeChirurgies();
+        int idMax = 0;
+        for (Chirurgie c : listeChirurgies) {
+            if (Integer.parseInt(c.getId()) > idMax) {
+                idMax = Integer.parseInt(c.getId());
+            }
+        }
+        return idMax;
     }
-    
-    public LocalDate setDateChirurgie(){
-    	Scanner sc = new Scanner(System.in);
-    	System.out.println("Veuillez saisir une date au format jj/mm/aaaa");
-    	String stringDate = sc.nextLine();    	
-    	String[] tab = stringDate.split("/");    	
-    	try {
-			return LocalDate.of(Integer.parseInt(tab[2]),Integer.parseInt(tab[1]),Integer.parseInt(tab[0]));
-		} catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
-                        System.err.println("Sasie incorrecte");
-			return this.setDateChirurgie();
-		}   	
+
+    public LocalDate setDateChirurgie() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Veuillez saisir une date au format jj/mm/aaaa");
+        String stringDate = sc.nextLine();
+        String[] tab = stringDate.split("/");
+        try {
+            return LocalDate.of(Integer.parseInt(tab[2]), Integer.parseInt(tab[1]), Integer.parseInt(tab[0]));
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
+            System.err.println("Sasie incorrecte");
+            return this.setDateChirurgie();
+        }
     }
-    
-    public LocalTime setHeureChirurgie(){
-    	Scanner sc = new Scanner(System.in);
-    	System.out.println("Veuillez saisir une heure au format hh:mm:ss");
-    	String stringDate = sc.nextLine();    	
-    	String[] tab = stringDate.split(":");    	
-    	try {
-			return LocalTime.of(Integer.parseInt(tab[0]),Integer.parseInt(tab[1]),Integer.parseInt(tab[2]));
-		} catch (DateTimeException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
-                        System.err.println("Sasie incorrecte");
-			return this.setHeureChirurgie();
-		}    	
+
+    public LocalTime setHeureChirurgie() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Veuillez saisir une heure au format hh:mm:ss");
+        String stringDate = sc.nextLine();
+        String[] tab = stringDate.split(":");
+        try {
+            return LocalTime.of(Integer.parseInt(tab[0]), Integer.parseInt(tab[1]), Integer.parseInt(tab[2]));
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
+            System.err.println("Sasie incorrecte");
+            return this.setHeureChirurgie();
+        }
     }
-    
-    public Salle setSalleChirurgie() {    	
-		System.out.println("Veuillez choisir une salle parmi les salles disponibles : ");
-		List<Salle> listeSalles = Arrays.asList(Salle.values());
-		int index = 0;
-		for (Salle s :listeSalles) {
-			System.out.println(++index + " : " + s.getNom());
-		}
-		try {
-			String choix = sc.nextLine();
-			int indexChoix = Integer.parseInt(choix);
-			return listeSalles.get(--indexChoix);
-		} catch (NumberFormatException | ArrayIndexOutOfBoundsException | InputMismatchException e) {
-			System.err.println("Sasie incorrecte");
-			return this.setSalleChirurgie();
-		}
-	}
-    
+
+    public Salle setSalleChirurgie() {
+        System.out.println("Veuillez choisir une salle parmi les salles disponibles : ");
+        List<Salle> listeSalles = Arrays.asList(Salle.values());
+        int index = 0;
+        for (Salle s : listeSalles) {
+            System.out.println(++index + " : " + s.getNom());
+        }
+        try {
+            String choix = sc.nextLine();
+            int indexChoix = Integer.parseInt(choix);
+            return listeSalles.get(--indexChoix);
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException | InputMismatchException e) {
+            System.err.println("Sasie incorrecte");
+            return this.setSalleChirurgie();
+        }
+    }
+
     public Chirurgien setChirurgienChirurgie() {
-    	//Scanner sc = new Scanner(System.in);
-		System.out.println("Veuillez choisir un chirurgien parmi les chirurgiens disponibles : ");
-		List<Chirurgien> listeChirurgiens = (Chirurgien.getListeChirurgiens());
-		int index = 0;
-		for (Chirurgien c :listeChirurgiens) {
-			System.out.println(++index + " : " + c.getNom());
-		}
-		try {
-			String choix = sc.nextLine();
-			int indexChoix = Integer.parseInt(choix);			
-			return listeChirurgiens.get(--indexChoix);
-		} catch (InputMismatchException | IndexOutOfBoundsException | NumberFormatException e) {
-                        System.err.println("Sasie incorrecte");
-			return this.setChirurgienChirurgie();
-		}	
+        //Scanner sc = new Scanner(System.in);
+        System.out.println("Veuillez choisir un chirurgien parmi les chirurgiens disponibles : ");
+        List<Chirurgien> listeChirurgiens = (Chirurgien.getListeChirurgiens());
+        int index = 0;
+        for (Chirurgien c : listeChirurgiens) {
+            System.out.println(++index + " : " + c.getNom());
+        }
+        try {
+            String choix = sc.nextLine();
+            int indexChoix = Integer.parseInt(choix);
+            return listeChirurgiens.get(--indexChoix);
+        } catch (InputMismatchException | IndexOutOfBoundsException | NumberFormatException e) {
+            System.err.println("Sasie incorrecte");
+            return this.setChirurgienChirurgie();
+        }
     }
 
-	public boolean isActif() {
-		return actif;
-	}
+    public boolean isActif() {
+        return actif;
+    }
 
-	public void switchActif() {
-		this.actif = !actif; 
-	}
+    public void switchActif() {
+        this.actif = !actif;
+    }
 }
