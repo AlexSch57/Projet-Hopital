@@ -71,8 +71,8 @@ public class Menu {
     }
 
     /**
-     ** Methode principale de la classe Mneu, elle appelle toutes les autres
-     * selon le choix de l'utilisateur, effectuera une action différente
+     ** Methode principale de la classe Mneu, elle appelle toutes les autres selon le choix de l'utilisateur,
+     * effectuera une action différente
      */
     public void switchChoix() throws IOException, FileNotFoundException, ParseException, ChirurgienInexistantException, SalleInexistanteException {
         switch (choixUtilisateur()) {
@@ -154,14 +154,16 @@ public class Menu {
                 if ((nombre < 1 || nombre > limite) && nombre != 7) {
                     if (limite == 1) {
                         System.out.println("Vous ne pouvez pas faire d'autres choix que le n°1 tant que vous n'avez pas choisi de fichier");
-                    } else {
+                    }
+                    else {
                         System.out.println("Veuillez séléctionner un nombre entre 1 et 7");
                     }
                 }
             } catch (InputMismatchException ex) {
                 if (limite == 1) {
                     System.out.println("Vous ne pouvez pas faire d'autres choix que le n°1 tant que vous n'avez pas choisi de fichier");
-                } else {
+                }
+                else {
                     System.out.println("Veuillez séléctionner un nombre entre 1 et 7");
                 }
                 return choixUtilisateur();
@@ -172,8 +174,7 @@ public class Menu {
     }
 
     /**
-     ** Methode gérant la selection et le chargement du fichier utilisé pour la
-     * création du graphe
+     ** Methode gérant la selection et le chargement du fichier utilisé pour la création du graphe
      */
     public void selectFile() throws IOException, FileNotFoundException, ParseException, ChirurgienInexistantException, SalleInexistanteException {
 
@@ -245,27 +246,32 @@ public class Menu {
             System.out.println("1. ID_CHIRURGIE : " + (getIdMax() + 1) + " (affecté automatiquement)");
             if (dateChirugie != null) {
                 System.out.println("2. DATE_CHIRURGIE : " + dateChirugie);
-            } else {
+            }
+            else {
                 System.out.println("2. DATE_CHIRURGIE : Non défini");
             }
             if (heureDeb != null) {
                 System.out.println("3. HEURE_DEBUT_CHIRURGIE : " + heureDeb);
-            } else {
+            }
+            else {
                 System.out.println("3. HEURE_DEBUT_CHIRURGIE : Non défini");
             }
             if (heureFin != null) {
                 System.out.println("4. HEURE_FIN_CHIRURGIE : " + heureFin);
-            } else {
+            }
+            else {
                 System.out.println("4. HEURE_FIN_CHIRURGIE : Non défini");
             }
             if (salle != null) {
                 System.out.println("5. SALLE : " + salle);
-            } else {
+            }
+            else {
                 System.out.println("5. SALLE : Non défini");
             }
             if (chirurgien != null) {
                 System.out.println("6. CHIRURGIEN : " + chirurgien);
-            } else {
+            }
+            else {
                 System.out.println("6. CHIRURGIEN : Non défini");
             }
             String choix = sc.nextLine();

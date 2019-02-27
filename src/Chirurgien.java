@@ -1,11 +1,12 @@
+
 import java.util.ArrayList;
 
 /**
  * type énuméré représentant un Chirurgien
+ *
  * @author Alexandre Schwitthal
  * @version 1.0
  */
-
 public enum Chirurgien {
 
     LAWRENCE_KUTNER("LAWRENCE KUTNER", 1),
@@ -57,14 +58,15 @@ public enum Chirurgien {
     }
 
     public void retraitTempsDeTravail(long i) {
-    	this.tempsDeTravail -= i;
+        this.tempsDeTravail -= i;
     }
+
     public boolean equals(Chirurgien c) {
         return (this.getNom().equals(c.getNom()));
     }
 
     /**
-     * 
+     *
      * @param id : int correspondant à l'id d'un Chirurgien
      * @return un Objet Chirurgien, ayant pour id, l'id passé en paramètre
      */
@@ -78,7 +80,7 @@ public enum Chirurgien {
     }
 
     /**
-     * 
+     *
      * @param s : String correspondant au nom d'un Chirurgien
      * @return un Objet Chirurgient, ayant pour nom, le nom passé en paramètre
      */
@@ -96,30 +98,29 @@ public enum Chirurgien {
             System.out.println(c);
         }
     }
-    
+
     public static ArrayList<Chirurgien> getListeChirurgiens() {
         ArrayList<Chirurgien> listeChirurgiens = new ArrayList<>();
-        for(Chirurgien c : Chirurgien.values()) {
-       		if(!(listeChirurgiens.contains(c))) {
-       			if(!(c.nom.equals("Joker"))) {
-       				listeChirurgiens.add(c);
-       			}
-       		}
-       	}
+        for (Chirurgien c : Chirurgien.values()) {
+            if (!(listeChirurgiens.contains(c))) {
+                if (!(c.nom.equals("Joker"))) {
+                    listeChirurgiens.add(c);
+                }
+            }
+        }
         return listeChirurgiens;
     }
-    
+
     public static ArrayList<Chirurgien> triListeChirurgiens(ArrayList<Chirurgien> lesChirurgiens) {
-    	for(int i = 0; i < lesChirurgiens.size(); i++) {
-    		for (int j = 0; j < lesChirurgiens.size(); j++) {
-    			if(lesChirurgiens.get(i).tempsDeTravail < lesChirurgiens.get(j).tempsDeTravail) {
-    				Chirurgien temp = lesChirurgiens.get(i);
-    				lesChirurgiens.set(i, lesChirurgiens.get(j));
-    				lesChirurgiens.set(j, temp);
-    			}
-    		}
-    	}
-    	return lesChirurgiens;
+        for (int i = 0; i < lesChirurgiens.size(); i++) {
+            for (int j = 0; j < lesChirurgiens.size(); j++) {
+                if (lesChirurgiens.get(i).tempsDeTravail < lesChirurgiens.get(j).tempsDeTravail) {
+                    Chirurgien temp = lesChirurgiens.get(i);
+                    lesChirurgiens.set(i, lesChirurgiens.get(j));
+                    lesChirurgiens.set(j, temp);
+                }
+            }
+        }
+        return lesChirurgiens;
     }
 }
-

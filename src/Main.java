@@ -19,49 +19,46 @@ import java.util.ArrayList;
  * @author kormli18
  */
 public class Main {
-      
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, FileNotFoundException, ParseException, ChirurgienInexistantException, SalleInexistanteException {
-        
+
         Menu m = new Menu();
 //        //boolean mdr = true;
-        while(m.isActif()) {
+        while (m.isActif()) {
             m.displayMenu();
             m.switchChoix();
         }
-       //test nouvelle branche
+        //test nouvelle branche
         Hopital h = new Hopital();
 //        
 //
         String fichierBase = "Chirurgies_v2";
         try {
             h.init(fichierBase + ".csv");
-        } 
-        catch (ChirurgienInexistantException | SalleInexistanteException | IOException | ParseException e) {			
+        } catch (ChirurgienInexistantException | SalleInexistanteException | IOException | ParseException e) {
             e.printStackTrace();
-        }        
+        }
 
         h.TriParJour();
         h.findErreur();
 
         LocalTime moyenne = h.getDureeMoyenneChirurgie();
-        
+
         int totalDebut = 0;
-        for(Chirurgie c : h.getListeChirurgies()) {
-        	totalDebut += c.getDuree();
+        for (Chirurgie c : h.getListeChirurgies()) {
+            totalDebut += c.getDuree();
         }
         System.out.println(totalDebut);
-        
-        
+
         //System.out.println(h.getTailleListeErreurs());
 //        
 //        h.verificationCouple();
 //        //h.printListeChirurgies();
 //
 //        
-
 ////        //LocalTime moyenne = h.getDureeMoyenneChirurgie();
 ////        //System.out.println(moyenne.getMinute());
 ////        //Chirurgie c1 = h.getChirurgieById("13");
@@ -78,7 +75,7 @@ public class Main {
 ////        
 ////        //System.out.println(h.getDureeMoyenneChirurgie());
 ////       
-        	//h.normalisationHeureChirurgie();
+        //h.normalisationHeureChirurgie();
 ////        
 ////        //h.printListeChirurgies();
 //////        Chirurgie c2 = h.getChirurgieById("25");
@@ -86,55 +83,50 @@ public class Main {
 //////
 //        h.findErreur();
 //        
-
 //        
-        	
 //        //h.printListeErreurs();       	
-  		  
-  		  
         System.out.println("nombres d'erreurs dans le fichier : " + h.getTailleListeErreurs() + "\n\n");
         //h.printListeErreurs();
         int nbEtape = 1;
         ArrayList<Integer> nbErreursParEtape = new ArrayList<>();
-       
-        while(h.getTailleListeErreurs() > 0) {
+
+        while (h.getTailleListeErreurs() > 0) {
             nbErreursParEtape.add(h.getTailleListeErreurs());
-            if(nbErreursParEtape.size() > 2) {
-                if(((nbErreursParEtape.get(nbErreursParEtape.size() - 1)).equals(nbErreursParEtape.get(nbErreursParEtape.size() - 2)))
-                    && ((nbErreursParEtape.get(nbErreursParEtape.size() - 1)).equals(nbErreursParEtape.get(nbErreursParEtape.size() - 3)))) {
-                    
-                        System.out.println("Impossible de resoudre toutes les erreurs");
-                        h.printListeErreurs();
-                        break;
+            if (nbErreursParEtape.size() > 2) {
+                if (((nbErreursParEtape.get(nbErreursParEtape.size() - 1)).equals(nbErreursParEtape.get(nbErreursParEtape.size() - 2)))
+                        && ((nbErreursParEtape.get(nbErreursParEtape.size() - 1)).equals(nbErreursParEtape.get(nbErreursParEtape.size() - 3)))) {
+
+                    System.out.println("Impossible de resoudre toutes les erreurs");
+                    h.printListeErreurs();
+                    break;
                 }
-                if(nbEtape > 50)  {
-                	h.printListeErreurs();
-                	break;
+                if (nbEtape > 50) {
+                    h.printListeErreurs();
+                    break;
                 }
             }
-            System.out.println( " étape " + (nbEtape) + " :");
+            System.out.println(" étape " + (nbEtape) + " :");
             h.findErreur();
 //           
             h.resolveErreur();
             System.out.println("erreur(s) restante(s) : " + h.getTailleListeErreurs());
             nbEtape++;
-        }        
-        
-        
+        }
+
         System.out.println("\nfdp");
-		  ArrayList<Chirurgien> mdr = Chirurgien.triListeChirurgiens(Chirurgien.getListeChirurgiens());
-		  for(Chirurgien c : mdr) {
-			  System.out.println(c + " : " + c.getTempsDeTravail());
-		  }
-		  
-		  int totalFin = 0;
-		  for(Chirurgie c : h.getListeChirurgies()) {
-	       	totalFin += c.getDuree();
-	    }
-	    System.out.println(totalFin);
-	    
-	    System.out.println(totalDebut - totalFin);
-	    System.out.println((totalDebut - totalFin) / h.getListeChirurgies().size());
+        ArrayList<Chirurgien> mdr = Chirurgien.triListeChirurgiens(Chirurgien.getListeChirurgiens());
+        for (Chirurgien c : mdr) {
+            System.out.println(c + " : " + c.getTempsDeTravail());
+        }
+
+        int totalFin = 0;
+        for (Chirurgie c : h.getListeChirurgies()) {
+            totalFin += c.getDuree();
+        }
+        System.out.println(totalFin);
+
+        System.out.println(totalDebut - totalFin);
+        System.out.println((totalDebut - totalFin) / h.getListeChirurgies().size());
         //createOutput(h);
 //    	Chirurgie c1 = h.getChirurgieById("12031");
 //    	Chirurgie c2 = h.getChirurgieById("12023");
@@ -164,27 +156,26 @@ public class Main {
 //            e.printStackTrace();
 //        }
 //        h.verificationCouple();
-    	
     }
-    
+
     public static void createOutput(Hopital h) throws IOException {
-    	String contenuFichier = "ID CHIRURGIE;DATE CHIRURGIE;HEURE_DEBUT CHIRURGIE;HEURE_FIN CHIRURGIE;SALLE;CHIRURGIEN";
-    	//contenuFichier += h.toString();
-        
+        String contenuFichier = "ID CHIRURGIE;DATE CHIRURGIE;HEURE_DEBUT CHIRURGIE;HEURE_FIN CHIRURGIE;SALLE;CHIRURGIEN";
+        //contenuFichier += h.toString();
+
         String formalisationMinute = "" + LocalTime.now().getMinute();
-        if(LocalTime.now().getMinute() < 10) {
+        if (LocalTime.now().getMinute() < 10) {
             formalisationMinute = "0" + LocalTime.now().getMinute();
         }
-        String nomFichier = "abc" + " " + LocalDate.now() + " " + LocalTime.now().getHour() + "h" + formalisationMinute +  ".csv";
-        
-    	File fichier = new File("files" + File.separator + "outputs" + File.separator + nomFichier);
-    	fichier.createNewFile();
-    	PrintWriter writer = new PrintWriter(fichier, "UTF-8");
+        String nomFichier = "abc" + " " + LocalDate.now() + " " + LocalTime.now().getHour() + "h" + formalisationMinute + ".csv";
+
+        File fichier = new File("files" + File.separator + "outputs" + File.separator + nomFichier);
+        fichier.createNewFile();
+        PrintWriter writer = new PrintWriter(fichier, "UTF-8");
         writer.println(contenuFichier);
-        for(Chirurgie c : h.getListeChirurgies()) {
+        for (Chirurgie c : h.getListeChirurgies()) {
             writer.println(c.toString());
-        }	
-    	writer.close();
+        }
+        writer.close();
         System.out.println("fichier exporté ! nom : " + nomFichier);
     }
 }

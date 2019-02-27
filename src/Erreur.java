@@ -3,13 +3,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- * Classe abstraite, représentant les erreurs
- * elle est composé d'une liste de chirurgies
- * les chirurgies de la liste sont en conflit entre-elles
+ * Classe abstraite, représentant les erreurs elle est composé d'une liste de chirurgies les chirurgies de la liste sont
+ * en conflit entre-elles
+ *
  * @author Liam Kormann
  * @version 1.0
  */
-
 public abstract class Erreur {
 
     protected ArrayList<Chirurgie> listeChirurgiesErreur;
@@ -34,8 +33,8 @@ public abstract class Erreur {
 
     /**
      * @param e : Object étant une Erreur
-     * @return true si les éléments de la liste des chirurgies de l'objet courant et de l'objet en paramètre sont équivalent
-     * false sinon
+     * @return true si les éléments de la liste des chirurgies de l'objet courant et de l'objet en paramètre sont
+     * équivalent false sinon
      */
     public boolean equals(Object e) {
         if (this.getClass().equals(e.getClass())) {
