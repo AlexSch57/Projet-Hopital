@@ -501,6 +501,8 @@ public class Hopital {
                             }
                             /*
                              * sinon, l'on soustrait la différence, pour ramener la durée de la chirurgie à 150% de la durée moyenne 
+                             * 
+                             * 
                              */
                             else {
                                 long toLong = (long) (moyenneEnSeconde * 1.5);
