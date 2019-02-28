@@ -64,9 +64,9 @@ public class Menu {
                 + "1. Choisir le fichier à utiliser \n"
                 + "2. Corriger les erreurs du fichier \n"
                 + "3. Exporter la base vers un autre fichier \n"
-                + "4. Ajouter une chirurgie (non implémenté) \n"
-                + "5. Modifier une chirurgie (non implémenté) \n"
-                + "6. Supprimer une chirurgie (non implémenté) \n"
+                + "4. Ajouter une chirurgie\n"
+                + "5. Modifier une chirurgie\n"
+                + "6. Supprimer une chirurgie\n"
                 + "7. Quittez l'application \n");
     }
 
@@ -115,7 +115,7 @@ public class Menu {
                 break;
 
             case 5:
-                System.out.println("ERREUR");
+                this.modifierChirurgie(notreHopital.getChirurgieById(this.selectIdChirurgie()));
                 break;
 
             case 6:
@@ -123,14 +123,13 @@ public class Menu {
                 break;
 
             case 7:
-                System.out.println("Fin du programme");
-                //System.exit(0);
+                System.out.println("Fin du programme");                
                 sc.close();
                 this.switchActif();
                 break;
 
             default:
-                System.out.println("ERREUR");
+                System.out.println("Saisie incorrecte");
                 System.exit(0);
                 break;
         }
@@ -151,6 +150,7 @@ public class Menu {
         do {
             try {
                 nombre = sc.nextInt();
+                sc.nextLine();
                 if ((nombre < 1 || nombre > limite) && nombre != 7) {
                     if (limite == 1) {
                         System.out.println("Vous ne pouvez pas faire d'autres choix que le n°1 tant que vous n'avez pas choisi de fichier");
@@ -166,6 +166,7 @@ public class Menu {
                 else {
                     System.out.println("Veuillez séléctionner un nombre entre 1 et 7");
                 }
+
                 return choixUtilisateur();
             }
         } while ((nombre < 1 || nombre > limite) && nombre != 7);
@@ -208,7 +209,10 @@ public class Menu {
             this.selectFile();
         }
     }
-
+    
+    /**
+     ** Methode créant un fichier au format csv définissant la base de l'hopital courant dans le dossier files/outputs
+     */
     public void createOutput() throws IOException {
         String contenuFichier = "ID CHIRURGIE;DATE CHIRURGIE;HEURE_DEBUT CHIRURGIE;HEURE_FIN CHIRURGIE;SALLE;CHIRURGIEN";
         //contenuFichier += h.toString();
@@ -231,95 +235,158 @@ public class Menu {
         System.out.println("fichier exporté ! nom : " + nomFichier);
     }
 
-    @SuppressWarnings("unused")
+    /**
+     ** Methode permettant l'ajout d'une nouvelle chirurgie dans la base où l'utilisateur peut définir chacun des attributs (hors id qui est auto-défini) 
+     */
     public void addChirurgie() {
-        int idChirurgie = getIdMax() + 1;
-        LocalDate dateChirugie = null;
-        LocalTime heureDeb = null;
-        LocalTime heureFin = null;
-        Salle salle = null;
-        Chirurgien chirurgien = null;
-        //Scanner sc = new Scanner(System.in);
-        while ((dateChirugie == null) || (heureDeb == null) || (heureFin == null) || (salle == null) || (chirurgien == null)) {
-            //String choix = "";
-            System.out.println("Veuillez saisir les attributs de la chirurgie à définir : ");
-            System.out.println("1. ID_CHIRURGIE : " + (getIdMax() + 1) + " (affecté automatiquement)");
-            if (dateChirugie != null) {
-                System.out.println("2. DATE_CHIRURGIE : " + dateChirugie);
-            }
-            else {
-                System.out.println("2. DATE_CHIRURGIE : Non défini");
-            }
-            if (heureDeb != null) {
-                System.out.println("3. HEURE_DEBUT_CHIRURGIE : " + heureDeb);
-            }
-            else {
-                System.out.println("3. HEURE_DEBUT_CHIRURGIE : Non défini");
-            }
-            if (heureFin != null) {
-                System.out.println("4. HEURE_FIN_CHIRURGIE : " + heureFin);
-            }
-            else {
-                System.out.println("4. HEURE_FIN_CHIRURGIE : Non défini");
-            }
-            if (salle != null) {
-                System.out.println("5. SALLE : " + salle);
-            }
-            else {
-                System.out.println("5. SALLE : Non défini");
-            }
-            if (chirurgien != null) {
-                System.out.println("6. CHIRURGIEN : " + chirurgien);
-            }
-            else {
-                System.out.println("6. CHIRURGIEN : Non défini");
-            }
-            String choix = sc.nextLine();
+		Chirurgie c = new Chirurgie();
+		c.setId(Integer.toString(this.getIdMax()+1));	
+		String choix = "";
+		while (((c.getDate() == null) || (c.getHeureDebut() == null) || (c.getHeureFin() == null) || (c.getSalle() == null) || (c.getChirurgien() == null))&&(!choix.equals("7"))) {			
+			System.out.println("Veuillez saisir les attributs de la chirurgie à définir : ");
+    		this.printInfosChirurgie(c);
+    		System.out.println("Pour quitter la création, appuyez sur 7.");
+            choix = sc.nextLine();
             switch (choix) {
                 case "2":
-                    dateChirugie = this.setDateChirurgie();
+                    c.setDate(this.setDateChirurgie());
                     break;
                 case "3":
-                    heureDeb = this.setHeureChirurgie();
+                    c.setHeureDebut(this.setHeureChirurgie());
                     break;
                 case "4":
-                    heureFin = this.setHeureChirurgie();
+                    c.setHeureFin(this.setHeureChirurgie());
                     break;
                 case "5":
-                    salle = this.setSalleChirurgie();
+                    c.setSalle(this.setSalleChirurgie());
                     break;
                 case "6":
-                    chirurgien = this.setChirurgienChirurgie();
+                    c.setChirurgien(this.setChirurgienChirurgie());
                     break;
                 default:
                     break;
-            }
-            //sc.reset();
-        }
-        notreHopital.getListeChirurgies().add(new Chirurgie(Integer.toString((idChirurgie)), dateChirugie, heureDeb, heureFin, salle, chirurgien));
-        System.out.println("Chirurgie ajoutée");
+            }            
+		}
+		if(!choix.equals("7")){
+			notreHopital.getListeChirurgies().add(c);
+			System.out.println("Chirurgie ajoutée");
+		}
 
     }
-
-    public void choixModifChirurgie(int id, LocalDate dateChirugie, LocalTime heureDeb, LocalTime heureFin, Salle salle, Chirurgien chirurgien) {
-
+    
+    /**
+     ** Methode permettant la modification d'une chirurgie de la base où l'utilisateur peut modifier chacun des attributs (hors id)
+     */
+    public void modifierChirurgie(Chirurgie c) {
+    	String choix = "";
+    	while (!choix.equals("7")){
+    		System.out.println("Veuillez saisir les attributs de la chirurgie à modifier : ");
+    		this.printInfosChirurgie(c);
+    		System.out.println("Pour quitter la modifictation appuyez sur 7.");
+    		choix = sc.nextLine();
+    		switch (choix) {
+	            case "2":
+	                c.setDate(this.setDateChirurgie());
+	                break;
+	            case "3":
+	                c.setHeureDebut(this.setHeureChirurgie());
+	                break;
+	            case "4":
+	                c.setHeureFin(this.setHeureChirurgie());
+	                break;
+	            case "5":
+	                c.setSalle(this.setSalleChirurgie());
+	                break;
+	            case "6":
+	                c.setChirurgien(this.setChirurgienChirurgie());
+	                break;
+	            default:
+	                break;
+    		}            
+    	}
     }
+    /**
+     ** Permet de choisir un id de Chirurgie (en vue d'une modification par exemple)
+     * @return String : Correspond à l'id séléctionné
+     * @see Hopital.getChirurgieById(String)
+     * @see Menu.modifierChirurgie(Chirurgie) 
+     */
+    public String selectIdChirurgie() {	  
+    	String choix = "";
+		do{
+			System.out.println("Veuillez séléctionner un id de Chirurgie >");
+			choix = sc.nextLine();
+		} 
+		while (notreHopital.getChirurgieById(choix)==null);
+		return choix;
+	   }
 
+    /**
+     ** Permet d'afficher dans la console les attributs d'une chirurgie
+     *@param c : Chirurgie dont on souhaite voir la valeur des attributs
+     *@see Menu.addChirurgie()
+     *@see Menu.modifierChirurgie(Chirurgie) 
+     */
+   public void printInfosChirurgie(Chirurgie c) {
+	   if (c.getId() != null) {
+           System.out.println("1. ID_CHIRURGIE : " + c.getId());
+       }else {
+    	   System.out.println("1. ID_CHIRURGIE : " + (getIdMax() + 1) + " (affecté automatiquement)");
+       }	   
+       if (c.getDate() != null) {
+           System.out.println("2. DATE_CHIRURGIE : " + c.getDate());
+       }
+       else {
+           System.out.println("2. DATE_CHIRURGIE : Non défini");
+       }
+       if (c.getHeureDebut() != null) {
+           System.out.println("3. HEURE_DEBUT_CHIRURGIE : " + c.getHeureDebut());
+       }
+       else {
+           System.out.println("3. HEURE_DEBUT_CHIRURGIE : Non défini");
+       }
+       if (c.getHeureFin() != null) {
+           System.out.println("4. HEURE_FIN_CHIRURGIE : " + c.getHeureFin());
+       }
+       else {
+           System.out.println("4. HEURE_FIN_CHIRURGIE : Non défini");
+       }
+       if (c.getSalle() != null) {
+           System.out.println("5. SALLE : " + c.getSalle());
+       }
+       else {
+           System.out.println("5. SALLE : Non défini");
+       }
+       if (c.getChirurgien() != null) {
+           System.out.println("6. CHIRURGIEN : " + c.getChirurgien());
+       }
+       else {
+           System.out.println("6. CHIRURGIEN : Non défini");
+       }
+   }
+
+   /**
+    ** Permet de supprimer une Chirurgie    * 
+    */
     public void removeChirurgie() {
-        System.out.println("Veuillez saisir l'identifiant de la chirurgie à supprimer : ");
-        Scanner sc = new Scanner(System.in);
+        System.out.println("Veuillez saisir l'identifiant de la chirurgie à supprimer : ");        
         String reponse = sc.nextLine();
         Iterator<Chirurgie> it = notreHopital.getListeChirurgies().iterator();
         while (it.hasNext()) {
             Chirurgie c = it.next();
             if (c.getId().equals(reponse)) {
                 it.remove();
-                System.out.println("la chirurgie n°" + reponse + " à bien été supprimé !");
+                System.out.println("la chirurgie n°" + reponse + " à bien été supprimée !");
                 this.notreHopital.findErreur();
             }
         }
     }
-
+    
+    /**
+     ** Permet d'obtenir l'Id maximum attribué à une Chirurgie dans la base
+     * @return int : Correspond à l'id maximum attribué dans la base 
+     * @see Menu.addChirurgie() 
+     */
     public int getIdMax() {
         ArrayList<Chirurgie> listeChirurgies = notreHopital.getListeChirurgies();
         int idMax = 0;
@@ -331,6 +398,12 @@ public class Menu {
         return idMax;
     }
 
+    /**
+     ** Permet d'initialier un objet LocalDate qui pourra être affecté à la date d'une Chirurgie
+     * @return LocalDate : Correspond à la date saisie
+     * @see Menu.addChirurgie() 
+     * @see Menu.modifierChirurgie()
+     */
     public LocalDate setDateChirurgie() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Veuillez saisir une date au format jj/mm/aaaa");
@@ -338,12 +411,18 @@ public class Menu {
         String[] tab = stringDate.split("/");
         try {
             return LocalDate.of(Integer.parseInt(tab[2]), Integer.parseInt(tab[1]), Integer.parseInt(tab[0]));
-        } catch (DateTimeException | ArrayIndexOutOfBoundsException e) {
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
             System.err.println("Sasie incorrecte");
             return this.setDateChirurgie();
         }
     }
-
+    
+    /**
+     ** Permet d'initialier un objet LocalTime  qui pourra être affecté à l'heure de début ou de fin d'une Chirurgie
+     * @return LocalTime : Correspond à l'heure saisie (au format hh:mm:ss)
+     * @see Menu.addChirurgie() 
+     * @see Menu.modifierChirurgie()
+     */
     public LocalTime setHeureChirurgie() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Veuillez saisir une heure au format hh:mm:ss");
@@ -357,6 +436,12 @@ public class Menu {
         }
     }
 
+    /**
+     ** Permet de séléctionner un objet Salle parmi les instances existantes pouvant être affecté à une Chirurgie
+     * @return Salle : Correspond à la salle séléctionnée
+     * @see Menu.addChirurgie() 
+     * @see Menu.modifierChirurgie()
+     */
     public Salle setSalleChirurgie() {
         System.out.println("Veuillez choisir une salle parmi les salles disponibles : ");
         List<Salle> listeSalles = Arrays.asList(Salle.values());
@@ -374,8 +459,13 @@ public class Menu {
         }
     }
 
-    public Chirurgien setChirurgienChirurgie() {
-        //Scanner sc = new Scanner(System.in);
+    /**
+     ** Permet de séléctionner un objet Chirurgien parmi les instances existantes pouvant être affecté à une Chirurgie
+     * @return Salle : Correspond à la salle séléctionnée
+     * @see Menu.addChirurgie() 
+     * @see Menu.modifierChirurgie()
+     */
+    public Chirurgien setChirurgienChirurgie() {        
         System.out.println("Veuillez choisir un chirurgien parmi les chirurgiens disponibles : ");
         List<Chirurgien> listeChirurgiens = (Chirurgien.getListeChirurgiens());
         int index = 0;
@@ -392,10 +482,19 @@ public class Menu {
         }
     }
 
+    /**
+     ** Vérifie si le menu est actif
+     * @see Menu.switchActif()
+     */
     public boolean isActif() {
         return actif;
     }
 
+    /**
+     ** Change la valeur de actif
+     * Cette méthode est appelée quand l'utilisateur saisit "7" dans le menu principal
+     * @see Menu.switchChoix()
+     */
     public void switchActif() {
         this.actif = !actif;
     }
