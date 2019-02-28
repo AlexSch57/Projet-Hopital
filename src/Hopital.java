@@ -518,12 +518,30 @@ public class Hopital {
         }
     }
 
+    /**
+    *
+    * @param c 	 			: Objet de type Chirurgie
+    * @param heure 			: Entier représentant des heures
+    * @param minute 		: Entier représentant des minutes
+    * @param typeChangement : String représentant le type de changement à effectuer
+    * 	il dois s'agir soit de "avancer", soit de "retarder"
+    * @return true: si une des salles est disponible à la fois durant la durée d'une des chirurgies, et sa journée
+    *		si c'est le cas, alors l'on change la salle de la chirurgie et l'on renvoie true
+    *	false sinon
+    */
     public boolean changementHeureChirurgie(Chirurgie c, int heure, int minute, String typeChangement) {
 
+    	// conversion des heures en minute
         minute = minute + (heure * 60);
+        // initialisation d'une heure de début et de fin
         LocalTime newHeureDebut = LocalTime.of(0, 0);
         LocalTime newHeureFin = LocalTime.of(0, 0);
 
+        /*
+         *  selon le typeChangement passé en paramètre, l'on affecte une valeur différente à newHeureDebut et newHeureFin
+         *  avancer : l'on affecte l'heure de début (et de fin) de c aux nouvelles valeurs plus les minutes et heure passé en paramètre
+         *  reculer : l'on affecte l'heure de début (et de fin) de c aux nouvelles valeurs moins les minutes et heure passé en paramètre
+        */
         if (typeChangement.equals("avancer")) {
             newHeureDebut = c.getHeureDebut().minusMinutes(minute);
             newHeureFin = c.getHeureFin().minusMinutes(minute);
@@ -536,10 +554,17 @@ public class Hopital {
             throw new IllegalArgumentException("le 4ème argument de la methode changementHeureChirurgie doit être \"avancer\" ou \"retarder\"");
         }
 
+        // récupération de la liste des chirurgies du jour 
         ArrayList<Chirurgie> listeChirurgiesDuJour = this.getChirurgiesDuJour(c.getDate());
+        // instanciation d'une nouvelle chirurgie, ayant les mêmes attributs que c, sauf l'heure de début et de fin
         Chirurgie tentativeChirurgie = new Chirurgie(c.getId(), c.getDate(), newHeureDebut, newHeureFin, c.getSalle(), c.getChirurgien());
         boolean datePossible = true;
 
+        /*
+         *  parcours des chirurgies du jour, et l'on vérifie, si la nouvelle chirurgie, pourrait-être placer durant la journée
+         *  si elle est parallèle et dispose d'attributs communs (chirurgien et/ou salle) avec au moins 1 chirurgie, elle ne peut alors pas être placer
+         *  
+         */
         for (Chirurgie ch : listeChirurgiesDuJour) {
             if ((tentativeChirurgie.estParallele(ch)
                     && ((tentativeChirurgie.getChirurgien().equals(ch.getChirurgien())) || (tentativeChirurgie.getSalle().equals(ch.getSalle()))))) {
@@ -548,6 +573,11 @@ public class Hopital {
             }
         }
 
+        /* si le placement de la chirurgie est possible, l'on vérifie alors des contraintes choisis arbitrairement :
+        *	- l'heure de début ne dois pas être avant 7 heures du matin
+        *	- l'heure de fin ne dois pas dépasser 23 heures
+        *	le but étant d'éviter au maximum, le placement de chirurgie à des heures contraignantes (de 03:00 à 05:00 par exemple)
+        */
         if (datePossible) {
             if (tentativeChirurgie.getHeureDebut().isBefore(LocalTime.of(7, 0))) {
                 return false;
@@ -558,6 +588,7 @@ public class Hopital {
             if (tentativeChirurgie.getHeureFin().isBefore(LocalTime.of(7, 0))) {
                 return false;
             }
+            // si toutes les conditions sont vérifié, alors l'on change l'heure de début et de fin de la chirurgie passé en paramètre
             c.setHeureDebut(newHeureDebut);
             c.setHeureFin(newHeureFin);
             return true;
@@ -567,14 +598,30 @@ public class Hopital {
         }
     }
 
+    
+    /**
+    *
+    * Boucle cherchant à déplacer les chirurgies d'une liste, une par une, au fur et à mesure, selon un pas donné en paramètre 
+    * @param lesChirurgies 	: ArrayList de Chirurgie
+    * @param tempsDécalage 	: Entier réprésentant les pas de temps de décalage (exprimé en minute)
+    * 
+    */
     public void deplacementHeureChirurgie(ArrayList<Chirurgie> lesChirurgies, int tempsDecalage) {
+    	int tempsDecalageInitial = tempsDecalage;
         boolean ChangementChirurgie = false;
+        // parcours de la liste des chirurgies
         for (Chirurgie c : lesChirurgies) {
             int i = 0;
+            /*
+             *  la limite est là pour savoir le nombre d'étape maximum atteignable, pour ne pas boucler indéfiniment
+             *  le but étant d'avoir un tempsDecalage de maximum 12h, car si l'on ne peut pas décaler vers l'avant ou vers l'arrière de 12h, 
+             *  alors la chirurgie ne peut pas être déplacer
+            */
             int limite = 12 * 60 / tempsDecalage;
+            // tant que le changement n'est pas possible, l'on rajoute un pas au temps de décalage 
             while (!((this.changementHeureChirurgie(c, 0, tempsDecalage, "avancer"))
                     || (this.changementHeureChirurgie(c, 0, tempsDecalage, "retarder")))) {
-                tempsDecalage += 10;
+                tempsDecalage += tempsDecalageInitial;
                 i++;
                 if (i >= limite) {
                     break;
@@ -586,25 +633,19 @@ public class Hopital {
                 break;
             }
         }
+        // si aucune chirurgie ne peut être déplacé, alors l'on normalise la durée des chirurgies de la journée
         if (!(ChangementChirurgie)) {
             this.normalisationHeureChirurgieDuJour(lesChirurgies.get(0).getDate());
         }
     }
 
-    public LocalTime getMoyenneHoraireChirurgie() {
-        LocalTime lt = LocalTime.of(0, 0);
-        long total = 0;
-        for (Chirurgie c : this.listeChirurgies) {
-            long duree = c.getDuree() / 2;
-            LocalTime heureMediane = c.getHeureDebut().plusMinutes(duree);
-            total += Chirurgie.getDuree(lt, heureMediane);
-        }
-
-        total = total / this.listeChirurgies.size();
-        lt = lt.plusMinutes(total);
-        return lt;
-    }
-
+    
+    /**
+    *
+    * @param c 	 : Objet de type Chirurgie   
+    * @return true: si la chirurgie passé en paramètre est présente dans la liste des erreurs
+    *	false sinon
+    */
     public boolean estErreur(Chirurgie c) {
     	for(Erreur e : this.listeErreurs) {
     		for (Chirurgie ch : e.getListeChirurgiesErreur()) {
@@ -616,7 +657,13 @@ public class Hopital {
     	return false;
     }
     
-    public TreeMap<Chirurgien, String> statTempsTravailChirurgien() {
+    /**
+    * Réalise des statistiques sur le temps de travail de chacun des chirurgiens, proportionnellement au temps de travail total
+    * 
+    * @return TreeMap<Chirurgien, String> : renvoie une map ayant pour clé un chirurgien
+    * et pour valeur une chaine représentant le temps de travail du chirurgien en %
+    */
+    public HashMap <Chirurgien, String> statTempsTravailChirurgien() {
         HashMap <Chirurgien, String> m = new HashMap<>();
     	double total = 0;
     	
@@ -624,7 +671,6 @@ public class Hopital {
     		total += c.getDuree();
     	}
     	
-    
     	for(Chirurgien c : Chirurgien.getListeChirurgiens()) {
     		if(!(c.getNom().equals("Joker"))) {
         		Double moyenne =  c.getTempsDeTravail() / total * 100;
@@ -633,14 +679,6 @@ public class Hopital {
         		m.put(c, s);
     		}
     	}
-    	TreeMap<Chirurgien, String> map = new TreeMap<>(m);
-    	
-    	for(Map.Entry<Chirurgien, String> entry : map.entrySet()) {
-    	    Chirurgien key = entry.getKey();
-    	    String value = entry.getValue();
-
-    	    System.out.println(key + " : " + value);
-    	}
-    	return map;
+    	return m;
     }
 }
