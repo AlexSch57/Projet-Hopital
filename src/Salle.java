@@ -57,6 +57,11 @@ public enum Salle {
         return null;
     }
 
+    /**
+    *
+    * @param str : String correspondant à un nom de Salle
+    * @return un Objet Salle, ayant pour nom la String passé en paramètre
+    */
     public static Salle getSalleByName(String str) {
         for (Salle s : Salle.values()) {
             if (s.getNom().equals(str)) {
@@ -66,6 +71,10 @@ public enum Salle {
         return null;
     }
 
+    /**
+    *
+    * @return l'ArrayList de toute les Salle existantes
+    */
     public static ArrayList<Salle> getListeSalles() {
         ArrayList<Salle> listeSalles = new ArrayList<>();
         for (Salle s : Salle.values()) {
