@@ -492,7 +492,6 @@ public class Hopital {
                         	 * alors l'on soustrait la durée de la moyenne
                         	*/
                             if (dureeChirurgieEnSeconde >= ((moyenneEnSeconde * 1.5) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60))) {
-                            	System.out.println(dureeChirurgieEnSeconde + " MDRRRRRR  CANCER MANGE TES GRANDS MORT LA PUTE");
                                 c.getChirurgien().retraitTempsDeTravail(c.getDuree());
                                 c.setHeureFin(c.getHeureFin().minusHours(moyenne.getHour()));
                                 c.setHeureFin(c.getHeureFin().minusMinutes(moyenne.getMinute()));
