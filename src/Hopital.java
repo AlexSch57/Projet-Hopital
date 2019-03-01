@@ -32,11 +32,12 @@ public class Hopital {
         this.listeErreurs = new ArrayList<>();
         this.dureeMoyenneChirurgies = LocalTime.of(0, 0);
     }
-    
+
     /**
-    * Initialise la classe Hopital, à l'aide du fichier passé en paramètre, il doit être de type CSV
-    * @param nomFichier : String étant le nom d'un fichier, elle doit être présente dans le dossier files
-    */
+     * Initialise la classe Hopital, à l'aide du fichier passé en paramètre, il doit être de type CSV
+     *
+     * @param nomFichier : String étant le nom d'un fichier, elle doit être présente dans le dossier files
+     */
     public void init(String nomFichier) throws FileNotFoundException, IOException, ParseException, ChirurgienInexistantException, SalleInexistanteException {
         BufferedReader reader = new BufferedReader(new FileReader(new File("." + File.separator + "files" + File.separator + nomFichier)));
 
@@ -44,17 +45,17 @@ public class Hopital {
         while (ligne != null) {
             if (!ligne.contains("ID CHIRURGIE")) {
                 String[] tab = ligne.split(";");
-                
+
                 // récupération du chirurgien
                 if (Chirurgien.getChirurgienByName(tab[5]) == null) {
                     throw new ChirurgienInexistantException();
                 }
-                
+
                 // récupération de la salle
                 if (Salle.getSalleByName(tab[4]) == null) {
                     throw new SalleInexistanteException();
                 }
-                
+
                 // récupération de la date
                 String[] tabDate = tab[1].split("/");
                 LocalDate dateChirurgie = LocalDate.of(Integer.parseInt(tabDate[2]), Integer.parseInt(tabDate[1]), Integer.parseInt(tabDate[0]));
@@ -71,23 +72,26 @@ public class Hopital {
                 Chirurgien c = Chirurgien.getChirurgienByName(tab[5]);
                 Chirurgie chir = new Chirurgie(tab[0], dateChirurgie, heureDeb, heureFin, Salle.getSalleByName(tab[4]), Chirurgien.getChirurgienByName(tab[5]));
                 this.listeChirurgies.add(chir);
-                
+
                 // ajout du temps de travail au chirurgien, égal à la durée de la chirurgie
                 c.ajoutTempsDeTravail(chir.getDuree());
             }
             ligne = reader.readLine();
         }
         Collections.sort(this.listeChirurgies);
-        
+
         // initialisation des possibles erreurs et de la durée moyenne des chirurgies
         this.findErreur();
         this.dureeMoyenneChirurgies = this.getDureeMoyenneChirurgie();
+        int total = 0;
+        for (Chirurgie c : this.listeChirurgies) {
+            total += c.getDuree();
+        }
     }
 
-    
     /**
-	* Affiche la liste des chrirugies
-    */
+     * Affiche la liste des chrirugies
+     */
     public void printListeChirurgies() {
         for (Chirurgie c : this.listeChirurgies) {
             System.out.println(c.toString());
@@ -99,8 +103,8 @@ public class Hopital {
     }
 
     /**
-	* Affiche la liste des erreurs
-    */
+     * Affiche la liste des erreurs
+     */
     public void printListeErreurs() {
         System.out.println("Nombre d'erreur(s) : " + this.listeErreurs.size());
         for (Erreur e : this.listeErreurs) {
@@ -122,11 +126,12 @@ public class Hopital {
     }
 
     /**
-    *
-    * Retourne une map, ayant pour clé une date et pour valeur une liste des chirurgies
-    * le but est de récupérer la liste des chirurgies (valeur) de chaque jour (clé)
-    * @return TreeMap <LocalDate, ArrayList<Chirurgie>>
-    */
+     *
+     * Retourne une map, ayant pour clé une date et pour valeur une liste des chirurgies le but est de récupérer la
+     * liste des chirurgies (valeur) de chaque jour (clé)
+     *
+     * @return TreeMap <LocalDate, ArrayList<Chirurgie>>
+     */
     public TreeMap<LocalDate, ArrayList<Chirurgie>> TriParJour() {
         HashMap<LocalDate, ArrayList<Chirurgie>> m = new HashMap<>();
 
@@ -159,11 +164,11 @@ public class Hopital {
     }
 
     /**
-    *
-    * @param s : String correspond à un id d'une chirurgie
-    * @return Chirurgie : retourne une Chirurgie, ayant pour id la string passé en paramètre.
-    * Elle doit être présente dans la liste des chirurgies de l'hopital
-    */
+     *
+     * @param s : String correspond à un id d'une chirurgie
+     * @return Chirurgie : retourne une Chirurgie, ayant pour id la string passé en paramètre. Elle doit être présente
+     * dans la liste des chirurgies de l'hopital
+     */
     public Chirurgie getChirurgieById(String s) {
         for (Chirurgie c : this.listeChirurgies) {
             if (c.getId().equals(s)) {
@@ -174,9 +179,9 @@ public class Hopital {
     }
 
     /**
-    *
-	* Cherche les erreurs présente dans la base, elles sont stocké dans l'attribut listeErreurs
-    */
+     *
+     * Cherche les erreurs présente dans la base, elles sont stocké dans l'attribut listeErreurs
+     */
     public void findErreur() {
         this.listeErreurs = new ArrayList<>();
         TreeMap<LocalDate, ArrayList<Chirurgie>> dateChirurgies = this.TriParJour();
@@ -191,13 +196,13 @@ public class Hopital {
                 /* 
                 	on vérifie qu'il ne s'agit pas de la dernière chirurgie du jour
                 	car l'on effectue une comparaison entre la chirurgie courante et sa suivante
-                */
+                 */
                 if (chirurgiesDuJour.indexOf(c1) != chirurgiesDuJour.size() - 1) {
-                	// l'on parcours à nouveau, de façon imbriqué, la liste des chirurgies du jour
+                    // l'on parcours à nouveau, de façon imbriqué, la liste des chirurgies du jour
                     for (int j = 0; j < chirurgiesDuJour.size(); j++) {
                         Chirurgie c2 = chirurgiesDuJour.get(j);
                         if (c1 != c2) {
-                        	/* 
+                            /* 
                         	 * si c1 et c2 sont parallèle (partage un temps donné)
                         	 * 	alors l'on effectue des vérifications d'égalité d'attributs
                         	 * 		si ils n'ont pas d'attributs communs (autres que la date et l'heure)
@@ -207,7 +212,7 @@ public class Hopital {
                         	 * 				le chirurgien et la salle sont communs : Chevauchement
                         	 * 				le chirurgien est commun : Ubiquite
                         	 * 				la salle est commune : Interference
-                        	*/
+                             */
                             if (c1.estParallele(c2)) {
                                 if ((c1.getChirurgien().equals(c2.getChirurgien()))
                                         && c1.getSalle().equals(c2.getSalle())) {
@@ -243,11 +248,14 @@ public class Hopital {
     }
 
     /**
-    *
-    * Resout les erreurs présentes dans l'attribut listeErreurs
-    */
+     *
+     * Resout les erreurs présentes dans l'attribut listeErreurs
+     */
     public void resolveErreur() {
-    	// parcours de la liste des erreurs
+        int nbChangementSalle = 0;
+        int nbChangementChirurgien = 0;
+        int nbChangementHeure = 0;
+        // parcours de la liste des erreurs
         Iterator<Erreur> it = this.listeErreurs.iterator();
         while (it.hasNext()) {
             Erreur e = it.next();
@@ -255,23 +263,23 @@ public class Hopital {
             LocalDate dateDuJour = listeChirurgiesErreur.get(0).getDate();
             ArrayList<Chirurgien> chirurgiensDuJour = this.getChirurgiensDuJour(dateDuJour);
             ArrayList<Salle> listeSalles = Salle.getListeSalles();
-            
+
             // ----- INTERFERENCE ------ //
             if (e instanceof ErreurInterference) {
-            	
+
                 // tentative de recherche d'une autre salle disponible
                 if (this.changementSalle(listeSalles, listeChirurgiesErreur)) {
-
+                    nbChangementSalle++;
                 }
 
                 // tentative de recherche d'un autre chirurgien disponible
                 else if (this.changementChirurgien(chirurgiensDuJour, listeChirurgiesErreur)) {
-                	
+                    nbChangementChirurgien++;
                 }
-                
+
                 // tentative de changement de l'heure de la chirurgie 
-                else {
-                    this.deplacementHeureChirurgie(listeChirurgiesErreur, 10);
+               else if(this.deplacementHeureChirurgie(listeChirurgiesErreur, 10)){
+                    nbChangementHeure++;
                 }
             }
 
@@ -279,11 +287,11 @@ public class Hopital {
             else if (e instanceof ErreurChevauchement) {
                 // tentative de recherche d'une autre salle disponible
                 if (this.changementSalle(listeSalles, listeChirurgiesErreur)) {
-                	
-                } 
+                    nbChangementSalle++;
+                }
                 // tentative de changement de l'heure de la chirurgie 
-                else {
-                    this.deplacementHeureChirurgie(listeChirurgiesErreur, 10);
+                else if(this.deplacementHeureChirurgie(listeChirurgiesErreur, 10)){
+                    nbChangementHeure++;
                 }
 
             }
@@ -292,32 +300,34 @@ public class Hopital {
             else if (e instanceof ErreurUbiquite) {
                 // tentative de recherche d'un autre chirurgien disponible
                 if (this.changementChirurgien(chirurgiensDuJour, listeChirurgiesErreur)) {
-
+                   nbChangementChirurgien++;
                 }
                 // tentative de changement de l'heure de la chirurgie 
-                else {
-                    this.deplacementHeureChirurgie(listeChirurgiesErreur, 10);
+                else if(this.deplacementHeureChirurgie(listeChirurgiesErreur, 10)){
+                    nbChangementHeure++;
                 }
             }
         }
+        System.out.println("nombre de changement de salle : " + nbChangementSalle);
+        System.out.println("nombre de changement de chirurgien : " + nbChangementChirurgien);
+        System.out.println("nombre de changement d'heure : " + nbChangementHeure);
         Collections.sort(this.listeChirurgies);
     }
 
     /**
-    *
-    * @param s : objet de type Salle
-    * @param c : objet de type Chirurgie
-    * @return true : si la Salle s est disponible durant la durée de la chirurgie c
-    * 		false sinon
-    */
+     *
+     * @param s : objet de type Salle
+     * @param c : objet de type Chirurgie
+     * @return true : si la Salle s est disponible durant la durée de la chirurgie c false sinon
+     */
     public boolean estDisponibleSalle(Salle s, Chirurgie c) {
-    	// parcoure la liste des chirurgies
+        // parcoure la liste des chirurgies
         for (Chirurgie ch : this.listeChirurgies) {
-        	// si la date de la chirurgie courante est égal à la chirurgie passé en paramètre
+            // si la date de la chirurgie courante est égal à la chirurgie passé en paramètre
             if (ch.getDate().equals(c.getDate())) {
-            	// si elles partagent la même salle
+                // si elles partagent la même salle
                 if (ch.getSalle().equals(s)) {
-                	// si elles sont en parallèle, alors l'on renvoie false
+                    // si elles sont en parallèle, alors l'on renvoie false
                     if (ch.estParallele(c)) {
                         return false;
                     }
@@ -328,12 +338,11 @@ public class Hopital {
     }
 
     /**
-    *
-    * @param chir : objet de type Chirurgien
-    * @param c : objet de type Chirurgie
-    * @return true : si le chirurgien chir est disponible durant la durée de la chirurgie c
-    * 		false sinon
-    */
+     *
+     * @param chir : objet de type Chirurgien
+     * @param c : objet de type Chirurgie
+     * @return true : si le chirurgien chir est disponible durant la durée de la chirurgie c false sinon
+     */
     public boolean estDisponibleChirurgien(Chirurgien chir, Chirurgie c) {
         for (Chirurgie ch : this.listeChirurgies) {
             if (ch.getDate().equals(c.getDate())) {
@@ -348,10 +357,10 @@ public class Hopital {
     }
 
     /**
-    *
-    * @param ld : objet de type LocalDate
-    * @return ArrayList<Chirurgien> : retourne la liste des chirurgien pour la journée passé en paramètre
-    */
+     *
+     * @param ld : objet de type LocalDate
+     * @return ArrayList<Chirurgien> : retourne la liste des chirurgien pour la journée passé en paramètre
+     */
     public ArrayList<Chirurgien> getChirurgiensDuJour(LocalDate ld) {
         ArrayList<Chirurgien> listeChirurgiens = new ArrayList<>();
         for (Chirurgie c : this.listeChirurgies) {
@@ -365,10 +374,10 @@ public class Hopital {
     }
 
     /**
-    *
-    * @param ld : objet de type LocalDate
-    * @return ArrayList<Chirurgie> : retourne la liste des chirurgie pour la journée passé en paramètre
-    */
+     *
+     * @param ld : objet de type LocalDate
+     * @return ArrayList<Chirurgie> : retourne la liste des chirurgie pour la journée passé en paramètre
+     */
     public ArrayList<Chirurgie> getChirurgiesDuJour(LocalDate ld) {
         ArrayList<Chirurgie> listeChirurgies = new ArrayList<>();
         for (Chirurgie c : this.listeChirurgies) {
@@ -382,13 +391,12 @@ public class Hopital {
     }
 
     /**
-    *
-    * @param listeSalles 	 : ArrayList de Salle
-    * @param listeChirurgies : ArrayList de Chirurgie, qui correspond à la liste des chirurgies d'une erreur
-    * @return true: si une des salles est disponible à la fois durant la durée d'une des chirurgies, et sa journée
-    *		si c'est le cas, alors l'on change la salle de la chirurgie et l'on renvoie true
-    *	false sinon
-    */
+     *
+     * @param listeSalles : ArrayList de Salle
+     * @param listeChirurgies : ArrayList de Chirurgie, qui correspond à la liste des chirurgies d'une erreur
+     * @return true: si une des salles est disponible à la fois durant la durée d'une des chirurgies, et sa journée si
+     * c'est le cas, alors l'on change la salle de la chirurgie et l'on renvoie true false sinon
+     */
     public boolean changementSalle(ArrayList<Salle> listeSalles, ArrayList<Chirurgie> listeChirurgies) {
         for (Salle s : listeSalles) {
             for (Chirurgie ch : listeChirurgies) {
@@ -407,13 +415,12 @@ public class Hopital {
     }
 
     /**
-    *
-    * @param listeSalles 	 : ArrayList de Chirurgien, il s'agit des chirurgies présent durant la journée
-    * @param listeChirurgies : ArrayList de Chirurgie, qui correspond à la liste des chirurgies d'une erreur
-    * @return true: si un des Chirurgien est disponible à la fois durant la durée d'une des chirurgies, et sa journée
-    *		si c'est le cas, alors l'on change le chirurgien de la chirurgie et l'on renvoie true
-    *	false sinon
-    */
+     *
+     * @param listeSalles : ArrayList de Chirurgien, il s'agit des chirurgies présent durant la journée
+     * @param listeChirurgies : ArrayList de Chirurgie, qui correspond à la liste des chirurgies d'une erreur
+     * @return true: si un des Chirurgien est disponible à la fois durant la durée d'une des chirurgies, et sa journée
+     * si c'est le cas, alors l'on change le chirurgien de la chirurgie et l'on renvoie true false sinon
+     */
     public boolean changementChirurgien(ArrayList<Chirurgien> listeChirurgiens, ArrayList<Chirurgie> listeChirurgies) {
         for (Chirurgie c : listeChirurgies) {
             Chirurgien.triListeChirurgiens(listeChirurgiens);
@@ -430,19 +437,20 @@ public class Hopital {
     }
 
     /**
-    *
-    * @return LocalTime : un objet de type LocalTime, qui correspond à la durée moyenne des chirurgies présente dans l'attribut listeChirurgies
-    */
+     *
+     * @return LocalTime : un objet de type LocalTime, qui correspond à la durée moyenne des chirurgies présente dans
+     * l'attribut listeChirurgies
+     */
     public LocalTime getDureeMoyenneChirurgie() {
-    	// calcul de la durée total des chirurgies, exprimé en secondes
+        // calcul de la durée total des chirurgies, exprimé en secondes
         float total = 0;
         for (Chirurgie c : this.listeChirurgies) {
             total += c.getDuree() * 60;
         }
-        
+
         // calcul de la moyenne, exprimé en secondes
         float moyenne = total / this.listeChirurgies.size();
-        
+
         // calcul de la durée en minute, sur laquel l'on effectue un modulo 60, pour ne garder que les minutes "en plus" des heures
         int min = (int) moyenne / 60;
         min = min % 60;
@@ -453,84 +461,77 @@ public class Hopital {
     }
 
     /**
-    * "normalise" les chirurgies d'un jour donné, pour réduire la durée des chirurgies 
-    * ayant une durée trop longue par rapport à la durée moyenne des chirurgies
-    * @param Jour 	 : Objet de type LocalDate
-    */
-    public void normalisationHeureChirurgieDuJour(LocalDate jour) {
+     * "normalise" une chirurgie donné, pour réduire sa durée si elle dépasse de façon anormale la durée moyenne
+     * rapport à la durée moyenne des chirurgies
+     *
+     * @param c : Objet de type Chirurgie
+     */
+    public void normalisationHeureChirurgie(Chirurgie c) {
         // récupération et conversion de la durée moyenne des chirurgies en seconde
         LocalTime moyenne = this.dureeMoyenneChirurgies;
         int moyenneEnSeconde = moyenne.getHour() * 3600 + moyenne.getMinute() * 60 + moyenne.getSecond();
-        // parcoure de la liste des chirurgies 
-        for (Chirurgie c : this.listeChirurgies) {
-        	// si la date de la chrirugie est égal à celle passé en paramètre
-            if (c.getDate().equals(jour)) {
-            	// qu'elle est présente dans au moins 1 erreur
-            	if(this.estErreur(c)) {
-            		/*
-            		 *  si son heure de fin est égal à minuit, sachant qu'il s'agit de "l'heure par défaut" de fin
-            		 *  l'on peut alors considérer qu'il s'agit d'une erreur de saisie
-            		*/
-                    if (c.getHeureFin().equals(LocalTime.of(0, 0))) {
-                    	// si sa durée est supérieur à 4 heures, alors l'on passe sa durée à 2 heures, 
-                        if (c.getDuree() > 240) {
-                            c.getChirurgien().retraitTempsDeTravail(c.getDuree());
-                            LocalTime newHeureFin = c.getHeureDebut().plusMinutes(120);
-                            c.setHeureFin(newHeureFin);
-                            c.getChirurgien().ajoutTempsDeTravail(c.getDuree());
-                        }
+        // qu'elle est présente dans au moins 1 erreur
+        if (this.estErreur(c)) {
+            /*
+            *  si son heure de fin est égal à minuit, sachant qu'il s'agit de "l'heure par défaut" de fin
+            *  l'on peut alors considérer qu'il s'agit d'une erreur de saisie
+             */
+            if (c.getHeureFin().equals(LocalTime.of(0, 0))) {
+                // si sa durée est supérieur à 4 heures, alors l'on passe sa durée à 2 heures
+                if (c.getDuree() > 240) {
+                    c.getChirurgien().retraitTempsDeTravail(c.getDuree());
+                    LocalTime newHeureFin = c.getHeureDebut().plusMinutes(120);                 
+                    c.setHeureFin(newHeureFin);
+                    c.getChirurgien().ajoutTempsDeTravail(c.getDuree());
+                }
+            }
+            else {
+                long dureeLong = c.getDuree();
+                int dureeChirurgieEnSeconde = (int) dureeLong * 60;
+
+                // sinon, si sa durée est supérieur ou égal à 150% de la durée moyenne des chirurgies :
+                if (dureeChirurgieEnSeconde >= moyenneEnSeconde * 1.5) {
+
+                    /*
+                    * si sa durée est supérieur  à plus de 150% de la moyenne de la durée des chirurgies PLUS la durée de la moyenne
+                    * alors l'on soustrait la durée de la moyenne
+                     */
+                    if (dureeChirurgieEnSeconde >= ((moyenneEnSeconde * 1.5) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60))) {
+                        c.getChirurgien().retraitTempsDeTravail(c.getDuree());
+                        c.setHeureFin(c.getHeureFin().minusHours(moyenne.getHour()));
+                        c.setHeureFin(c.getHeureFin().minusMinutes(moyenne.getMinute()));
+                        c.setHeureFin(c.getHeureFin().minusSeconds(moyenne.getSecond()));
+                        c.getChirurgien().ajoutTempsDeTravail(c.getDuree());
                     }
+                    /*
+                    * sinon, l'on soustrait la différence, pour ramener la durée de la chirurgie à 150% de la durée moyenne 
+                    * 
+                     */
                     else {
-                        long dureeLong = c.getDuree();
-                        int dureeChirurgieEnSeconde = (int) dureeLong * 60;
-
-                        // sinon, si sa durée est supérieur ou égal à 150% de la durée moyenne des chirurgies :
-                        if (dureeChirurgieEnSeconde >= moyenneEnSeconde * 1.5) {
-
-                        	/*
-                        	 * si sa durée est supérieur  à plus de 150% de la moyenne de la durée des chirurgies PLUS la durée de la moyenne
-                        	 * alors l'on soustrait la durée de la moyenne
-                        	*/
-                            if (dureeChirurgieEnSeconde >= ((moyenneEnSeconde * 1.5) + (moyenne.getHour() * 3600) + (moyenne.getMinute() * 60))) {
-                                c.getChirurgien().retraitTempsDeTravail(c.getDuree());
-                                c.setHeureFin(c.getHeureFin().minusHours(moyenne.getHour()));
-                                c.setHeureFin(c.getHeureFin().minusMinutes(moyenne.getMinute()));
-                                c.setHeureFin(c.getHeureFin().minusSeconds(moyenne.getSecond()));
-                                c.getChirurgien().ajoutTempsDeTravail(c.getDuree());
-                            }
-                            /*
-                             * sinon, l'on soustrait la différence, pour ramener la durée de la chirurgie à 150% de la durée moyenne 
-                             * 
-                             * 
-                             */
-                            else {
-                                long toLong = (long) (moyenneEnSeconde * 1.5);
-                                c.getChirurgien().retraitTempsDeTravail(c.getDuree());
-                                c.setHeureFin(c.getHeureDebut().plusSeconds(toLong));
-                                c.setHeureFin(LocalTime.of(c.getHeureFin().getHour(), c.getHeureFin().getMinute()));
-                                c.getChirurgien().ajoutTempsDeTravail(c.getDuree());
-                            }
-                        }
+                        long toLong = (long) (moyenneEnSeconde * 1.5);
+                        c.getChirurgien().retraitTempsDeTravail(c.getDuree());
+                        c.setHeureFin(c.getHeureDebut().plusSeconds(toLong));
+                        c.setHeureFin(LocalTime.of(c.getHeureFin().getHour(), c.getHeureFin().getMinute()));
+                        c.getChirurgien().ajoutTempsDeTravail(c.getDuree());
                     }
-            	}
+                }
             }
         }
     }
 
     /**
-    *
-    * @param c 	 			: Objet de type Chirurgie
-    * @param heure 			: Entier représentant des heures
-    * @param minute 		: Entier représentant des minutes
-    * @param typeChangement : String représentant le type de changement à effectuer
-    * 	il dois s'agir soit de "avancer", soit de "retarder"
-    * @return true: si une des salles est disponible à la fois durant la durée d'une des chirurgies, et sa journée
-    *		si c'est le cas, alors l'on change la salle de la chirurgie et l'on renvoie true
-    *	false sinon
-    */
+     *
+     * @param c : Objet de type Chirurgie
+     * @param heure : Entier représentant des heures
+     * @param minute : Entier représentant des minutes
+     * @param typeChangement : String représentant le type de changement à effectuer il dois s'agir soit de "avancer",
+     * soit de "retarder"
+     * @return true: si une des salles est disponible à la fois durant la durée d'une des chirurgies, et sa journée si
+     * c'est le cas, alors l'on change la salle de la chirurgie et l'on renvoie true false sinon
+     */
     public boolean changementHeureChirurgie(Chirurgie c, int heure, int minute, String typeChangement) {
 
-    	// conversion des heures en minute
+        // conversion des heures en minute
         minute = minute + (heure * 60);
         // initialisation d'une heure de début et de fin
         LocalTime newHeureDebut = LocalTime.of(0, 0);
@@ -540,7 +541,7 @@ public class Hopital {
          *  selon le typeChangement passé en paramètre, l'on affecte une valeur différente à newHeureDebut et newHeureFin
          *  avancer : l'on affecte l'heure de début (et de fin) de c aux nouvelles valeurs plus les minutes et heure passé en paramètre
          *  reculer : l'on affecte l'heure de début (et de fin) de c aux nouvelles valeurs moins les minutes et heure passé en paramètre
-        */
+         */
         if (typeChangement.equals("avancer")) {
             newHeureDebut = c.getHeureDebut().minusMinutes(minute);
             newHeureFin = c.getHeureFin().minusMinutes(minute);
@@ -574,14 +575,14 @@ public class Hopital {
 
         /* si le placement de la chirurgie est possible, l'on vérifie alors des contraintes choisis arbitrairement :
         *	- l'heure de début ne dois pas être avant 7 heures du matin
-        *	- l'heure de fin ne dois pas dépasser 23 heures
+        *	- l'heure de debut ne dois dépasser 20 heures
         *	le but étant d'éviter au maximum, le placement de chirurgie à des heures contraignantes (de 03:00 à 05:00 par exemple)
-        */
+         */
         if (datePossible) {
             if (tentativeChirurgie.getHeureDebut().isBefore(LocalTime.of(7, 0))) {
                 return false;
             }
-            if (tentativeChirurgie.getHeureFin().isAfter(LocalTime.of(23, 0))) {
+            if (tentativeChirurgie.getHeureDebut().isAfter(LocalTime.of(20, 0))) {
                 return false;
             }
             if (tentativeChirurgie.getHeureFin().isBefore(LocalTime.of(7, 0))) {
@@ -597,16 +598,17 @@ public class Hopital {
         }
     }
 
-    
     /**
-    *
-    * Boucle cherchant à déplacer les chirurgies d'une liste, une par une, au fur et à mesure, selon un pas donné en paramètre 
-    * @param lesChirurgies 	: ArrayList de Chirurgie
-    * @param tempsDécalage 	: Entier réprésentant les pas de temps de décalage (exprimé en minute)
-    * 
-    */
-    public void deplacementHeureChirurgie(ArrayList<Chirurgie> lesChirurgies, int tempsDecalage) {
-    	int tempsDecalageInitial = tempsDecalage;
+     *
+     * Boucle cherchant à déplacer les chirurgies d'une liste, une par une, au fur et à mesure, selon un pas donné en
+     * paramètre
+     *
+     * @param lesChirurgies : ArrayList de Chirurgie
+     * @param tempsDécalage : Entier réprésentant les pas de temps de décalage (exprimé en minute)
+     *
+     */
+    public boolean deplacementHeureChirurgie(ArrayList<Chirurgie> lesChirurgies, int tempsDecalage) {
+        int tempsDecalageInitial = tempsDecalage;
         boolean ChangementChirurgie = false;
         // parcours de la liste des chirurgies
         for (Chirurgie c : lesChirurgies) {
@@ -615,7 +617,7 @@ public class Hopital {
              *  la limite est là pour savoir le nombre d'étape maximum atteignable, pour ne pas boucler indéfiniment
              *  le but étant d'avoir un tempsDecalage de maximum 12h, car si l'on ne peut pas décaler vers l'avant ou vers l'arrière de 12h, 
              *  alors la chirurgie ne peut pas être déplacer
-            */
+             */
             int limite = 12 * 60 / tempsDecalage;
             // tant que le changement n'est pas possible, l'on rajoute un pas au temps de décalage 
             while (!((this.changementHeureChirurgie(c, 0, tempsDecalage, "avancer"))
@@ -627,57 +629,73 @@ public class Hopital {
                 }
             }
             if (i < limite) {
-                System.out.println(c);
                 ChangementChirurgie = true;
-                break;
+                return true;
             }
         }
+
         // si aucune chirurgie ne peut être déplacé, alors l'on normalise la durée des chirurgies de la journée
         if (!(ChangementChirurgie)) {
-            this.normalisationHeureChirurgieDuJour(lesChirurgies.get(0).getDate());
+            double nb = Math.random();
+            int valeur;
+            if (nb > 0.5) {
+                valeur = 1;
+            }
+            else {
+                valeur = 0;
+            }
+            this.normalisationHeureChirurgie(lesChirurgies.get(valeur));
         }
+        return false;
     }
 
-    
     /**
-    *
-    * @param c 	 : Objet de type Chirurgie   
-    * @return true: si la chirurgie passé en paramètre est présente dans la liste des erreurs
-    *	false sinon
-    */
+     *
+     * @param c : Objet de type Chirurgie
+     * @return true: si la chirurgie passé en paramètre est présente dans la liste des erreurs false sinon
+     */
     public boolean estErreur(Chirurgie c) {
-    	for(Erreur e : this.listeErreurs) {
-    		for (Chirurgie ch : e.getListeChirurgiesErreur()) {
-    			if(ch.equals(c)) {
-    				return true;
-    			}
-    		}
-    	}
-    	return false;
+        for (Erreur e : this.listeErreurs) {
+            for (Chirurgie ch : e.getListeChirurgiesErreur()) {
+                if (ch.equals(c)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
-    
+
     /**
-    * Réalise des statistiques sur le temps de travail de chacun des chirurgiens, proportionnellement au temps de travail total
-    * 
-    * @return TreeMap<Chirurgien, String> : renvoie une map ayant pour clé un chirurgien
-    * et pour valeur une chaine représentant le temps de travail du chirurgien en %
-    */
-    public HashMap <Chirurgien, String> statTempsTravailChirurgien() {
-        HashMap <Chirurgien, String> m = new HashMap<>();
-    	double total = 0;
-    	
-    	for (Chirurgie c : this.listeChirurgies) {
-    		total += c.getDuree();
-    	}
-    	
-    	for(Chirurgien c : Chirurgien.getListeChirurgiens()) {
-    		if(!(c.getNom().equals("Joker"))) {
-        		Double moyenne =  c.getTempsDeTravail() / total * 100;
-        		DecimalFormat df = new DecimalFormat("#0.00");
-        		String s = df.format(moyenne) + "%";
-        		m.put(c, s);
-    		}
-    	}
-    	return m;
+     * Réalise des statistiques sur le temps de travail de chacun des chirurgiens, proportionnellement au temps de
+     * travail total
+     *
+     * @return TreeMap<Chirurgien, String> : renvoie une map ayant pour clé un chirurgien et pour valeur une chaine
+     * représentant le temps de travail du chirurgien en %
+     */
+    public HashMap<Chirurgien, String> statTempsTravailChirurgien() {
+        HashMap<Chirurgien, String> m = new HashMap<>();
+        double total = 0;
+
+        for (Chirurgie c : this.listeChirurgies) {
+            total += c.getDuree();
+        }
+
+        for (Chirurgien c : Chirurgien.getListeChirurgiens()) {
+            if (!(c.getNom().equals("Joker"))) {
+                Double moyenne = c.getTempsDeTravail() / total * 100;
+                DecimalFormat df = new DecimalFormat("#0.00");
+                String s = df.format(moyenne) + "%";
+                m.put(c, s);
+            }
+        }
+        return m;
+    }
+
+    public int getDureeTotalChirurgies() {
+        int total = 0;
+        for (Chirurgie c : this.listeChirurgies) {
+            total += c.getDuree();
+        }
+        return total;
     }
 }
