@@ -15,21 +15,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
+ * Classe représentant le menu, qui sera l'interface d'accès aux diverses fonctionnalités
  *
- * @author schwal180
+ * @author Liam Kormann
+ * @version 1.0
  */
+
 public class Menu {
 
     private String currentFile;
     private Hopital notreHopital;
     private Scanner sc;
     private boolean actif;
+    
+    // attributs de statistiques
     private int dureeTotal;
     private int nbErreurs;
 
@@ -89,19 +89,22 @@ public class Menu {
                 int nbEtape = 1;
                 while (this.notreHopital.getTailleListeErreurs() > 0) {
                     if (nbEtape > 20) {
-                        System.out.println("Impossible de resoudre toutes les erreurs\n\n");
+                        System.out.println("\nImpossible de resoudre toutes les erreurs\n\n");
                         this.notreHopital.printListeErreurs();
                         break;
                     }
                     this.notreHopital.findErreur();
                     if (this.notreHopital.getTailleListeErreurs() == 0) {
+                        System.out.println("\nErreur(s) restante(s) : " + this.notreHopital.getTailleListeErreurs());
                         System.out.println("Toutes les erreurs ont été corrigées !\n");
                         this.printStats();
                         break;
                     }
-                    System.out.println(" étape " + (nbEtape) + " :");
-                    this.notreHopital.resolveErreur();
-                    System.out.println("erreur(s) restante(s) : " + this.notreHopital.getTailleListeErreurs());
+                    System.out.println("\nétape " + (nbEtape) + " :");
+                    System.out.println("Erreur(s) restante(s) : " + this.notreHopital.getTailleListeErreurs());
+                    this.notreHopital.printNbErreursParType();
+                    System.out.println("Resolution : ");
+                    this.notreHopital.resolveErreur(); 
                     nbEtape++;
                 }
                 break;
@@ -204,7 +207,8 @@ public class Menu {
             this.currentFile = nomFichier;
             this.notreHopital = new Hopital();
             this.notreHopital.init(nomFichier);
-        } catch (IndexOutOfBoundsException | InputMismatchException e) {
+        } 
+        catch (IndexOutOfBoundsException | InputMismatchException e) {
             System.err.println("Le fichier demandé n'existe pas\n");
             this.selectFile();
         }
