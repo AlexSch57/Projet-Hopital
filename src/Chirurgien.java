@@ -100,9 +100,9 @@ public enum Chirurgien {
     }
 
     /**
-    *
-    * @return l'ArrayList De tous les Chirurgien
-    */
+     *
+     * @return l'ArrayList De tous les Chirurgien
+     */
     public static ArrayList<Chirurgien> getListeChirurgiens() {
         ArrayList<Chirurgien> listeChirurgiens = new ArrayList<>();
         for (Chirurgien c : Chirurgien.values()) {
@@ -116,10 +116,10 @@ public enum Chirurgien {
     }
 
     /**
-    *
-    * @param s : ArrayList de Chirurgien
-    * @return une ArrayList de Chirurgien, trié selon leurs temps de travail (du plus faible au plus grand)
-    */
+     *
+     * @param s : ArrayList de Chirurgien
+     * @return une ArrayList de Chirurgien, trié selon leurs temps de travail (du plus faible au plus grand)
+     */
     public static ArrayList<Chirurgien> triListeChirurgiens(ArrayList<Chirurgien> lesChirurgiens) {
         for (int i = 0; i < lesChirurgiens.size(); i++) {
             for (int j = 0; j < lesChirurgiens.size(); j++) {

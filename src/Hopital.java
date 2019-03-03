@@ -663,11 +663,11 @@ public class Hopital {
             * elle correspond au nombres d'itérations requises pour atteindre 24h
              */
             int limite = 24 * 60 / tempsDecalage;
-           
+
             /*
             * cette boucle gère le déplacement et la modification du pas, si d'un coté ou de l'autre (avancer ou retarder), la limite est atteinte
             * alors l'on ignore ce type de déplacement, afin d'éviter des itérations inutiles
-            */
+             */
             boolean stopAvancer = false;
             boolean stopRetarder = false;
             while (!(changementPossible)) {
@@ -681,20 +681,17 @@ public class Hopital {
                     stopRetarder = true;
                 }
 
-                
-                if(!(stopRetarder)) {
+                if (!(stopRetarder)) {
                     if (this.changementHeureChirurgie(c, 0, tempsDecalage, "retarder")) {
                         return true;
                     }
                 }
-                if(!(stopAvancer)) {
+                if (!(stopAvancer)) {
                     if (this.changementHeureChirurgie(c, 0, tempsDecalage, "avancer")) {
                         return true;
                     }
                 }
-              
 
-               
                 tempsDecalage += tempsDecalageInitial;
                 i++;
                 if (i >= limite) {

@@ -21,14 +21,13 @@ import java.util.Scanner;
  * @author Liam Kormann
  * @version 1.0
  */
-
 public class Menu {
 
     private String currentFile;
     private Hopital notreHopital;
     private Scanner sc;
     private boolean actif;
-    
+
     // attributs de statistiques
     private int dureeTotal;
     private int nbErreurs;
@@ -104,7 +103,7 @@ public class Menu {
                     System.out.println("Erreur(s) restante(s) : " + this.notreHopital.getTailleListeErreurs());
                     this.notreHopital.printNbErreursParType();
                     System.out.println("Resolution : ");
-                    this.notreHopital.resolveErreur(); 
+                    this.notreHopital.resolveErreur();
                     nbEtape++;
                 }
                 break;
@@ -207,8 +206,7 @@ public class Menu {
             this.currentFile = nomFichier;
             this.notreHopital = new Hopital();
             this.notreHopital.init(nomFichier);
-        } 
-        catch (IndexOutOfBoundsException | InputMismatchException e) {
+        } catch (IndexOutOfBoundsException | InputMismatchException e) {
             System.err.println("Le fichier demandé n'existe pas\n");
             this.selectFile();
         }
