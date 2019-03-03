@@ -271,10 +271,10 @@ public class Menu {
             }
         }
         if (!choix.equals("7")) {
-            notreHopital.getListeChirurgies().add(c);
+            this.notreHopital.getListeChirurgies().add(c);
             System.out.println("Chirurgie ajoutée");
+            this.notreHopital.findErreur();
         }
-
     }
 
     /**
@@ -305,6 +305,7 @@ public class Menu {
                     c.setChirurgien(this.setChirurgienChirurgie());
                     break;
                 default:
+                    this.notreHopital.findErreur();
                     break;
             }
         }
