@@ -273,11 +273,6 @@ public class Hopital {
                     nbChangementSalle++;
                 }
 
-                // tentative de recherche d'un autre chirurgien disponible
-                else if (this.changementChirurgien(chirurgiensDuJour, listeChirurgiesErreur)) {
-                    nbChangementChirurgien++;
-                }
-
                 // tentative de changement de l'heure de la chirurgie 
                 else if (this.deplacementHeureChirurgie(listeChirurgiesErreur, 10)) {
                     nbChangementHeure++;
@@ -295,10 +290,17 @@ public class Hopital {
                 if (this.changementSalle(listeSalles, listeChirurgiesErreur)) {
                     nbChangementSalle++;
                 }
+                
+                // tentative de recherche d'un autre chirurgien disponible
+                else if (this.changementChirurgien(chirurgiensDuJour, listeChirurgiesErreur)) {
+                    nbChangementChirurgien++;
+                }
+                
                 // tentative de changement de l'heure de la chirurgie 
                 else if (this.deplacementHeureChirurgie(listeChirurgiesErreur, 10)) {
                     nbChangementHeure++;
                 }
+                
                 else {
                     this.normalisationAleatoire(listeChirurgiesErreur);
                     nbReduction++;
@@ -559,7 +561,7 @@ public class Hopital {
         Chirurgie c = lesChirurgies.get(valeur);
         System.out.print("Chirurgie n°" + c.getId() + " : \t" + c.getHeureDebut() + ";" + c.getHeureFin() + "\t -> ");
         this.normalisationHeureChirurgie(lesChirurgies.get(valeur));
-        System.out.println("\t" + c.getHeureDebut() + ";" + c.getHeureFin());
+        System.out.println("\t" + c.getHeureDebut() + ";" + c.getHeureFin() + "\t" + " [REDUCTION HEURE]");
     }
 
     /**
@@ -635,7 +637,7 @@ public class Hopital {
             System.out.print("Chirurgie n°" + c.getId() + " : \t" + c.getHeureDebut() + ";" + c.getHeureFin() + "\t -> ");
             c.setHeureDebut(newHeureDebut);
             c.setHeureFin(newHeureFin);
-            System.out.println("\t" + c.getHeureDebut() + ";" + c.getHeureFin());
+            System.out.println("\t" + c.getHeureDebut() + ";" + c.getHeureFin() + "\t" + " [CHANGEMENT HEURE]");
             return true;
         }
         else {
