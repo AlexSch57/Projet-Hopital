@@ -1,22 +1,18 @@
 
 # Sujet du projet 
 
-Le but du projet est de vous faire manipuler des réseaux. C’est un concept naturel : vous empruntez le
-réseau du métro, vous utilisez les réseaux sociaux, on peut avoir des réseaux de co-auteurs en recherche,
-etc. On pourra voir aussi ce projet comme une implémentation de concepts que vous avez vus dans votre
-cours de graphe.
-Nous allons vous fournir deux fichiers en entrée. Le premier représente le réseau du métro parisien.
-Le second représente un réseau social qui a été généré aléatoirement. Le but du projet est d’écrire un
-code qui répond aux questions suivantes :
-1. Ecrivez sur la console les premières 10 stations en ordre décroissant du nombre de stations directement voisines.
-2. Ecrire une méthode qui prend en paramètre deux stations et qui retourne un itinéraire entre la
-première station et la seconde.
-3. En utilisant les questions précédentes, implémentez des méthodes pour
-(a) écrire sur la console le nom des dix personnes les plus connectées en ordre décroissant
-(b) écrire la chaîne de rencontres nécéssaires pour mettre en relation deux personnes passées en
-paramètre.
-4. En utilisant la question 3b, implémentez une méthode pour savoir si l’on observe les "six degrés
-de séparation" (aussi connus comme les six degrés de Kevin Bacon).
-Bonus. Trouvez un itinéraire qui utilise au moins un tronçon de chacune des lignes de métro en visitant
-le moins de stations possibles. C’est un problème difficile, donc je n’attends pas forcément une
-solution optimale, une "bonne" solution sera acceptable.
+Le but du projet est la correction des erreurs d’une base de données hospitalière.
+
+qui recense les chirurgies effectuées durant 3 années consécutives. Lors d’une opération chirurgicale,
+les infirmières doivent renseigner plusieurs informations sur le tableau de bord présent dans le bloc
+opératoire : l’identifiant du bloc opératoire, le nom du chirurgien qui effectue l’opération ainsi que
+l’heure (et la date) de début et de fin d’intervention. On a constaté des incohérences sur la base de
+données à cause de saisies éronnées. 
+
+L’erreur peut aussi bien porter sur la saisie du chirurgien en charge
+de l’opération ou du bloc opératoire que sur la saisie de l’heure de début ou de fin d’intervention.
+Cela crée des “conflits” entre les chirurgies qu’il faut résoudre pour retrouver une base de données
+cohérente. Votre mission, si vous l’acceptez (mais vous n’avez pas vraiment le choix), est de développer
+une application permettant de corriger ces conflits.
+
+
